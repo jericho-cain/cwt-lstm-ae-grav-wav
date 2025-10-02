@@ -1,0 +1,148 @@
+# Configuration Schema Definition
+# This file defines the expected structure for all configuration files
+
+schema_version: "1.0"
+
+downloader_schema:
+  type: object
+  required: ["data_directories", "detectors", "observing_runs", "download_params"]
+  properties:
+    data_directories:
+      type: object
+      required: ["raw_data", "manifest_file"]
+      properties:
+        raw_data:
+          type: string
+          description: "Directory path for raw downloaded data"
+        processed_data:
+          type: string
+          description: "Directory path for processed data"
+        manifest_file:
+          type: string
+          description: "JSON file path for download manifest"
+    
+    detectors:
+      type: array
+      items:
+        type: string
+        enum: ["H1", "L1", "V1", "G1", "K1"]
+      description: "List of detectors to download from"
+    
+    observing_runs:
+      type: array
+      items:
+        type: string
+        enum: ["O1", "O2", "O3a", "O3b", "O4a", "S5", "S6"]
+      description: "List of observing runs to include"
+    
+    noise_segments:
+      type: array
+      items:
+        type: object
+        required: ["start_gps", "end_gps", "label", "type", "detector"]
+        properties:
+          start_gps:
+            type: integer
+            description: "Start GPS time"
+          end_gps:
+            type: integer
+            description: "End GPS time"
+          label:
+            type: string
+            description: "Human-readable label for this segment"
+          type:
+            type: string
+            enum: ["noise", "signal", "unlabeled"]
+          detector:
+            type: string
+            enum: ["H1", "L1", "V1", "G1", "K1"]
+          duration:
+            type: integer
+            default: 32
+            description: "Segment duration in seconds"
+          sample_rate:
+            type: integer
+            default: 4096
+            description: "Sample rate in Hz"
+          known_event:
+            type: string
+            description: "Name of known GW event (for signal segments)"
+    
+    signal_segments:
+      type: array
+      items:
+        type: object
+        required: ["start_gps", "end_gps", "label", "type", "detector", "known_event"]
+        properties:
+          start_gps:
+            type: integer
+            description: "Start GPS time"
+          end_gps:
+            type: integer
+            description: "End GPS time"
+          label:
+            type: string
+            description: "Human-readable label for this segment"
+          type:
+            type: string
+            enum: ["signal"]
+          detector:
+            type: string
+            enum: ["H1", "L1", "V1", "G1", "K1"]
+          duration:
+            type: integer
+            default: 32
+            description: "Segment duration in seconds"
+          sample_rate:
+            type: integer
+            default: 4096
+            description: "Sample rate in Hz"
+          known_event:
+            type: string
+            description: "Name of known GW event"
+    
+    download_params:
+      type: object
+      required: ["segment_duration", "sample_rate", "retry_attempts"]
+      properties:
+        segment_duration:
+          type: integer
+          description: "Default segment duration in seconds"
+        sample_rate:
+          type: integer
+          description: "Default sample rate in Hz"
+        retry_attempts:
+          type: integer
+          minimum: 1
+          maximum: 10
+          description: "Number of retry attempts for failed downloads"
+        timeout_seconds:
+          type: integer
+          default: 30
+          description: "Timeout for individual downloads"
+        verify_data_quality:
+          type: boolean
+          default: true
+          description: "Whether to verify data quality after download"
+        check_nan_inf:
+          type: boolean
+          default: true
+          description: "Whether to check for NaN/Inf values"
+    
+    safety:
+      type: object
+      properties:
+        require_confirmation:
+          type: boolean
+          default: true
+          description: "Require user confirmation before downloading"
+        backup_existing:
+          type: boolean
+          default: true
+          description: "Backup existing files before overwriting"
+        max_concurrent_downloads:
+          type: integer
+          default: 3
+          minimum: 1
+          maximum: 10
+          description: "Maximum concurrent downloads"

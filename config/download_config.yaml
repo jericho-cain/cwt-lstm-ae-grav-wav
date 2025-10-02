@@ -1,0 +1,61 @@
+# Download Configuration Schema
+# This defines the structure for download configuration files
+
+downloader:
+  data_directories:
+    raw_data: "data/raw/"
+    processed_data: "data/processed/"
+    manifest_file: "data/download_manifest.json"
+  
+  detectors: ["H1", "L1", "V1"]
+  observing_runs: ["O1", "O2", "O3a", "O3b", "O4a"]
+  
+  # Clean noise segments - specific GPS time ranges for training data
+  noise_segments:
+    - start_gps: 1126259462
+      end_gps: 1126259500
+      label: "O1_clean_noise_1"
+      type: "noise"
+      detector: "H1"
+      duration: 32
+      sample_rate: 4096
+    - start_gps: 1126259500
+      end_gps: 1126259600
+      label: "O1_clean_noise_2"
+      type: "noise"
+      detector: "H1"
+      duration: 32
+      sample_rate: 4096
+  
+  # Gravitational wave signal segments - around confirmed events
+  signal_segments:
+    - start_gps: 1126259462
+      end_gps: 1126259500
+      label: "GW150914"
+      type: "signal"
+      detector: "H1"
+      duration: 32
+      sample_rate: 4096
+      known_event: "GW150914"
+    - start_gps: 1135136350
+      end_gps: 1135136390
+      label: "GW151226"
+      type: "signal"
+      detector: "H1"
+      duration: 32
+      sample_rate: 4096
+      known_event: "GW151226"
+  
+  download_params:
+    segment_duration: 32
+    sample_rate: 4096
+    retry_attempts: 3
+    timeout_seconds: 30
+    verify_data_quality: true
+    check_nan_inf: true
+    
+  # Safety settings
+  safety:
+    require_confirmation: true
+    backup_existing: true
+    max_concurrent_downloads: 3

@@ -115,7 +115,7 @@ dmypy.json
 *.pickle
 data/
 datasets/
-models/
+models/  # Only ignore root models/ directory (saved model files)
 checkpoints/
 logs/
 outputs/

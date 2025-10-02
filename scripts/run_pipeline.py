@@ -21,7 +21,7 @@ import numpy as np
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from training import CWTModelTrainer
-from evaluation import AnomalyDetector
+from evaluation import AnomalyDetector, PostProcessor
 from preprocessing import CWTPreprocessor
 from pipeline import RunManager
 
@@ -236,11 +236,30 @@ def evaluate_model(config: Dict[str, Any], run_manager: RunManager) -> Dict[str,
     # Detect anomalies
     results = detector.detect_anomalies(test_data, test_labels)
     
+    # Post-process results to add timing information
+    postprocessor = PostProcessor(str(run_manager.config_path))
+    enhanced_results = postprocessor.add_timing(results, test_data)
+    
+    # Analyze detection patterns
+    pattern_analysis = postprocessor.analyze_detection_patterns(enhanced_results)
+    enhanced_results.update(pattern_analysis)
+    
+    # Generate detection report
+    detection_report = postprocessor.generate_detection_report(enhanced_results)
+    
+    # Save detection report
+    if run_manager.current_run_dir:
+        report_file = run_manager.current_run_dir / "results" / "detection_report.txt"
+        report_file.parent.mkdir(parents=True, exist_ok=True)
+        with open(report_file, 'w') as f:
+            f.write(detection_report)
+        logger.info(f"Detection report saved to {report_file}")
+    
     # Add evaluation results to run metadata
-    run_manager.add_evaluation_results(results)
+    run_manager.add_evaluation_results(enhanced_results)
     
     logger.info("Model evaluation completed")
-    return results
+    return enhanced_results
 
 
 def main() -> int:

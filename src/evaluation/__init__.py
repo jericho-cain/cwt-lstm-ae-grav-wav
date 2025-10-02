@@ -6,5 +6,6 @@ models, including anomaly detection, performance metrics, and visualization.
 """
 
 from .anomaly_detector import AnomalyDetector
+from .post_processor import PostProcessor
 
-__all__ = ['AnomalyDetector']
+__all__ = ['AnomalyDetector', 'PostProcessor']

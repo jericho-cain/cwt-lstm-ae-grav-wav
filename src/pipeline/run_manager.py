@@ -13,6 +13,7 @@ import json
 import hashlib
 import subprocess
 import logging
+import numpy as np
 from datetime import datetime
 from pathlib import Path
 from typing import Dict, Any, Optional, List
@@ -166,10 +167,25 @@ class RunManager:
         # Add timestamp
         self.run_metadata["last_updated"] = datetime.now().isoformat()
         
+        # Convert numpy arrays and other non-serializable types for JSON serialization
+        def convert_numpy(obj):
+            if isinstance(obj, np.ndarray):
+                return obj.tolist()
+            elif isinstance(obj, (np.float32, np.float64, np.int32, np.int64)):
+                return float(obj) if 'float' in str(type(obj)) else int(obj)
+            elif isinstance(obj, dict):
+                return {key: convert_numpy(value) for key, value in obj.items()}
+            elif isinstance(obj, list):
+                return [convert_numpy(item) for item in obj]
+            else:
+                return obj
+        
+        serializable_metadata = convert_numpy(self.run_metadata)
+        
         # Save to file
         metadata_file = self.current_run_dir / "run_metadata.json"
         with open(metadata_file, 'w') as f:
-            json.dump(self.run_metadata, f, indent=2)
+            json.dump(serializable_metadata, f, indent=2)
             
         logger.info(f"Saved run metadata to {metadata_file}")
         

@@ -140,3 +140,6 @@ Thumbs.db
 # Temporary files
 *.tmp
 *.temp
+
+# Test outputs
+test_metrics_output/

@@ -387,7 +387,7 @@ class GWOSCDownloader:
         logger.debug(f"Generated mock strain data for {detector}: {n_samples} samples")
         return strain
     
-    def _validate_data_quality(self, strain_data: np.ndarray) -> Dict[str, bool]:
+    def _validate_data_quality(self, strain_data: np.ndarray) -> Dict[str, Any]:
         """
         Validate data quality and return quality metrics.
         
@@ -395,16 +395,97 @@ class GWOSCDownloader:
             strain_data (np.ndarray): Strain data to validate
             
         Returns:
-            Dict[str, bool]: Quality metrics
+            Dict[str, Any]: Quality metrics and statistics
         """
         quality = {
             "has_nan": np.any(np.isnan(strain_data)),
             "has_inf": np.any(np.isinf(strain_data)),
             "has_zero_variance": np.std(strain_data) < 1e-25,
-            "has_reasonable_range": np.all(np.abs(strain_data) < 1e-18)
+            "has_reasonable_range": np.all(np.abs(strain_data) < 1e-18),
+            "nan_count": np.sum(np.isnan(strain_data)),
+            "inf_count": np.sum(np.isinf(strain_data)),
+            "total_samples": len(strain_data),
+            "nan_percentage": (np.sum(np.isnan(strain_data)) / len(strain_data)) * 100,
+            "inf_percentage": (np.sum(np.isinf(strain_data)) / len(strain_data)) * 100
         }
         
         return quality
+        
+    def _clean_data(self, strain_data: np.ndarray, quality: Dict[str, Any]) -> Tuple[np.ndarray, Dict[str, Any]]:
+        """
+        Clean data by handling NaN/Inf values.
+        
+        Args:
+            strain_data (np.ndarray): Raw strain data
+            quality (Dict[str, Any]): Data quality metrics
+            
+        Returns:
+            Tuple[np.ndarray, Dict[str, Any]]: Cleaned data and cleaning report
+        """
+        cleaned_data = strain_data.copy()
+        cleaning_report = {
+            "original_quality": quality,
+            "cleaning_applied": [],
+            "final_quality": None
+        }
+        
+        # If more than 50% of data is NaN/Inf, reject the segment
+        if quality["nan_percentage"] > 50 or quality["inf_percentage"] > 50:
+            logger.warning(f"Segment rejected: {quality['nan_percentage']:.1f}% NaN, {quality['inf_percentage']:.1f}% Inf")
+            return None, {"rejected": True, "reason": "Too many NaN/Inf values"}
+        
+        # Handle NaN values
+        if quality["has_nan"]:
+            if quality["nan_percentage"] < 5:
+                # Few NaNs: interpolate
+                nan_mask = np.isnan(cleaned_data)
+                if np.any(nan_mask) and not np.all(nan_mask):
+                    # Linear interpolation for NaN values
+                    valid_indices = np.where(~nan_mask)[0]
+                    if len(valid_indices) > 1:
+                        cleaned_data[nan_mask] = np.interp(
+                            np.where(nan_mask)[0], 
+                            valid_indices, 
+                            cleaned_data[valid_indices]
+                        )
+                        cleaning_report["cleaning_applied"].append("NaN interpolation")
+                    else:
+                        # All data is NaN, fill with zeros
+                        cleaned_data[nan_mask] = 0.0
+                        cleaning_report["cleaning_applied"].append("NaN zero-fill")
+            else:
+                # Many NaNs: zero-fill
+                cleaned_data[np.isnan(cleaned_data)] = 0.0
+                cleaning_report["cleaning_applied"].append("NaN zero-fill")
+        
+        # Handle Inf values
+        if quality["has_inf"]:
+            if quality["inf_percentage"] < 5:
+                # Few Infs: replace with max/min values
+                inf_mask = np.isinf(cleaned_data)
+                finite_data = cleaned_data[~inf_mask]
+                if len(finite_data) > 0:
+                    max_val = np.max(finite_data)
+                    min_val = np.min(finite_data)
+                    cleaned_data[cleaned_data == np.inf] = max_val
+                    cleaned_data[cleaned_data == -np.inf] = min_val
+                    cleaning_report["cleaning_applied"].append("Inf replacement")
+                else:
+                    # All data is Inf, fill with zeros
+                    cleaned_data[inf_mask] = 0.0
+                    cleaning_report["cleaning_applied"].append("Inf zero-fill")
+            else:
+                # Many Infs: zero-fill
+                cleaned_data[np.isinf(cleaned_data)] = 0.0
+                cleaning_report["cleaning_applied"].append("Inf zero-fill")
+        
+        # Re-validate cleaned data
+        final_quality = self._validate_data_quality(cleaned_data)
+        cleaning_report["final_quality"] = final_quality
+        
+        logger.info(f"Data cleaning applied: {cleaning_report['cleaning_applied']}")
+        
+        return cleaned_data, cleaning_report
     
     def _download_single_segment(self, segment_config: Dict) -> Dict:
         """
@@ -437,7 +518,9 @@ class GWOSCDownloader:
         logger.info(f"Downloading {segment_id}: {label} ({segment_type})")
         
         # Download data
+        logger.debug(f"Calling _download_strain_data for {segment_id}")
         strain_data = self._download_strain_data(detector, start_gps, duration, sample_rate)
+        logger.debug(f"_download_strain_data completed for {segment_id}, got data: {strain_data is not None}")
         
         if strain_data is None:
             return {
@@ -449,22 +532,49 @@ class GWOSCDownloader:
         # Validate data quality
         quality = self._validate_data_quality(strain_data)
         
+        # Clean data if needed
+        if quality["has_nan"] or quality["has_inf"]:
+            logger.info(f"Data quality issues detected: {quality['nan_percentage']:.1f}% NaN, {quality['inf_percentage']:.1f}% Inf")
+            cleaned_data, cleaning_report = self._clean_data(strain_data, quality)
+            
+            if cleaned_data is None:
+                return {
+                    "segment_id": segment_id,
+                    "status": "failed",
+                    "reason": "data_quality_rejected",
+                    "quality": quality,
+                    "cleaning_report": cleaning_report
+                }
+            
+            # Use cleaned data
+            strain_data = cleaned_data
+            quality = cleaning_report["final_quality"]
+        else:
+            cleaning_report = None
+        
         # Save data
         filename = f"{segment_id}.npz"
         filepath = os.path.join(self.raw_data_dir, filename)
         
         try:
-            np.savez_compressed(
-                filepath,
-                strain=strain_data,
-                detector=detector,
-                start_gps=start_gps,
-                duration=duration,
-                sample_rate=sample_rate,
-                label=label,
-                segment_type=segment_type,
-                download_timestamp=datetime.now().isoformat()
-            )
+            save_data = {
+                "strain": strain_data,
+                "detector": detector,
+                "start_gps": start_gps,
+                "duration": duration,
+                "sample_rate": sample_rate,
+                "label": label,
+                "segment_type": segment_type,
+                "download_timestamp": datetime.now().isoformat()
+            }
+            
+            # Add quality and cleaning info if available
+            if quality:
+                save_data["quality"] = quality
+            if cleaning_report:
+                save_data["cleaning_report"] = cleaning_report
+            
+            np.savez_compressed(filepath, **save_data)
             
             # Create manifest entry
             manifest_entry = {
@@ -482,6 +592,11 @@ class GWOSCDownloader:
                 "quality_metrics": quality,
                 "download_timestamp": datetime.now().isoformat()
             }
+            
+            # Add cleaning information if available
+            if cleaning_report:
+                manifest_entry["cleaning_applied"] = cleaning_report["cleaning_applied"]
+                manifest_entry["original_quality"] = cleaning_report["original_quality"]
             
             self.manifest['downloads'].append(manifest_entry)
             
@@ -555,18 +670,31 @@ class GWOSCDownloader:
         
         max_concurrent = self.config['downloader'].get('safety', {}).get('max_concurrent_downloads', 3)
         
+        logger.info(f"Starting download with {max_concurrent} concurrent workers")
+        
         with ThreadPoolExecutor(max_workers=max_concurrent) as executor:
             # Submit all download tasks
-            future_to_segment = {
-                executor.submit(self._download_single_segment, segment): segment 
-                for segment in all_segments
-            }
+            logger.info(f"Submitting {len(all_segments)} download tasks to thread pool")
+            future_to_segment = {}
+            for i, segment in enumerate(all_segments):
+                segment_id = self._get_segment_id(segment['detector'], segment['start_gps'], segment.get('duration', 32))
+                logger.info(f"  Submitting task {i+1}/{len(all_segments)}: {segment_id}")
+                future = executor.submit(self._download_single_segment, segment)
+                future_to_segment[future] = segment
+            
+            logger.info(f"All {len(future_to_segment)} tasks submitted, waiting for completion...")
             
             # Process completed downloads
+            completed_count = 0
             for future in as_completed(future_to_segment):
+                completed_count += 1
                 segment = future_to_segment[future]
+                segment_id = self._get_segment_id(segment['detector'], segment['start_gps'], segment.get('duration', 32))
+                logger.info(f"Processing completed task {completed_count}/{len(future_to_segment)}: {segment_id}")
+                
                 try:
                     result = future.result()
+                    logger.info(f"Task {segment_id} completed with status: {result['status']}")
                     results["results"].append(result)
                     
                     if result["status"] == "success":
@@ -580,10 +708,12 @@ class GWOSCDownloader:
                     logger.error(f"Download task failed for {segment['label']}: {e}")
                     results["failed"] += 1
                     results["results"].append({
-                        "segment_id": self._get_segment_id(segment['detector'], segment['start_gps'], segment.get('duration', 32)),
+                        "segment_id": segment_id,
                         "status": "failed",
                         "reason": f"task_exception: {e}"
                     })
+            
+            logger.info(f"All {completed_count} tasks completed")
         
         # Save updated manifest
         self._save_manifest()

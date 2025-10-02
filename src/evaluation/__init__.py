@@ -7,5 +7,6 @@ models, including anomaly detection, performance metrics, and visualization.
 
 from .anomaly_detector import AnomalyDetector
 from .post_processor import PostProcessor
+from .metrics import MetricsEvaluator
 
-__all__ = ['AnomalyDetector', 'PostProcessor']
+__all__ = ['AnomalyDetector', 'PostProcessor', 'MetricsEvaluator']

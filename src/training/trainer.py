@@ -421,7 +421,8 @@ class CWTModelTrainer:
                 patience_counter += 1
                 
             # Save checkpoint
-            if (epoch + 1) % training_config['save_every_n_epochs'] == 0 or is_best:
+            save_config = self.config['model']['save']
+            if (epoch + 1) % save_config['save_every_n_epochs'] == 0 or is_best:
                 self.save_checkpoint(epoch + 1, is_best)
                 
             # Log progress

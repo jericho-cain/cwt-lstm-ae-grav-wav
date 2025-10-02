@@ -21,7 +21,7 @@ import numpy as np
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 
 from training import CWTModelTrainer
-from evaluation import AnomalyDetector, PostProcessor
+from evaluation import AnomalyDetector, PostProcessor, MetricsEvaluator
 from preprocessing import CWTPreprocessor
 from pipeline import RunManager
 
@@ -254,6 +254,27 @@ def evaluate_model(config: Dict[str, Any], run_manager: RunManager) -> Dict[str,
         with open(report_file, 'w') as f:
             f.write(detection_report)
         logger.info(f"Detection report saved to {report_file}")
+    
+    # Calculate comprehensive metrics and create plots
+    logger.info("Calculating comprehensive metrics and creating plots...")
+    metrics_evaluator = MetricsEvaluator()
+    
+    # Calculate metrics using reconstruction errors and true labels
+    metrics_results = metrics_evaluator.calculate_metrics(
+        y_true=test_labels,
+        y_scores=results['reconstruction_errors']
+    )
+    
+    # Create comprehensive plots
+    metrics_evaluator.create_comprehensive_plots(str(run_manager.current_run_dir / "results"))
+    
+    # Get summary metrics
+    summary_metrics = metrics_evaluator.get_summary_metrics()
+    logger.info(f"Metrics summary: {summary_metrics}")
+    
+    # Add metrics to results
+    enhanced_results['metrics'] = summary_metrics
+    enhanced_results['metrics_detailed'] = metrics_results
     
     # Add evaluation results to run metadata
     run_manager.add_evaluation_results(enhanced_results)

@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-CWT Timing Validation Test Script
+CWT Timing Validation Script
 
-This script tests the CWT preprocessing timing accuracy using known
+This script validates the CWT preprocessing timing accuracy using known
 gravitational wave events with precise timing information.
 
 Usage:
-    python scripts/test_cwt_timing.py --data-dir data/raw --events GW150914,GW151226
+    python tests/validate_cwt_timing.py --data-dir data/raw --events GW150914,GW151226
 """
 
 import sys
@@ -224,14 +224,14 @@ def main() -> None:
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
 Examples:
-  # Test with real data
-  python scripts/test_cwt_timing.py --data-dir data/raw --events GW150914,GW151226
+  # Validate with real data
+  python tests/validate_cwt_timing.py --data-dir data/raw --events GW150914,GW151226
   
-  # Test with mock data
-  python scripts/test_cwt_timing.py --events GW150914,GW151226,GW170817 --mock-data
+  # Validate with mock data
+  python tests/validate_cwt_timing.py --events GW150914,GW151226,GW170817 --mock-data
   
-  # Test single event
-  python scripts/test_cwt_timing.py --data-dir data/raw --events GW150914
+  # Validate single event
+  python tests/validate_cwt_timing.py --data-dir data/raw --events GW150914
         """
     )
     

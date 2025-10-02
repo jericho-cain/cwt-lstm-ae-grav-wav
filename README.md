@@ -4,7 +4,7 @@
 **Status**: Private repository, active development  
 **Last Updated**: October 1, 2025  
 
-## 🎯 **Project Overview**
+## **Project Overview**
 
 This is a complete redesign of the gravitational wave detection system. The original `gravitational_wave_hunter` project became cluttered and hard to work with. This v2.0 redesign implements a clean, modular, production-ready architecture.
 
@@ -13,11 +13,11 @@ This is a complete redesign of the gravitational wave detection system. The orig
 - **Root Cause**: Indexing bugs in CWT processing + incorrect CWT implementation
 - **Solution**: Fixed CWT preprocessing with proper timing alignment (offsets now ±1.7 seconds)
 
-## 📊 **Development Progress**
+## **Development Progress**
 
 ### **Phase 1: Foundation & Downloader (COMPLETED - Oct 1, 2025)**
 
-#### **✅ What We Built**
+#### **What We Built**
 1. **Clean Repository Structure**
    ```
    cwt-lstm-ae-grav-wav/
@@ -52,22 +52,22 @@ This is a complete redesign of the gravitational wave detection system. The orig
    - **Usage**: `python scripts/download_data.py --config config/download_config.yaml`
    - **Features**: Validation-only mode, confirmation prompts, error handling
 
-#### **✅ Success Metrics**
-- **Configuration Validation**: ✅ PASSED
-- **Download Functionality**: ✅ 4 segments downloaded successfully
-- **Duplicate Prevention**: ✅ 4 segments skipped on second run
-- **Manifest Tracking**: ✅ Complete metadata stored in JSON
-- **Data Quality**: ✅ NaN/Inf detection working
-- **Cross-Platform**: ✅ Works on Windows (fixed emoji encoding issues)
+#### **Success Metrics**
+- **Configuration Validation**: PASSED
+- **Download Functionality**: 4 segments downloaded successfully
+- **Duplicate Prevention**: 4 segments skipped on second run
+- **Manifest Tracking**: Complete metadata stored in JSON
+- **Data Quality**: NaN/Inf detection working
+- **Cross-Platform**: Works on Windows (fixed emoji encoding issues)
 
-#### **✅ Key Design Decisions**
+#### **Key Design Decisions**
 1. **Separated Downloader from Training**: Downloader runs independently, training reads from downloaded data
 2. **Configuration-Driven**: All parameters externalized to YAML files
 3. **State Tracking**: JSON manifest prevents duplicate downloads
 4. **Clean Architecture**: Models separated from data directory
 5. **Professional Code**: Removed all emojis for production readiness
 
-#### **✅ Technical Implementation**
+#### **Technical Implementation**
 - **Dependencies**: Only PyYAML, requests, numpy (minimal footprint)
 - **Mock Data**: Currently using mock data (real GWOSC API integration pending)
 - **Error Handling**: Comprehensive exception handling and logging
@@ -101,7 +101,7 @@ This is a complete redesign of the gravitational wave detection system. The orig
 3. **Regression Tests**: Compare results with legacy system
 4. **Performance Tests**: Timing accuracy validation
 
-## 📁 **File Organization**
+## **File Organization**
 
 ### **Active Development Files**
 - `src/downloader/data_downloader.py` - Core downloader implementation
@@ -121,7 +121,7 @@ This is a complete redesign of the gravitational wave detection system. The orig
 - `results/` - Analysis results
 - `data/download_manifest.json` - Download tracking
 
-## 🚀 **Usage Instructions**
+## **Usage Instructions**
 
 ### **Download Data**
 ```bash
@@ -142,7 +142,7 @@ Edit `config/download_config.yaml` to specify:
 - Download parameters (duration, sample rate)
 - Safety settings
 
-## 🔧 **Technical Details**
+## **Technical Details**
 
 ### **Dependencies**
 ```txt
@@ -165,7 +165,7 @@ numpy>=1.21.0
 4. **Training** → Reads from downloaded data (future)
 5. **Models** → Saves to `models/` directory (future)
 
-## 📈 **Performance Metrics**
+## **Performance Metrics**
 
 ### **Downloader Performance**
 - **Download Speed**: 4 segments in ~1 second (mock data)
@@ -179,7 +179,7 @@ numpy>=1.21.0
 - **Test Coverage**: Manual testing completed
 - **Documentation**: Comprehensive docstrings and comments
 
-## 🎯 **Next Development Phase**
+## **Next Development Phase**
 
 ### **Immediate Tasks**
 1. **Model Module**: Implement CWT-LSTM autoencoder from legacy scripts
@@ -209,7 +209,7 @@ numpy>=1.21.0
 
 ---
 
-**Status**: Phase 1 Complete ✅  
+**Status**: Phase 1 Complete  
 **Next**: Phase 2 - Training Pipeline Implementation  
 **Repository**: Private, active development  
 **Last Updated**: October 1, 2025

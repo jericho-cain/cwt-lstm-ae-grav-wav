@@ -284,13 +284,13 @@ def main():
         result = validator.validate_cwt_config(args.config)
     
     if result['valid']:
-        print("✅ Configuration is valid")
+        print("Configuration is valid")
         if result['warnings']:
-            print("⚠️ Warnings:")
+            print("Warnings:")
             for warning in result['warnings']:
                 print(f"   - {warning}")
     else:
-        print("❌ Configuration is invalid")
+        print("Configuration is invalid")
         print("Errors:")
         for error in result['errors']:
             print(f"   - {error}")

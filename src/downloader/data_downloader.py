@@ -474,7 +474,7 @@ def main():
         if results["status"] == "cancelled":
             print("Download cancelled.")
         else:
-            print(f"\n📊 Download Summary:")
+            print(f"\nDownload Summary:")
             print(f"   Total segments: {results['total']}")
             print(f"   Successful: {results['successful']}")
             print(f"   Failed: {results['failed']}")

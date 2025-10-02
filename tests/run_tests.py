@@ -63,9 +63,9 @@ def run_all_tests():
     
     print(f"\n{'='*80}")
     if result.wasSuccessful():
-        print("🎉 ALL TESTS PASSED!")
+        print("ALL TESTS PASSED!")
     else:
-        print("❌ SOME TESTS FAILED")
+        print("SOME TESTS FAILED")
     print(f"{'='*80}")
     
     return result.wasSuccessful()

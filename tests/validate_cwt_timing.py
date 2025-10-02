@@ -52,26 +52,49 @@ def load_strain_data(data_dir: str, event_name: str) -> np.ndarray:
     FileNotFoundError
         If data file is not found
     """
-    # Look for data files (this would be customized based on your data format)
-    data_file = Path(data_dir) / f"{event_name}_strain.npy"
+    # Look for data files in the downloader format
+    data_file = None
     
-    if not data_file.exists():
-        # Try alternative naming conventions
-        alt_files = [
-            Path(data_dir) / f"{event_name}.npy",
-            Path(data_dir) / f"{event_name}_H1.npy",
-            Path(data_dir) / f"{event_name}_L1.npy"
+    # Try different naming conventions
+    alt_files = [
+        Path(data_dir) / f"{event_name}_strain.npy",
+        Path(data_dir) / f"{event_name}.npy",
+        Path(data_dir) / f"{event_name}_H1.npy",
+        Path(data_dir) / f"{event_name}_L1.npy"
+    ]
+    
+    # For GW150914, look for the downloaded files
+    if event_name == "GW150914":
+        # Look for H1 and L1 detector files
+        gw150914_files = [
+            Path(data_dir) / "H1_1126259450_32s.npz",
+            Path(data_dir) / "L1_1126259450_32s.npz"
         ]
-        
-        for alt_file in alt_files:
-            if alt_file.exists():
-                data_file = alt_file
-                break
-        else:
-            raise FileNotFoundError(f"No data file found for {event_name} in {data_dir}")
+        alt_files.extend(gw150914_files)
+    
+    for alt_file in alt_files:
+        if alt_file.exists():
+            data_file = alt_file
+            break
+    
+    if not data_file:
+        raise FileNotFoundError(f"No data file found for {event_name} in {data_dir}")
     
     logger.info(f"Loading strain data from {data_file}")
-    strain_data = np.load(data_file)
+    
+    # Handle different file formats
+    if data_file.suffix == '.npz':
+        # Load from .npz file (downloader format)
+        data = np.load(data_file)
+        # The strain data is typically stored as 'strain' in the .npz file
+        if 'strain' in data:
+            strain_data = data['strain']
+        else:
+            # If no 'strain' key, take the first array
+            strain_data = data[list(data.keys())[0]]
+    else:
+        # Load from .npy file
+        strain_data = np.load(data_file)
     
     logger.info(f"Loaded {event_name} data: shape {strain_data.shape}")
     return strain_data
@@ -160,9 +183,9 @@ def test_cwt_timing_accuracy(
     
     # Known event timing information
     event_timing = {
-        'GW150914': {'peak_time': 0.1, 'gps_start': 1126259462.4},
-        'GW151226': {'peak_time': 0.5, 'gps_start': 1135136350.6},
-        'GW170817': {'peak_time': 1.0, 'gps_start': 1187008882.4}
+        'GW150914': {'peak_time': 12.4, 'gps_start': 1126259450, 'actual_gps': 1126259462.4},
+        'GW151226': {'peak_time': 0.5, 'gps_start': 1135136350.6, 'actual_gps': 1135136350.6},
+        'GW170817': {'peak_time': 1.0, 'gps_start': 1187008882.4, 'actual_gps': 1187008882.4}
     }
     
     validation_results = {}
@@ -174,9 +197,11 @@ def test_cwt_timing_accuracy(
             if use_mock_data:
                 # Create mock data for testing
                 peak_time = event_timing.get(event_name, {}).get('peak_time', 1.0)
+                # Use appropriate duration based on peak time
+                duration = max(peak_time * 2, 2.0)  # At least 2 seconds, or 2x peak time
                 strain_data = create_mock_gw_signal(
                     sample_rate=sample_rate,
-                    duration=2.0,
+                    duration=duration,
                     peak_time=peak_time
                 )
                 gps_start = event_timing.get(event_name, {}).get('gps_start', 0.0)

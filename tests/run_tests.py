@@ -1,8 +1,32 @@
 #!/usr/bin/env python3
 """
-Test runner for Gravitational Wave Hunter v2.0
+Test Runner for Gravitational Wave Hunter v2.0
 
-This script runs all tests and provides comprehensive reporting.
+This script runs all unit tests and provides comprehensive reporting for the gravitational
+wave detection system. It discovers and executes all test modules in the tests directory.
+
+Purpose:
+    - Run all unit tests across the codebase
+    - Provide detailed test reporting
+    - Ensure code quality and functionality
+    - Validate CWT preprocessing and downloader modules
+
+Usage:
+    python tests/run_tests.py [--verbose] [--coverage]
+
+Requirements:
+    - All test modules in tests/ directory
+    - Test configuration in tests/assets/test_config.yaml
+    - Test data directories in tests/assets/test_data/
+
+Output:
+    - Test execution results
+    - Coverage reports (if requested)
+    - Performance metrics
+    - Error summaries
+
+Author: Gravitational Wave Hunter v2.0
+Date: October 2, 2025
 """
 
 import unittest

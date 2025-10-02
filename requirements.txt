@@ -23,5 +23,6 @@ black>=21.0.0
 flake8>=3.9.0
 
 # Optional: For real GWOSC data access
+gwosc>=0.8.0  # For accessing GWOSC event information
 # gwpy>=2.0.0  # Uncomment when implementing real GWOSC API
 # ligo-gracedb>=2.0.0  # Uncomment for GraceDB access

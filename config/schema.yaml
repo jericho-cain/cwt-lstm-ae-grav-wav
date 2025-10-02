@@ -1,7 +1,7 @@
 # Configuration Schema Definition
 # This file defines the expected structure for all configuration files
 
-schema_version: "1.0"
+schema_version: "2.0"
 
 downloader_schema:
   type: object
@@ -146,3 +146,244 @@ downloader_schema:
           minimum: 1
           maximum: 10
           description: "Maximum concurrent downloads"
+
+# CWT Preprocessing Schema
+preprocessing_schema:
+  type: object
+  required: ["cwt"]
+  properties:
+    cwt:
+      type: object
+      required: ["sample_rate", "target_height", "use_analytic"]
+      properties:
+        sample_rate:
+          type: integer
+          minimum: 1024
+          maximum: 16384
+          description: "Sampling rate in Hz"
+        target_height:
+          type: integer
+          minimum: 4
+          maximum: 64
+          description: "Target height for CWT scalograms"
+        use_analytic:
+          type: boolean
+          description: "Use analytic wavelet for better timing accuracy"
+        fmin:
+          type: number
+          minimum: 10.0
+          maximum: 100.0
+          description: "Minimum frequency for CWT analysis"
+        fmax:
+          type: number
+          minimum: 100.0
+          maximum: 1024.0
+          description: "Maximum frequency for CWT analysis"
+        n_scales:
+          type: integer
+          minimum: 4
+          maximum: 32
+          description: "Number of wavelet scales"
+        wavelet:
+          type: string
+          enum: ["cmor1.5-1.0", "morl", "gaus1", "gaus2"]
+          description: "Wavelet type for CWT"
+        k_pad:
+          type: number
+          minimum: 1.0
+          maximum: 20.0
+          description: "Padding factor for CWT"
+        k_coi:
+          type: number
+          minimum: 1.0
+          maximum: 20.0
+          description: "Cone of influence factor"
+
+# Model Schema
+model_schema:
+  type: object
+  required: ["model_type", "input_height", "input_width", "training", "save"]
+  properties:
+    model_type:
+      type: string
+      enum: ["cwt_lstm", "simple_cwt"]
+      description: "Type of model architecture"
+    input_height:
+      type: integer
+      minimum: 4
+      maximum: 64
+      description: "Height of input CWT scalograms"
+    input_width:
+      type: integer
+      minimum: 1024
+      maximum: 262144
+      description: "Width of input CWT scalograms"
+    latent_dim:
+      type: integer
+      minimum: 8
+      maximum: 256
+      description: "Dimension of latent space"
+    lstm_hidden:
+      type: integer
+      minimum: 16
+      maximum: 512
+      description: "Hidden size for LSTM layers"
+    dropout:
+      type: number
+      minimum: 0.0
+      maximum: 0.5
+      description: "Dropout rate for regularization"
+    
+    training:
+      type: object
+      required: ["batch_size", "num_epochs", "learning_rate", "optimizer"]
+      properties:
+        batch_size:
+          type: integer
+          minimum: 1
+          maximum: 64
+          description: "Training batch size"
+        num_epochs:
+          type: integer
+          minimum: 1
+          maximum: 1000
+          description: "Number of training epochs"
+        learning_rate:
+          type: number
+          minimum: 1e-6
+          maximum: 1e-1
+          description: "Learning rate for optimization"
+        optimizer:
+          type: string
+          enum: ["adam", "sgd", "adamw"]
+          description: "Optimizer type"
+        scheduler:
+          type: string
+          enum: ["reduce_on_plateau", "cosine", "none"]
+          description: "Learning rate scheduler"
+        early_stopping_patience:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: "Early stopping patience"
+        validation_split:
+          type: number
+          minimum: 0.0
+          maximum: 0.5
+          description: "Validation data split ratio"
+        loss_function:
+          type: string
+          enum: ["mse", "l1", "smooth_l1"]
+          description: "Loss function type"
+        
+        augmentation:
+          type: object
+          properties:
+            enabled:
+              type: boolean
+              description: "Enable data augmentation"
+            noise_level:
+              type: number
+              minimum: 0.0
+              maximum: 0.1
+              description: "Noise level for augmentation"
+            time_shift:
+              type: number
+              minimum: 0.0
+              maximum: 0.5
+              description: "Time shift factor for augmentation"
+    
+    save:
+      type: object
+      required: ["model_dir", "best_model_name", "final_model_name"]
+      properties:
+        model_dir:
+          type: string
+          description: "Directory for saving models"
+        checkpoint_dir:
+          type: string
+          description: "Directory for saving checkpoints"
+        best_model_name:
+          type: string
+          description: "Filename for best model"
+        final_model_name:
+          type: string
+          description: "Filename for final model"
+        save_every_n_epochs:
+          type: integer
+          minimum: 1
+          maximum: 100
+          description: "Save checkpoint every N epochs"
+    
+    anomaly_detection:
+      type: object
+      properties:
+        threshold_percentile:
+          type: number
+          minimum: 80.0
+          maximum: 99.9
+          description: "Percentile threshold for anomaly detection"
+        reconstruction_error_threshold:
+          type: ["number", "null"]
+          description: "Fixed reconstruction error threshold"
+        min_anomaly_score:
+          type: number
+          minimum: 0.0
+          maximum: 1.0
+          description: "Minimum anomaly score"
+
+# Pipeline Schema
+pipeline_schema:
+  type: object
+  required: ["run_management", "data_flow", "output"]
+  properties:
+    run_management:
+      type: object
+      required: ["create_unique_dirs", "run_metadata_file"]
+      properties:
+        create_unique_dirs:
+          type: boolean
+          description: "Create unique directories for each run"
+        run_metadata_file:
+          type: string
+          description: "Filename for run metadata"
+        include_git_hash:
+          type: boolean
+          description: "Include git hash in run names"
+        include_timestamp:
+          type: boolean
+          description: "Include timestamp in run names"
+    
+    data_flow:
+      type: object
+      required: ["use_preprocessed_data", "preprocessed_data_dir"]
+      properties:
+        use_preprocessed_data:
+          type: boolean
+          description: "Use preprocessed data for training"
+        preprocessed_data_dir:
+          type: string
+          description: "Directory containing preprocessed data"
+        train_on_noise_only:
+          type: boolean
+          description: "Train model only on noise data"
+        test_on_all_data:
+          type: boolean
+          description: "Test on all data (noise + signals)"
+    
+    output:
+      type: object
+      required: ["results_dir"]
+      properties:
+        results_dir:
+          type: string
+          description: "Directory for results"
+        plots_dir:
+          type: string
+          description: "Directory for plots"
+        logs_dir:
+          type: string
+          description: "Directory for logs"
+        reports_dir:
+          type: string
+          description: "Directory for reports"

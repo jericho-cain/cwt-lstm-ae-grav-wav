@@ -1,5 +1,5 @@
-# Download Configuration Schema
-# This defines the structure for download configuration files
+# Gravitational Wave Hunter v2.0 Configuration
+# Unified configuration file for downloader, preprocessing, and model training
 
 downloader:
   data_directories:
@@ -29,22 +29,22 @@ downloader:
   
   # Gravitational wave signal segments - around confirmed events
   signal_segments:
-    - start_gps: 1126259462
-      end_gps: 1126259500
-      label: "GW150914"
+    - start_gps: 1126259450
+      end_gps: 1126259480
+      label: "GW150914_H1"
       type: "signal"
       detector: "H1"
       duration: 32
       sample_rate: 4096
       known_event: "GW150914"
-    - start_gps: 1135136350
-      end_gps: 1135136390
-      label: "GW151226"
+    - start_gps: 1126259450
+      end_gps: 1126259480
+      label: "GW150914_L1"
       type: "signal"
-      detector: "H1"
+      detector: "L1"
       duration: 32
       sample_rate: 4096
-      known_event: "GW151226"
+      known_event: "GW150914"
   
   download_params:
     segment_duration: 32
@@ -59,3 +59,82 @@ downloader:
     require_confirmation: true
     backup_existing: true
     max_concurrent_downloads: 3
+
+# CWT Preprocessing Configuration
+preprocessing:
+  cwt:
+    sample_rate: 4096
+    target_height: 8
+    use_analytic: true
+    fmin: 20.0
+    fmax: 512.0
+    n_scales: 8
+    wavelet: "cmor1.5-1.0"
+    k_pad: 10.0
+    k_coi: 6.0
+
+# Model Configuration
+model:
+  # Model architecture
+  model_type: "cwt_lstm"  # Options: "cwt_lstm", "simple_cwt"
+  input_height: 8
+  input_width: 131072  # 32 seconds * 4096 Hz
+  latent_dim: 32
+  lstm_hidden: 64
+  dropout: 0.1
+  
+  # Training parameters
+  training:
+    batch_size: 8
+    num_epochs: 50
+    learning_rate: 0.001
+    optimizer: "adam"  # Options: "adam", "sgd"
+    scheduler: "reduce_on_plateau"  # Options: "reduce_on_plateau", "cosine", "none"
+    early_stopping_patience: 10
+    validation_split: 0.2
+    
+    # Loss function
+    loss_function: "mse"  # Options: "mse", "l1", "smooth_l1"
+    
+    # Data augmentation
+    augmentation:
+      enabled: false
+      noise_level: 0.01
+      time_shift: 0.1
+      
+  # Model saving
+  save:
+    model_dir: "models/"
+    checkpoint_dir: "models/checkpoints/"
+    best_model_name: "best_cwt_lstm_model.pth"
+    final_model_name: "final_cwt_lstm_model.pth"
+    save_every_n_epochs: 10
+    
+  # Anomaly detection
+  anomaly_detection:
+    threshold_percentile: 95.0
+    reconstruction_error_threshold: null  # Auto-calculated if null
+    min_anomaly_score: 0.5
+
+# Pipeline Configuration
+pipeline:
+  # Run management
+  run_management:
+    create_unique_dirs: true
+    run_metadata_file: "run_metadata.json"
+    include_git_hash: true
+    include_timestamp: true
+    
+  # Data flow
+  data_flow:
+    use_preprocessed_data: true
+    preprocessed_data_dir: "data/processed/"
+    train_on_noise_only: true
+    test_on_all_data: true
+    
+  # Output directories
+  output:
+    results_dir: "results/"
+    plots_dir: "results/plots/"
+    logs_dir: "results/logs/"
+    reports_dir: "results/reports/"

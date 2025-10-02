@@ -1,0 +1,19 @@
+============================================================
+CWT TIMING VALIDATION REPORT
+============================================================
+Generated: 2025-10-02 09:30:56
+Sample rate: 4096 Hz
+Wavelet type: Analytic
+
+[POOR] GW150914:
+  Timing offset: 6471.09 ms
+  Accuracy score: 0.000
+  Peak time: 18.871s
+  Expected: 12.400s
+
+SUMMARY:
+  Events tested: 1
+  Successful validations: 1
+  Average timing offset: 6471.09 ms
+  Overall status: [POOR] TIMING ACCURACY
+============================================================

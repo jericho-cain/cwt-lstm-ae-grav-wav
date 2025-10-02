@@ -1,0 +1,61 @@
+# Test Configuration for Gravitational Wave Hunter v2.0
+# This configuration is used for testing and validation purposes
+
+downloader:
+  data_directories:
+    raw_data: "tests/assets/test_data/raw/"
+    processed_data: "tests/assets/test_data/processed/"
+    manifest_file: "tests/assets/test_data/download_manifest.json"
+  
+  detectors: ["H1", "L1"]
+  observing_runs: ["O1", "O2"]
+  
+  # Test noise segments
+  noise_segments:
+    - start_gps: 1126259462
+      end_gps: 1126259500
+      label: "test_noise_1"
+      type: "noise"
+      detector: "H1"
+      duration: 32
+      sample_rate: 4096
+    - start_gps: 1126259500
+      end_gps: 1126259600
+      label: "test_noise_2"
+      type: "noise"
+      detector: "L1"
+      duration: 32
+      sample_rate: 4096
+  
+  # Test signal segments
+  signal_segments:
+    - start_gps: 1126259450
+      end_gps: 1126259480
+      label: "test_signal_H1"
+      type: "signal"
+      detector: "H1"
+      duration: 32
+      sample_rate: 4096
+      known_event: "GW150914"
+    - start_gps: 1126259450
+      end_gps: 1126259480
+      label: "test_signal_L1"
+      type: "signal"
+      detector: "L1"
+      duration: 32
+      sample_rate: 4096
+      known_event: "GW150914"
+  
+  download_params:
+    segment_duration: 32
+    sample_rate: 4096
+    retry_attempts: 3
+    timeout_seconds: 30
+    verify_data_quality: true
+    check_nan_inf: true
+    
+  # Safety settings
+  safety:
+    require_confirmation: false  # Disabled for testing
+    backup_existing: false       # Disabled for testing
+    max_concurrent_downloads: 2

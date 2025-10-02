@@ -17,12 +17,13 @@ import yaml
 import logging
 import requests
 import numpy as np
+import time
 from datetime import datetime
 from typing import Dict, List, Optional, Tuple, Any
 from pathlib import Path
-import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from gwosc.datasets import event_gps
+from gwosc.timeline import get_segments
 
 # Set up logging
 logging.basicConfig(
@@ -218,7 +219,7 @@ class GWOSCDownloader:
             np.ndarray: Strain data or None if download failed
         """
         try:
-            # Use gwosc to get event GPS time if this is a known event
+            # Check if this is a signal segment (known event)
             event_name = None
             for segment in self.config.get('downloader', {}).get('signal_segments', []):
                 if (segment.get('start_gps') <= start_gps <= segment.get('end_gps', start_gps + duration) and
@@ -237,10 +238,23 @@ class GWOSCDownloader:
                     
                 except Exception as e:
                     logger.warning(f"Failed to get GPS time for {event_name}: {e}")
-                    logger.info("Falling back to mock data")
+                    return None
             
-            # Fall back to mock data for noise segments or if real download fails
-            return self._generate_mock_strain_data(detector, start_gps, duration, sample_rate)
+            # Check if this is a noise segment
+            is_noise_segment = False
+            for segment in self.config.get('downloader', {}).get('noise_segments', []):
+                if (segment.get('start_gps') <= start_gps <= segment.get('end_gps', start_gps + duration) and
+                    segment.get('detector') == detector):
+                    is_noise_segment = True
+                    break
+            
+            if is_noise_segment:
+                # Download real noise data using GWOSC API
+                return self._download_real_gwosc_data(detector, start_gps, duration, sample_rate)
+            
+            # No matching segment found
+            logger.error(f"No matching segment found for {detector} at {start_gps}")
+            return None
             
         except Exception as e:
             logger.error(f"Unexpected error downloading {detector} data: {e}")
@@ -249,7 +263,7 @@ class GWOSCDownloader:
     def _download_real_gwosc_data(self, detector: str, start_gps: int, duration: int, 
                                  sample_rate: int = 4096) -> Optional[np.ndarray]:
         """
-        Download real strain data from GWOSC.
+        Download real strain data from GWOSC using the official gwosc client.
         
         Args:
             detector (str): Detector name (H1, L1, V1, etc.)
@@ -261,131 +275,252 @@ class GWOSCDownloader:
             np.ndarray: Strain data or None if download failed
         """
         try:
-            # Get event name from configuration
+            # Import required libraries
+            try:
+                from gwosc.datasets import event_gps, find_datasets
+                from gwosc import locate
+                from gwosc.timeline import get_segments
+                from gwosc.datasets import run_segment
+                from gwpy.timeseries import TimeSeries
+            except ImportError as e:
+                logger.error(f"Required libraries not available: {e}")
+                logger.error("Install with: pip install gwosc gwpy")
+                return None
+            
+            # Check if this is a signal segment or noise segment
             event_name = None
+            segment_type = None
+            
+            # Check signal segments first
             for segment in self.config.get('downloader', {}).get('signal_segments', []):
                 if (segment.get('start_gps') <= start_gps <= segment.get('end_gps', start_gps + duration) and
                     segment.get('detector') == detector):
                     event_name = segment.get('known_event')
+                    segment_type = 'signal'
                     break
             
+            # If not a signal, check if it's a noise segment
             if not event_name:
-                logger.warning("No event name found for this segment, using mock data")
-                return self._generate_mock_strain_data(detector, start_gps, duration, sample_rate)
+                for segment in self.config.get('downloader', {}).get('noise_segments', []):
+                    if (segment.get('start_gps') <= start_gps <= segment.get('end_gps', start_gps + duration) and
+                        segment.get('detector') == detector):
+                        segment_type = 'noise'
+                        break
             
-            # Use direct GWOSC URLs for known events
-            if event_name == "GW150914":
-                # Direct URLs for GW150914 strain data
-                if detector == "H1":
-                    download_url = "https://gwosc.org/eventapi/json/O1_O2-Preliminary/GW150914/v1/H-H1_LOSC_16_V1-1126257414-4096.gwf"
-                elif detector == "L1":
-                    download_url = "https://gwosc.org/eventapi/json/O1_O2-Preliminary/GW150914/v1/L-L1_LOSC_16_V1-1126257414-4096.gwf"
-                else:
-                    logger.warning(f"Unknown detector {detector} for {event_name}")
-                    return self._generate_mock_strain_data(detector, start_gps, duration, sample_rate)
+            if not segment_type:
+                logger.error(f"No matching segment found for {detector} at GPS {start_gps}")
+                return None
+            
+            if segment_type == 'signal' and not event_name:
+                logger.error("Signal segment found but no event name - cannot download real data")
+                return None
+            
+            logger.info(f"Downloading real GWOSC data for {event_name or 'noise'} ({detector})")
+            
+            # Handle signal segments vs noise segments differently
+            if segment_type == 'signal':
+                # For signal segments, use the existing event-based download method
+                try:
+                    logger.info(f"Attempting to locate direct file URLs for {event_name}")
+                    
+                    # Get direct file URLs for the event
+                    file_urls = locate.get_event_urls(event_name, sample_rate=sample_rate)
+                    
+                    if not file_urls:
+                        logger.error(f"No file URLs found for {event_name}")
+                        return None
+                    
+                    # Filter URLs for the specific detector
+                    detector_urls = [url for url in file_urls if detector in url]
+                    
+                    if not detector_urls:
+                        logger.error(f"No file URLs found for {event_name} {detector}")
+                        return None
+                    
+                    # Use the first available URL
+                    file_url = detector_urls[0]
+                    logger.info(f"Downloading from direct URL: {file_url}")
+                    
+                    # Download and parse the file
+                    import requests
+                    import h5py
+                    import io
+                    
+                    response = requests.get(file_url, timeout=60)
+                    response.raise_for_status()
+                    
+                    # Parse HDF5 data
+                    with h5py.File(io.BytesIO(response.content), 'r') as f:
+                        # Look for strain data in the HDF5 file
+                        strain_data = None
+                        
+                        # Try common strain data paths
+                        possible_paths = [
+                            f'strain/{detector}',
+                            f'strain/Strain',
+                            f'{detector}/strain',
+                            f'strain'
+                        ]
+                        
+                        for path in possible_paths:
+                            if path in f:
+                                strain_data = f[path][:]
+                                logger.info(f"Found strain data at path: {path}")
+                                break
+                        
+                        if strain_data is None:
+                            # List available keys for debugging
+                            logger.error("Available keys in HDF5 file:")
+                            def print_keys(name, obj):
+                                logger.error(f"  {name}: {type(obj)}")
+                            f.visititems(print_keys)
+                            raise ValueError("Could not find strain data in HDF5 file")
+                        
+                        # Convert to float32 and ensure correct length
+                        strain_array = np.array(strain_data, dtype=np.float32)
+                        
+                        # Resample if necessary
+                        if len(strain_array) != duration * sample_rate:
+                            logger.warning(f"Data length {len(strain_array)} != expected {duration * sample_rate}, resampling")
+                            from scipy import signal
+                            strain_array = signal.resample(strain_array, duration * sample_rate)
+                        
+                        logger.info(f"Successfully downloaded {len(strain_array)} samples via direct URL")
+                        return strain_array
+                        
+                except Exception as e:
+                    logger.error(f"Direct URL download failed: {e}")
+                    return None
+            
             else:
-                logger.warning(f"No direct URL available for {event_name}")
-                return self._generate_mock_strain_data(detector, start_gps, duration, sample_rate)
-            
-            logger.info(f"Downloading strain data from: {download_url}")
-            
-            # Download the data
-            response = requests.get(download_url, timeout=60)
-            response.raise_for_status()
-            
-            # For now, generate realistic data based on the successful download
-            # In a full implementation, we would parse the .gwf or .hdf5 file format
-            logger.info("Successfully downloaded GWOSC strain data (using realistic mock for now)")
-            
-            # Generate realistic strain data with proper characteristics
-            n_samples = duration * sample_rate
-            t = np.linspace(0, duration, n_samples)
-            
-            # Create realistic gravitational wave strain signal
-            # Add some characteristic frequency content
-            strain = np.zeros(n_samples, dtype=np.float32)
-            
-            # Add low-frequency noise (seismic, thermal)
-            strain += np.random.normal(0, 1e-22, n_samples)
-            
-            # Add mid-frequency noise (quantum, shot noise)
-            strain += np.random.normal(0, 5e-23, n_samples)
-            
-            # Add high-frequency noise (electronic)
-            strain += np.random.normal(0, 1e-23, n_samples)
-            
-            # Add a realistic gravitational wave signal if this is around the event time
-            actual_gps = event_gps(event_name)
-            if abs(start_gps - actual_gps) < 100:  # Within 100 seconds of the event
-                # Add a chirp signal characteristic of binary black hole mergers
-                event_time_in_segment = actual_gps - start_gps
-                if 0 <= event_time_in_segment <= duration:
-                    # Create a chirp signal
-                    f0 = 20.0  # Starting frequency
-                    f1 = 200.0  # Ending frequency
-                    chirp_duration = 0.5  # 0.5 seconds
+                # For noise segments, use GWpy's fetch_open_data with science-mode segment validation
+                try:
+                    logger.info(f"Downloading real noise data for {detector} at GPS {start_gps}")
                     
-                    # Frequency as a function of time
-                    t_chirp = np.linspace(0, chirp_duration, int(chirp_duration * sample_rate))
-                    f_chirp = f0 + (f1 - f0) * t_chirp / chirp_duration
+                    # Check if this GPS time is in a valid science-mode segment
+                    if not self._is_valid_science_segment(detector, start_gps, duration):
+                        logger.error(f"GPS {start_gps} is not in a valid science-mode segment for {detector}")
+                        return None
                     
-                    # Create chirp signal
-                    phase = 2 * np.pi * np.cumsum(f_chirp) / sample_rate
-                    chirp_signal = 1e-20 * np.sin(phase)  # Increased amplitude for better detection
+                    # Use GWpy's fetch_open_data which handles proper GWOSC URLs automatically
+                    end_gps = start_gps + duration
                     
-                    # Add Gaussian envelope
-                    sigma = 0.1
-                    envelope = np.exp(-0.5 * ((t_chirp - chirp_duration/2) / sigma) ** 2)
-                    chirp_signal *= envelope
+                    logger.info(f"Fetching open data for {detector} from GPS {start_gps} to {end_gps}")
                     
-                    # Insert the chirp signal at the event time
-                    start_idx = int(event_time_in_segment * sample_rate)
-                    end_idx = start_idx + len(chirp_signal)
-                    if end_idx <= len(strain):
-                        strain[start_idx:end_idx] += chirp_signal
+                    # Add retry logic for transient failures
+                    max_tries = 3
+                    delay = 1.0
                     
-                    logger.info(f"Added realistic GW signal at {event_time_in_segment:.2f}s in segment")
+                    for attempt in range(max_tries):
+                        try:
+                            # Fetch open data using GWpy - this uses the correct GWOSC URLs
+                            ts = TimeSeries.fetch_open_data(
+                                detector, 
+                                start_gps, 
+                                end_gps, 
+                                cache=True,
+                                host='https://gwosc.org'
+                            )
+                            
+                            # Check for non-finite values
+                            if not np.isfinite(ts.value).all():
+                                logger.warning(f"Non-finite samples detected in {detector} noise data")
+                                # Try to clean the data
+                                ts = ts.fillna(0)  # Fill NaN with zeros
+                                ts = ts.replace([np.inf, -np.inf], 0)  # Replace inf with zeros
+                            
+                            # Convert to numpy array and ensure correct length
+                            strain_array = np.array(ts.value, dtype=np.float32)
+                            
+                            # Resample if necessary
+                            if len(strain_array) != duration * sample_rate:
+                                logger.warning(f"Data length {len(strain_array)} != expected {duration * sample_rate}, resampling")
+                                from scipy import signal
+                                strain_array = signal.resample(strain_array, duration * sample_rate)
+                            
+                            logger.info(f"Successfully downloaded {len(strain_array)} real noise samples via GWpy")
+                            return strain_array
+                            
+                        except Exception as e:
+                            if attempt < max_tries - 1:
+                                logger.warning(f"Attempt {attempt + 1} failed: {e}. Retrying in {delay}s...")
+                                time.sleep(delay)
+                                delay *= 2
+                            else:
+                                raise e
+                    
+                except Exception as e:
+                    logger.error(f"Error downloading real noise data via GWpy: {e}")
+                    return None
             
-            return strain
-            
-        except requests.exceptions.RequestException as e:
-            logger.error(f"Failed to download real GWOSC data for {detector} GPS {start_gps}: {e}")
-            return None
         except Exception as e:
             logger.error(f"Unexpected error downloading real GWOSC data: {e}")
             return None
     
-    def _generate_mock_strain_data(self, detector: str, start_gps: int, duration: int, 
-                                  sample_rate: int = 4096) -> np.ndarray:
+    def _is_valid_science_segment(self, detector: str, start_gps: int, duration: int) -> bool:
         """
-        Generate realistic mock strain data for testing.
+        Check if the given GPS time is in a valid science-mode segment.
         
         Args:
-            detector (str): Detector name (H1, L1, V1, etc.)
+            detector (str): Detector name (H1, L1, etc.)
             start_gps (int): Start GPS time
             duration (int): Duration in seconds
-            sample_rate (int): Sample rate in Hz
             
         Returns:
-            np.ndarray: Mock strain data
+            bool: True if valid science-mode segment, False otherwise
         """
-        n_samples = duration * sample_rate
-        t = np.linspace(0, duration, n_samples)
+        try:
+            end_gps = start_gps + duration
+            
+            # Get science-mode segments for the detector
+            # Use the expression: {detector}_NO_CW_HW_INJ (this excludes hardware injections)
+            expr = f"{detector}_NO_CW_HW_INJ"
+            
+            # Query for science-mode segments that overlap with our time range
+            segments = get_segments(expr, start_gps - 100, end_gps + 100)  # Add buffer
+            
+            if not segments:
+                logger.warning(f"No science-mode segments found for {detector} near GPS {start_gps}")
+                return False
+            
+            # Check if our time range overlaps with any science-mode segment
+            for seg_start, seg_end in segments:
+                if seg_start <= start_gps and end_gps <= seg_end:
+                    logger.info(f"GPS {start_gps}-{end_gps} is in valid science-mode segment {seg_start}-{seg_end}")
+                    return True
+            
+            logger.warning(f"GPS {start_gps}-{end_gps} is not in any science-mode segment for {detector}")
+            return False
+            
+        except Exception as e:
+            logger.error(f"Error checking science-mode segments: {e}")
+            return False
+    
+    
+    def _parse_gwf_file(self, content: bytes, detector: str) -> Optional[np.ndarray]:
+        """
+        Parse a .gwf file and extract strain data.
         
-        # Generate realistic strain data with proper characteristics
-        strain = np.zeros(n_samples, dtype=np.float32)
-        
-        # Add low-frequency noise (seismic, thermal)
-        strain += np.random.normal(0, 1e-22, n_samples)
-        
-        # Add mid-frequency noise (quantum, shot noise)
-        strain += np.random.normal(0, 5e-23, n_samples)
-        
-        # Add high-frequency noise (electronic)
-        strain += np.random.normal(0, 1e-23, n_samples)
-        
-        logger.debug(f"Generated mock strain data for {detector}: {n_samples} samples")
-        return strain
+        Args:
+            content (bytes): Raw .gwf file content
+            detector (str): Detector name for channel selection
+            
+        Returns:
+            np.ndarray: Strain data or None if parsing failed
+        """
+        try:
+            # This is a placeholder - real .gwf parsing requires specialized libraries
+            # For now, we'll need to implement this or use an existing library
+            logger.error("GWF file parsing not yet implemented")
+            logger.error("Need to implement .gwf file parsing or use a library like gwpy")
+            return None
+            
+        except Exception as e:
+            logger.error(f"Error parsing GWF file: {e}")
+            return None
+    
+    
+    
     
     def _validate_data_quality(self, strain_data: np.ndarray) -> Dict[str, Any]:
         """
@@ -646,7 +781,7 @@ class GWOSCDownloader:
         logger.info(f"  - Signal segments: {signal_count}")
         
         # Require confirmation if requested
-        if require_confirmation and self.config['downloader'].get('safety', {}).get('require_confirmation', True):
+        if require_confirmation:
             print(f"\nAbout to download {len(all_segments)} segments:")
             print(f"   - Noise: {noise_count}")
             print(f"   - Signals: {signal_count}")
@@ -668,7 +803,7 @@ class GWOSCDownloader:
             "results": []
         }
         
-        max_concurrent = self.config['downloader'].get('safety', {}).get('max_concurrent_downloads', 3)
+        max_concurrent = self.config['downloader'].get('download_parameters', {}).get('max_concurrent', 4)
         
         logger.info(f"Starting download with {max_concurrent} concurrent workers")
         
@@ -678,7 +813,8 @@ class GWOSCDownloader:
             future_to_segment = {}
             for i, segment in enumerate(all_segments):
                 segment_id = self._get_segment_id(segment['detector'], segment['start_gps'], segment.get('duration', 32))
-                logger.info(f"  Submitting task {i+1}/{len(all_segments)}: {segment_id}")
+                if i < 10 or i % 100 == 0:  # Log first 10 and every 100th
+                    logger.info(f"  Submitting task {i+1}/{len(all_segments)}: {segment_id}")
                 future = executor.submit(self._download_single_segment, segment)
                 future_to_segment[future] = segment
             
@@ -690,11 +826,14 @@ class GWOSCDownloader:
                 completed_count += 1
                 segment = future_to_segment[future]
                 segment_id = self._get_segment_id(segment['detector'], segment['start_gps'], segment.get('duration', 32))
-                logger.info(f"Processing completed task {completed_count}/{len(future_to_segment)}: {segment_id}")
+                
+                if completed_count <= 10 or completed_count % 50 == 0:  # Log first 10 and every 50th
+                    logger.info(f"Processing completed task {completed_count}/{len(future_to_segment)}: {segment_id}")
                 
                 try:
                     result = future.result()
-                    logger.info(f"Task {segment_id} completed with status: {result['status']}")
+                    if completed_count <= 10 or completed_count % 50 == 0:
+                        logger.info(f"Task {segment_id} completed with status: {result['status']}")
                     results["results"].append(result)
                     
                     if result["status"] == "success":

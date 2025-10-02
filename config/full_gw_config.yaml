@@ -1,0 +1,5339 @@
+downloader:
+  data_directories:
+    raw_data: data/raw/
+    processed_data: data/processed/
+    manifest_file: data/download_manifest.json
+  detectors:
+  - H1
+  - L1
+  observing_runs:
+  - O1
+  - O2
+  - O3a
+  - O3b
+  - O4a
+  download_parameters:
+    max_concurrent: 4
+    timeout_seconds: 300
+    retry_attempts: 3
+    retry_delay: 5
+  data_quality:
+    validate_downloads: true
+    check_file_integrity: true
+    max_nan_percentage: 50.0
+    max_inf_percentage: 50.0
+  signal_segments:
+  - start_gps: 1126259446
+    end_gps: 1126259478
+    label: GW150914_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW150914
+  - start_gps: 1126259446
+    end_gps: 1126259478
+    label: GW150914_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW150914
+  - start_gps: 1128678884
+    end_gps: 1128678916
+    label: GW151012_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW151012
+  - start_gps: 1128678884
+    end_gps: 1128678916
+    label: GW151012_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW151012
+  - start_gps: 1135136334
+    end_gps: 1135136366
+    label: GW151226_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW151226
+  - start_gps: 1135136334
+    end_gps: 1135136366
+    label: GW151226_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW151226
+  - start_gps: 1167559920
+    end_gps: 1167559952
+    label: GW170104_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170104
+  - start_gps: 1167559920
+    end_gps: 1167559952
+    label: GW170104_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170104
+  - start_gps: 1180922478
+    end_gps: 1180922510
+    label: GW170608_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170608
+  - start_gps: 1180922478
+    end_gps: 1180922510
+    label: GW170608_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170608
+  - start_gps: 1185389791
+    end_gps: 1185389823
+    label: GW170729_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170729
+  - start_gps: 1185389791
+    end_gps: 1185389823
+    label: GW170729_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170729
+  - start_gps: 1186302503
+    end_gps: 1186302535
+    label: GW170809_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170809
+  - start_gps: 1186302503
+    end_gps: 1186302535
+    label: GW170809_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170809
+  - start_gps: 1186741845
+    end_gps: 1186741877
+    label: GW170814_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170814
+  - start_gps: 1186741845
+    end_gps: 1186741877
+    label: GW170814_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170814
+  - start_gps: 1187008866
+    end_gps: 1187008898
+    label: GW170817_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170817
+  - start_gps: 1187008866
+    end_gps: 1187008898
+    label: GW170817_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170817
+  - start_gps: 1187058311
+    end_gps: 1187058343
+    label: GW170818_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170818
+  - start_gps: 1187058311
+    end_gps: 1187058343
+    label: GW170818_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170818
+  - start_gps: 1187529240
+    end_gps: 1187529272
+    label: GW170823_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170823
+  - start_gps: 1187529240
+    end_gps: 1187529272
+    label: GW170823_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW170823
+  - start_gps: 1238303721
+    end_gps: 1238303753
+    label: GW190403_051519_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190403_051519
+  - start_gps: 1238303721
+    end_gps: 1238303753
+    label: GW190403_051519_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190403_051519
+  - start_gps: 1238782684
+    end_gps: 1238782716
+    label: GW190408_181802_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190408_181802
+  - start_gps: 1238782684
+    end_gps: 1238782716
+    label: GW190408_181802_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190408_181802
+  - start_gps: 1239082246
+    end_gps: 1239082278
+    label: GW190412_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190412
+  - start_gps: 1239082246
+    end_gps: 1239082278
+    label: GW190412_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190412
+  - start_gps: 1239082246
+    end_gps: 1239082278
+    label: GW190412_053044_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190412_053044
+  - start_gps: 1239082246
+    end_gps: 1239082278
+    label: GW190412_053044_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190412_053044
+  - start_gps: 1239168596
+    end_gps: 1239168628
+    label: GW190413_052954_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190413_052954
+  - start_gps: 1239168596
+    end_gps: 1239168628
+    label: GW190413_052954_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190413_052954
+  - start_gps: 1239198190
+    end_gps: 1239198222
+    label: GW190413_134308_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190413_134308
+  - start_gps: 1239198190
+    end_gps: 1239198222
+    label: GW190413_134308_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190413_134308
+  - start_gps: 1239917938
+    end_gps: 1239917970
+    label: GW190421_213856_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190421_213856
+  - start_gps: 1239917938
+    end_gps: 1239917970
+    label: GW190421_213856_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190421_213856
+  - start_gps: 1240164410
+    end_gps: 1240164442
+    label: GW190424_180648_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190424_180648
+  - start_gps: 1240164410
+    end_gps: 1240164442
+    label: GW190424_180648_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190424_180648
+  - start_gps: 1240215487
+    end_gps: 1240215519
+    label: GW190425_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190425
+  - start_gps: 1240215487
+    end_gps: 1240215519
+    label: GW190425_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190425
+  - start_gps: 1240215487
+    end_gps: 1240215519
+    label: GW190425_081805_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190425_081805
+  - start_gps: 1240215487
+    end_gps: 1240215519
+    label: GW190425_081805_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190425_081805
+  - start_gps: 1240327317
+    end_gps: 1240327349
+    label: GW190426_152155_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190426_152155
+  - start_gps: 1240327317
+    end_gps: 1240327349
+    label: GW190426_152155_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190426_152155
+  - start_gps: 1240340804
+    end_gps: 1240340836
+    label: GW190426_190642_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190426_190642
+  - start_gps: 1240340804
+    end_gps: 1240340836
+    label: GW190426_190642_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190426_190642
+  - start_gps: 1240944846
+    end_gps: 1240944878
+    label: GW190503_185404_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190503_185404
+  - start_gps: 1240944846
+    end_gps: 1240944878
+    label: GW190503_185404_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190503_185404
+  - start_gps: 1241719636
+    end_gps: 1241719668
+    label: GW190512_180714_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190512_180714
+  - start_gps: 1241719636
+    end_gps: 1241719668
+    label: GW190512_180714_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190512_180714
+  - start_gps: 1241816070
+    end_gps: 1241816102
+    label: GW190513_205428_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190513_205428
+  - start_gps: 1241816070
+    end_gps: 1241816102
+    label: GW190513_205428_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190513_205428
+  - start_gps: 1241852058
+    end_gps: 1241852090
+    label: GW190514_065416_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190514_065416
+  - start_gps: 1241852058
+    end_gps: 1241852090
+    label: GW190514_065416_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190514_065416
+  - start_gps: 1242107463
+    end_gps: 1242107495
+    label: GW190517_055101_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190517_055101
+  - start_gps: 1242107463
+    end_gps: 1242107495
+    label: GW190517_055101_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190517_055101
+  - start_gps: 1242315346
+    end_gps: 1242315378
+    label: GW190519_153544_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190519_153544
+  - start_gps: 1242315346
+    end_gps: 1242315378
+    label: GW190519_153544_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190519_153544
+  - start_gps: 1242442951
+    end_gps: 1242442983
+    label: GW190521_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190521
+  - start_gps: 1242442951
+    end_gps: 1242442983
+    label: GW190521_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190521
+  - start_gps: 1242442951
+    end_gps: 1242442983
+    label: GW190521_030229_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190521_030229
+  - start_gps: 1242442951
+    end_gps: 1242442983
+    label: GW190521_030229_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190521_030229
+  - start_gps: 1242459841
+    end_gps: 1242459873
+    label: GW190521_074359_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190521_074359
+  - start_gps: 1242459841
+    end_gps: 1242459873
+    label: GW190521_074359_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190521_074359
+  - start_gps: 1242984057
+    end_gps: 1242984089
+    label: GW190527_092055_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190527_092055
+  - start_gps: 1242984057
+    end_gps: 1242984089
+    label: GW190527_092055_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190527_092055
+  - start_gps: 1243305410
+    end_gps: 1243305442
+    label: GW190531_023648_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190531_023648
+  - start_gps: 1243305410
+    end_gps: 1243305442
+    label: GW190531_023648_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190531_023648
+  - start_gps: 1243533569
+    end_gps: 1243533601
+    label: GW190602_175927_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190602_175927
+  - start_gps: 1243533569
+    end_gps: 1243533601
+    label: GW190602_175927_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190602_175927
+  - start_gps: 1245035063
+    end_gps: 1245035095
+    label: GW190620_030421_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190620_030421
+  - start_gps: 1245035063
+    end_gps: 1245035095
+    label: GW190620_030421_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190620_030421
+  - start_gps: 1245955927
+    end_gps: 1245955959
+    label: GW190630_185205_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190630_185205
+  - start_gps: 1245955927
+    end_gps: 1245955959
+    label: GW190630_185205_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190630_185205
+  - start_gps: 1246048388
+    end_gps: 1246048420
+    label: GW190701_203306_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190701_203306
+  - start_gps: 1246048388
+    end_gps: 1246048420
+    label: GW190701_203306_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190701_203306
+  - start_gps: 1246272516
+    end_gps: 1246272548
+    label: GW190704_104834_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190704_104834
+  - start_gps: 1246272516
+    end_gps: 1246272548
+    label: GW190704_104834_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190704_104834
+  - start_gps: 1246487203
+    end_gps: 1246487235
+    label: GW190706_222641_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190706_222641
+  - start_gps: 1246487203
+    end_gps: 1246487235
+    label: GW190706_222641_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190706_222641
+  - start_gps: 1246523548
+    end_gps: 1246523580
+    label: GW190707_083226_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190707_083226
+  - start_gps: 1246523548
+    end_gps: 1246523580
+    label: GW190707_083226_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190707_083226
+  - start_gps: 1246527208
+    end_gps: 1246527240
+    label: GW190707_093326_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190707_093326
+  - start_gps: 1246527208
+    end_gps: 1246527240
+    label: GW190707_093326_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190707_093326
+  - start_gps: 1246663499
+    end_gps: 1246663531
+    label: GW190708_232457_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190708_232457
+  - start_gps: 1246663499
+    end_gps: 1246663531
+    label: GW190708_232457_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190708_232457
+  - start_gps: 1246849678
+    end_gps: 1246849710
+    label: GW190711_030756_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190711_030756
+  - start_gps: 1246849678
+    end_gps: 1246849710
+    label: GW190711_030756_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190711_030756
+  - start_gps: 1247500921
+    end_gps: 1247500953
+    label: GW190718_160159_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190718_160159
+  - start_gps: 1247500921
+    end_gps: 1247500953
+    label: GW190718_160159_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190718_160159
+  - start_gps: 1247608516
+    end_gps: 1247608548
+    label: GW190719_215514_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190719_215514
+  - start_gps: 1247608516
+    end_gps: 1247608548
+    label: GW190719_215514_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190719_215514
+  - start_gps: 1247616518
+    end_gps: 1247616550
+    label: GW190720_000836_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190720_000836
+  - start_gps: 1247616518
+    end_gps: 1247616550
+    label: GW190720_000836_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190720_000836
+  - start_gps: 1248112050
+    end_gps: 1248112082
+    label: GW190725_174728_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190725_174728
+  - start_gps: 1248112050
+    end_gps: 1248112082
+    label: GW190725_174728_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190725_174728
+  - start_gps: 1248242616
+    end_gps: 1248242648
+    label: GW190727_060333_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190727_060333
+  - start_gps: 1248242616
+    end_gps: 1248242648
+    label: GW190727_060333_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190727_060333
+  - start_gps: 1248331512
+    end_gps: 1248331544
+    label: GW190728_064510_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190728_064510
+  - start_gps: 1248331512
+    end_gps: 1248331544
+    label: GW190728_064510_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190728_064510
+  - start_gps: 1248617378
+    end_gps: 1248617410
+    label: GW190731_140936_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190731_140936
+  - start_gps: 1248617378
+    end_gps: 1248617410
+    label: GW190731_140936_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190731_140936
+  - start_gps: 1248834423
+    end_gps: 1248834455
+    label: GW190803_022701_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190803_022701
+  - start_gps: 1248834423
+    end_gps: 1248834455
+    label: GW190803_022701_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190803_022701
+  - start_gps: 1249074699
+    end_gps: 1249074731
+    label: GW190805_211137_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190805_211137
+  - start_gps: 1249074699
+    end_gps: 1249074731
+    label: GW190805_211137_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190805_211137
+  - start_gps: 1249852241
+    end_gps: 1249852273
+    label: GW190814_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190814
+  - start_gps: 1249852241
+    end_gps: 1249852273
+    label: GW190814_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190814
+  - start_gps: 1249845611
+    end_gps: 1249845643
+    label: GW190814_192009_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190814_192009
+  - start_gps: 1249845611
+    end_gps: 1249845643
+    label: GW190814_192009_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190814_192009
+  - start_gps: 1249852241
+    end_gps: 1249852273
+    label: GW190814_211039_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190814_211039
+  - start_gps: 1249852241
+    end_gps: 1249852273
+    label: GW190814_211039_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190814_211039
+  - start_gps: 1250205946
+    end_gps: 1250205978
+    label: GW190818_232544_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190818_232544
+  - start_gps: 1250205946
+    end_gps: 1250205978
+    label: GW190818_232544_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190818_232544
+  - start_gps: 1250426903
+    end_gps: 1250426935
+    label: GW190821_124821_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190821_124821
+  - start_gps: 1250426903
+    end_gps: 1250426935
+    label: GW190821_124821_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190821_124821
+  - start_gps: 1251009247
+    end_gps: 1251009279
+    label: GW190828_063405_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190828_063405
+  - start_gps: 1251009247
+    end_gps: 1251009279
+    label: GW190828_063405_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190828_063405
+  - start_gps: 1251010511
+    end_gps: 1251010543
+    label: GW190828_065509_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190828_065509
+  - start_gps: 1251010511
+    end_gps: 1251010543
+    label: GW190828_065509_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190828_065509
+  - start_gps: 1251783817
+    end_gps: 1251783849
+    label: GW190906_054335_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190906_054335
+  - start_gps: 1251783817
+    end_gps: 1251783849
+    label: GW190906_054335_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190906_054335
+  - start_gps: 1252064511
+    end_gps: 1252064543
+    label: GW190909_114149_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190909_114149
+  - start_gps: 1252064511
+    end_gps: 1252064543
+    label: GW190909_114149_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190909_114149
+  - start_gps: 1252113981
+    end_gps: 1252114013
+    label: GW190910_012619_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190910_012619
+  - start_gps: 1252113981
+    end_gps: 1252114013
+    label: GW190910_012619_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190910_012619
+  - start_gps: 1252150089
+    end_gps: 1252150121
+    label: GW190910_112807_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190910_112807
+  - start_gps: 1252150089
+    end_gps: 1252150121
+    label: GW190910_112807_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190910_112807
+  - start_gps: 1252627024
+    end_gps: 1252627056
+    label: GW190915_235702_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190915_235702
+  - start_gps: 1252627024
+    end_gps: 1252627056
+    label: GW190915_235702_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190915_235702
+  - start_gps: 1252699620
+    end_gps: 1252699652
+    label: GW190916_200658_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190916_200658
+  - start_gps: 1252699620
+    end_gps: 1252699652
+    label: GW190916_200658_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190916_200658
+  - start_gps: 1252755992
+    end_gps: 1252756024
+    label: GW190917_114630_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190917_114630
+  - start_gps: 1252755992
+    end_gps: 1252756024
+    label: GW190917_114630_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190917_114630
+  - start_gps: 1253014518
+    end_gps: 1253014550
+    label: GW190920_113516_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190920_113516
+  - start_gps: 1253014518
+    end_gps: 1253014550
+    label: GW190920_113516_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190920_113516
+  - start_gps: 1253326728
+    end_gps: 1253326760
+    label: GW190924_021846_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190924_021846
+  - start_gps: 1253326728
+    end_gps: 1253326760
+    label: GW190924_021846_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190924_021846
+  - start_gps: 1253489327
+    end_gps: 1253489359
+    label: GW190925_232845_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190925_232845
+  - start_gps: 1253489327
+    end_gps: 1253489359
+    label: GW190925_232845_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190925_232845
+  - start_gps: 1253509418
+    end_gps: 1253509450
+    label: GW190926_050336_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190926_050336
+  - start_gps: 1253509418
+    end_gps: 1253509450
+    label: GW190926_050336_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190926_050336
+  - start_gps: 1253755311
+    end_gps: 1253755343
+    label: GW190929_012149_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190929_012149
+  - start_gps: 1253755311
+    end_gps: 1253755343
+    label: GW190929_012149_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190929_012149
+  - start_gps: 1253885743
+    end_gps: 1253885775
+    label: GW190930_133541_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190930_133541
+  - start_gps: 1253885743
+    end_gps: 1253885775
+    label: GW190930_133541_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW190930_133541
+  - start_gps: 1256779551
+    end_gps: 1256779583
+    label: GW191103_012549_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191103_012549
+  - start_gps: 1256779551
+    end_gps: 1256779583
+    label: GW191103_012549_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191103_012549
+  - start_gps: 1256999723
+    end_gps: 1256999755
+    label: GW191105_143521_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191105_143521
+  - start_gps: 1256999723
+    end_gps: 1256999755
+    label: GW191105_143521_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191105_143521
+  - start_gps: 1257296839
+    end_gps: 1257296871
+    label: GW191109_010717_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191109_010717
+  - start_gps: 1257296839
+    end_gps: 1257296871
+    label: GW191109_010717_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191109_010717
+  - start_gps: 1257664675
+    end_gps: 1257664707
+    label: GW191113_071753_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191113_071753
+  - start_gps: 1257664675
+    end_gps: 1257664707
+    label: GW191113_071753_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191113_071753
+  - start_gps: 1258804381
+    end_gps: 1258804413
+    label: GW191126_115259_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191126_115259
+  - start_gps: 1258804381
+    end_gps: 1258804413
+    label: GW191126_115259_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191126_115259
+  - start_gps: 1258866149
+    end_gps: 1258866181
+    label: GW191127_050227_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191127_050227
+  - start_gps: 1258866149
+    end_gps: 1258866181
+    label: GW191127_050227_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191127_050227
+  - start_gps: 1259070031
+    end_gps: 1259070063
+    label: GW191129_134029_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191129_134029
+  - start_gps: 1259070031
+    end_gps: 1259070063
+    label: GW191129_134029_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191129_134029
+  - start_gps: 1259492731
+    end_gps: 1259492763
+    label: GW191204_110529_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191204_110529
+  - start_gps: 1259492731
+    end_gps: 1259492763
+    label: GW191204_110529_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191204_110529
+  - start_gps: 1259514928
+    end_gps: 1259514960
+    label: GW191204_171526_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191204_171526
+  - start_gps: 1259514928
+    end_gps: 1259514960
+    label: GW191204_171526_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191204_171526
+  - start_gps: 1260484254
+    end_gps: 1260484286
+    label: GW191215_223052_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191215_223052
+  - start_gps: 1260484254
+    end_gps: 1260484286
+    label: GW191215_223052_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191215_223052
+  - start_gps: 1260567220
+    end_gps: 1260567252
+    label: GW191216_213338_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191216_213338
+  - start_gps: 1260567220
+    end_gps: 1260567252
+    label: GW191216_213338_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191216_213338
+  - start_gps: 1260808282
+    end_gps: 1260808314
+    label: GW191219_163120_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191219_163120
+  - start_gps: 1260808282
+    end_gps: 1260808314
+    label: GW191219_163120_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191219_163120
+  - start_gps: 1261020939
+    end_gps: 1261020971
+    label: GW191222_033537_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191222_033537
+  - start_gps: 1261020939
+    end_gps: 1261020971
+    label: GW191222_033537_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191222_033537
+  - start_gps: 1261764300
+    end_gps: 1261764332
+    label: GW191230_180458_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191230_180458
+  - start_gps: 1261764300
+    end_gps: 1261764332
+    label: GW191230_180458_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW191230_180458
+  - start_gps: 1262276668
+    end_gps: 1262276700
+    label: GW200105_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200105
+  - start_gps: 1262276668
+    end_gps: 1262276700
+    label: GW200105_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200105
+  - start_gps: 1262276668
+    end_gps: 1262276700
+    label: GW200105_162426_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200105_162426
+  - start_gps: 1262276668
+    end_gps: 1262276700
+    label: GW200105_162426_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200105_162426
+  - start_gps: 1262879920
+    end_gps: 1262879952
+    label: GW200112_155838_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200112_155838
+  - start_gps: 1262879920
+    end_gps: 1262879952
+    label: GW200112_155838_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200112_155838
+  - start_gps: 1263097391
+    end_gps: 1263097423
+    label: GW200115_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200115
+  - start_gps: 1263097391
+    end_gps: 1263097423
+    label: GW200115_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200115
+  - start_gps: 1263097391
+    end_gps: 1263097423
+    label: GW200115_042309_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200115_042309
+  - start_gps: 1263097391
+    end_gps: 1263097423
+    label: GW200115_042309_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200115_042309
+  - start_gps: 1264213213
+    end_gps: 1264213245
+    label: GW200128_022011_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200128_022011
+  - start_gps: 1264213213
+    end_gps: 1264213245
+    label: GW200128_022011_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200128_022011
+  - start_gps: 1264316100
+    end_gps: 1264316132
+    label: GW200129_065458_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200129_065458
+  - start_gps: 1264316100
+    end_gps: 1264316132
+    label: GW200129_065458_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200129_065458
+  - start_gps: 1264693395
+    end_gps: 1264693427
+    label: GW200202_154313_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200202_154313
+  - start_gps: 1264693395
+    end_gps: 1264693427
+    label: GW200202_154313_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200202_154313
+  - start_gps: 1265202079
+    end_gps: 1265202111
+    label: GW200208_130117_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200208_130117
+  - start_gps: 1265202079
+    end_gps: 1265202111
+    label: GW200208_130117_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200208_130117
+  - start_gps: 1265235979
+    end_gps: 1265236011
+    label: GW200208_222617_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200208_222617
+  - start_gps: 1265235979
+    end_gps: 1265236011
+    label: GW200208_222617_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200208_222617
+  - start_gps: 1265273694
+    end_gps: 1265273726
+    label: GW200209_085452_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200209_085452
+  - start_gps: 1265273694
+    end_gps: 1265273726
+    label: GW200209_085452_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200209_085452
+  - start_gps: 1265361776
+    end_gps: 1265361808
+    label: GW200210_092254_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200210_092254
+  - start_gps: 1265361776
+    end_gps: 1265361808
+    label: GW200210_092254_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200210_092254
+  - start_gps: 1265926086
+    end_gps: 1265926118
+    label: GW200216_220804_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200216_220804
+  - start_gps: 1265926086
+    end_gps: 1265926118
+    label: GW200216_220804_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200216_220804
+  - start_gps: 1266140657
+    end_gps: 1266140689
+    label: GW200219_094415_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200219_094415
+  - start_gps: 1266140657
+    end_gps: 1266140689
+    label: GW200219_094415_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200219_094415
+  - start_gps: 1266214770
+    end_gps: 1266214802
+    label: GW200220_061928_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200220_061928
+  - start_gps: 1266214770
+    end_gps: 1266214802
+    label: GW200220_061928_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200220_061928
+  - start_gps: 1266238132
+    end_gps: 1266238164
+    label: GW200220_124850_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200220_124850
+  - start_gps: 1266238132
+    end_gps: 1266238164
+    label: GW200220_124850_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200220_124850
+  - start_gps: 1266618156
+    end_gps: 1266618188
+    label: GW200224_222234_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200224_222234
+  - start_gps: 1266618156
+    end_gps: 1266618188
+    label: GW200224_222234_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200224_222234
+  - start_gps: 1266645863
+    end_gps: 1266645895
+    label: GW200225_060421_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200225_060421
+  - start_gps: 1266645863
+    end_gps: 1266645895
+    label: GW200225_060421_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200225_060421
+  - start_gps: 1267149493
+    end_gps: 1267149525
+    label: GW200302_015811_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200302_015811
+  - start_gps: 1267149493
+    end_gps: 1267149525
+    label: GW200302_015811_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200302_015811
+  - start_gps: 1267522636
+    end_gps: 1267522668
+    label: GW200306_093714_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200306_093714
+  - start_gps: 1267522636
+    end_gps: 1267522668
+    label: GW200306_093714_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200306_093714
+  - start_gps: 1267724171
+    end_gps: 1267724203
+    label: GW200308_173609_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200308_173609
+  - start_gps: 1267724171
+    end_gps: 1267724203
+    label: GW200308_173609_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200308_173609
+  - start_gps: 1267963135
+    end_gps: 1267963167
+    label: GW200311_115853_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200311_115853
+  - start_gps: 1267963135
+    end_gps: 1267963167
+    label: GW200311_115853_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200311_115853
+  - start_gps: 1268431078
+    end_gps: 1268431110
+    label: GW200316_215756_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200316_215756
+  - start_gps: 1268431078
+    end_gps: 1268431110
+    label: GW200316_215756_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200316_215756
+  - start_gps: 1268903495
+    end_gps: 1268903527
+    label: GW200322_091133_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200322_091133
+  - start_gps: 1268903495
+    end_gps: 1268903527
+    label: GW200322_091133_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW200322_091133
+  - start_gps: 1368449950
+    end_gps: 1368449982
+    label: GW230518_125908_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230518_125908
+  - start_gps: 1368449950
+    end_gps: 1368449982
+    label: GW230518_125908_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230518_125908
+  - start_gps: 1369419302
+    end_gps: 1369419334
+    label: GW230529_181500_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230529_181500
+  - start_gps: 1369419302
+    end_gps: 1369419334
+    label: GW230529_181500_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230529_181500
+  - start_gps: 1369577462
+    end_gps: 1369577494
+    label: GW230531_141100_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230531_141100
+  - start_gps: 1369577462
+    end_gps: 1369577494
+    label: GW230531_141100_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230531_141100
+  - start_gps: 1369694496
+    end_gps: 1369694528
+    label: GW230601_224134_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230601_224134
+  - start_gps: 1369694496
+    end_gps: 1369694528
+    label: GW230601_224134_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230601_224134
+  - start_gps: 1369849678
+    end_gps: 1369849710
+    label: GW230603_174756_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230603_174756
+  - start_gps: 1369849678
+    end_gps: 1369849710
+    label: GW230603_174756_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230603_174756
+  - start_gps: 1369983225
+    end_gps: 1369983257
+    label: GW230605_065343_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230605_065343
+  - start_gps: 1369983225
+    end_gps: 1369983257
+    label: GW230605_065343_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230605_065343
+  - start_gps: 1370047387
+    end_gps: 1370047419
+    label: GW230606_004305_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230606_004305
+  - start_gps: 1370047387
+    end_gps: 1370047419
+    label: GW230606_004305_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230606_004305
+  - start_gps: 1370054747
+    end_gps: 1370054779
+    label: GW230606_024545_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230606_024545
+  - start_gps: 1370054747
+    end_gps: 1370054779
+    label: GW230606_024545_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230606_024545
+  - start_gps: 1370292649
+    end_gps: 1370292681
+    label: GW230608_205047_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230608_205047
+  - start_gps: 1370292649
+    end_gps: 1370292681
+    label: GW230608_205047_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230608_205047
+  - start_gps: 1370308106
+    end_gps: 1370308138
+    label: GW230609_010824_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230609_010824
+  - start_gps: 1370308106
+    end_gps: 1370308138
+    label: GW230609_010824_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230609_010824
+  - start_gps: 1370328600
+    end_gps: 1370328632
+    label: GW230609_064958_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230609_064958
+  - start_gps: 1370328600
+    end_gps: 1370328632
+    label: GW230609_064958_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230609_064958
+  - start_gps: 1370880508
+    end_gps: 1370880540
+    label: GW230615_160825_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230615_160825
+  - start_gps: 1370880508
+    end_gps: 1370880540
+    label: GW230615_160825_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230615_160825
+  - start_gps: 1371119152
+    end_gps: 1371119184
+    label: GW230618_102550_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230618_102550
+  - start_gps: 1371119152
+    end_gps: 1371119184
+    label: GW230618_102550_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230618_102550
+  - start_gps: 1371641465
+    end_gps: 1371641497
+    label: GW230624_113103_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230624_113103
+  - start_gps: 1371641465
+    end_gps: 1371641497
+    label: GW230624_113103_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230624_113103
+  - start_gps: 1371678586
+    end_gps: 1371678618
+    label: GW230624_214944_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230624_214944
+  - start_gps: 1371678586
+    end_gps: 1371678618
+    label: GW230624_214944_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230624_214944
+  - start_gps: 1371763017
+    end_gps: 1371763049
+    label: GW230625_211655_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230625_211655
+  - start_gps: 1371763017
+    end_gps: 1371763049
+    label: GW230625_211655_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230625_211655
+  - start_gps: 1371866019
+    end_gps: 1371866051
+    label: GW230627_015337_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230627_015337
+  - start_gps: 1371866019
+    end_gps: 1371866051
+    label: GW230627_015337_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230627_015337
+  - start_gps: 1372029122
+    end_gps: 1372029154
+    label: GW230628_231200_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230628_231200
+  - start_gps: 1372029122
+    end_gps: 1372029154
+    label: GW230628_231200_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230628_231200
+  - start_gps: 1372144021
+    end_gps: 1372144053
+    label: GW230630_070659_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230630_070659
+  - start_gps: 1372144021
+    end_gps: 1372144053
+    label: GW230630_070659_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230630_070659
+  - start_gps: 1372165088
+    end_gps: 1372165120
+    label: GW230630_125806_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230630_125806
+  - start_gps: 1372165088
+    end_gps: 1372165120
+    label: GW230630_125806_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230630_125806
+  - start_gps: 1372203934
+    end_gps: 1372203966
+    label: GW230630_234532_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230630_234532
+  - start_gps: 1372203934
+    end_gps: 1372203966
+    label: GW230630_234532_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230630_234532
+  - start_gps: 1372350027
+    end_gps: 1372350059
+    label: GW230702_162025_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230702_162025
+  - start_gps: 1372350027
+    end_gps: 1372350059
+    label: GW230702_162025_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230702_162025
+  - start_gps: 1372359295
+    end_gps: 1372359327
+    label: GW230702_185453_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230702_185453
+  - start_gps: 1372359295
+    end_gps: 1372359327
+    label: GW230702_185453_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230702_185453
+  - start_gps: 1372471933
+    end_gps: 1372471965
+    label: GW230704_021211_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230704_021211
+  - start_gps: 1372471933
+    end_gps: 1372471965
+    label: GW230704_021211_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230704_021211
+  - start_gps: 1372541178
+    end_gps: 1372541210
+    label: GW230704_212616_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230704_212616
+  - start_gps: 1372541178
+    end_gps: 1372541210
+    label: GW230704_212616_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230704_212616
+  - start_gps: 1372675415
+    end_gps: 1372675447
+    label: GW230706_104333_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230706_104333
+  - start_gps: 1372675415
+    end_gps: 1372675447
+    label: GW230706_104333_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230706_104333
+  - start_gps: 1372768849
+    end_gps: 1372768881
+    label: GW230707_124047_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230707_124047
+  - start_gps: 1372768849
+    end_gps: 1372768881
+    label: GW230707_124047_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230707_124047
+  - start_gps: 1372829827
+    end_gps: 1372829859
+    label: GW230708_053705_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230708_053705
+  - start_gps: 1372829827
+    end_gps: 1372829859
+    label: GW230708_053705_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230708_053705
+  - start_gps: 1372835941
+    end_gps: 1372835973
+    label: GW230708_071859_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230708_071859
+  - start_gps: 1372835941
+    end_gps: 1372835973
+    label: GW230708_071859_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230708_071859
+  - start_gps: 1372892977
+    end_gps: 1372893009
+    label: GW230708_230935_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230708_230935
+  - start_gps: 1372892977
+    end_gps: 1372893009
+    label: GW230708_230935_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230708_230935
+  - start_gps: 1372919687
+    end_gps: 1372919719
+    label: GW230709_063445_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230709_063445
+  - start_gps: 1372919687
+    end_gps: 1372919719
+    label: GW230709_063445_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230709_063445
+  - start_gps: 1372940849
+    end_gps: 1372940881
+    label: GW230709_122727_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230709_122727
+  - start_gps: 1372940849
+    end_gps: 1372940881
+    label: GW230709_122727_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230709_122727
+  - start_gps: 1373187847
+    end_gps: 1373187879
+    label: GW230712_090405_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230712_090405
+  - start_gps: 1373187847
+    end_gps: 1373187879
+    label: GW230712_090405_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230712_090405
+  - start_gps: 1373624501
+    end_gps: 1373624533
+    label: GW230717_102139_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230717_102139
+  - start_gps: 1373624501
+    end_gps: 1373624533
+    label: GW230717_102139_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230717_102139
+  - start_gps: 1374013596
+    end_gps: 1374013628
+    label: GW230721_222634_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230721_222634
+  - start_gps: 1374013596
+    end_gps: 1374013628
+    label: GW230721_222634_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230721_222634
+  - start_gps: 1374137302
+    end_gps: 1374137334
+    label: GW230723_084820_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230723_084820
+  - start_gps: 1374137302
+    end_gps: 1374137334
+    label: GW230723_084820_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230723_084820
+  - start_gps: 1374142716
+    end_gps: 1374142748
+    label: GW230723_101834_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230723_101834
+  - start_gps: 1374142716
+    end_gps: 1374142748
+    label: GW230723_101834_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230723_101834
+  - start_gps: 1374366582
+    end_gps: 1374366614
+    label: GW230726_002940_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230726_002940
+  - start_gps: 1374366582
+    end_gps: 1374366614
+    label: GW230726_002940_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230726_002940
+  - start_gps: 1374568590
+    end_gps: 1374568622
+    label: GW230728_083628_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230728_083628
+  - start_gps: 1374568590
+    end_gps: 1374568622
+    label: GW230728_083628_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230728_083628
+  - start_gps: 1374654199
+    end_gps: 1374654231
+    label: GW230729_082317_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230729_082317
+  - start_gps: 1374654199
+    end_gps: 1374654231
+    label: GW230729_082317_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230729_082317
+  - start_gps: 1374875589
+    end_gps: 1374875621
+    label: GW230731_215307_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230731_215307
+  - start_gps: 1374875589
+    end_gps: 1374875621
+    label: GW230731_215307_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230731_215307
+  - start_gps: 1375068854
+    end_gps: 1375068886
+    label: GW230803_033412_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230803_033412
+  - start_gps: 1375068854
+    end_gps: 1375068886
+    label: GW230803_033412_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230803_033412
+  - start_gps: 1375242172
+    end_gps: 1375242204
+    label: GW230805_034249_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230805_034249
+  - start_gps: 1375242172
+    end_gps: 1375242204
+    label: GW230805_034249_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230805_034249
+  - start_gps: 1375389643
+    end_gps: 1375389675
+    label: GW230806_204041_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230806_204041
+  - start_gps: 1375389643
+    end_gps: 1375389675
+    label: GW230806_204041_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230806_204041
+  - start_gps: 1375476647
+    end_gps: 1375476679
+    label: GW230807_205045_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230807_205045
+  - start_gps: 1375476647
+    end_gps: 1375476679
+    label: GW230807_205045_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230807_205045
+  - start_gps: 1375759278
+    end_gps: 1375759310
+    label: GW230811_032116_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230811_032116
+  - start_gps: 1375759278
+    end_gps: 1375759310
+    label: GW230811_032116_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230811_032116
+  - start_gps: 1376029162
+    end_gps: 1376029194
+    label: GW230814_061920_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230814_061920
+  - start_gps: 1376029162
+    end_gps: 1376029194
+    label: GW230814_061920_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230814_061920
+  - start_gps: 1376089743
+    end_gps: 1376089775
+    label: GW230814_230901_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230814_230901
+  - start_gps: 1376089743
+    end_gps: 1376089775
+    label: GW230814_230901_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230814_230901
+  - start_gps: 1376342631
+    end_gps: 1376342663
+    label: GW230817_212349_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230817_212349
+  - start_gps: 1376342631
+    end_gps: 1376342663
+    label: GW230817_212349_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230817_212349
+  - start_gps: 1376500752
+    end_gps: 1376500784
+    label: GW230819_171910_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230819_171910
+  - start_gps: 1376500752
+    end_gps: 1376500784
+    label: GW230819_171910_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230819_171910
+  - start_gps: 1376601918
+    end_gps: 1376601950
+    label: GW230820_212515_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230820_212515
+  - start_gps: 1376601918
+    end_gps: 1376601950
+    label: GW230820_212515_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230820_212515
+  - start_gps: 1376780619
+    end_gps: 1376780651
+    label: GW230822_230337_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230822_230337
+  - start_gps: 1376780619
+    end_gps: 1376780651
+    label: GW230822_230337_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230822_230337
+  - start_gps: 1376835926
+    end_gps: 1376835958
+    label: GW230823_142524_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230823_142524
+  - start_gps: 1376835926
+    end_gps: 1376835958
+    label: GW230823_142524_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230823_142524
+  - start_gps: 1376883049
+    end_gps: 1376883081
+    label: GW230824_033047_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230824_033047
+  - start_gps: 1376883049
+    end_gps: 1376883081
+    label: GW230824_033047_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230824_033047
+  - start_gps: 1376920413
+    end_gps: 1376920445
+    label: GW230824_135331_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230824_135331
+  - start_gps: 1376920413
+    end_gps: 1376920445
+    label: GW230824_135331_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230824_135331
+  - start_gps: 1376972016
+    end_gps: 1376972048
+    label: GW230825_041334_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230825_041334
+  - start_gps: 1376972016
+    end_gps: 1376972048
+    label: GW230825_041334_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230825_041334
+  - start_gps: 1377413266
+    end_gps: 1377413298
+    label: GW230830_064744_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230830_064744
+  - start_gps: 1377413266
+    end_gps: 1377413298
+    label: GW230830_064744_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230830_064744
+  - start_gps: 1377482056
+    end_gps: 1377482088
+    label: GW230831_015414_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230831_015414
+  - start_gps: 1377482056
+    end_gps: 1377482088
+    label: GW230831_015414_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230831_015414
+  - start_gps: 1377524783
+    end_gps: 1377524815
+    label: GW230831_134621_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230831_134621
+  - start_gps: 1377524783
+    end_gps: 1377524815
+    label: GW230831_134621_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230831_134621
+  - start_gps: 1377692896
+    end_gps: 1377692928
+    label: GW230902_122814_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230902_122814
+  - start_gps: 1377692896
+    end_gps: 1377692928
+    label: GW230902_122814_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230902_122814
+  - start_gps: 1377710672
+    end_gps: 1377710704
+    label: GW230902_172430_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230902_172430
+  - start_gps: 1377710672
+    end_gps: 1377710704
+    label: GW230902_172430_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230902_172430
+  - start_gps: 1377729957
+    end_gps: 1377729989
+    label: GW230902_224555_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230902_224555
+  - start_gps: 1377729957
+    end_gps: 1377729989
+    label: GW230902_224555_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230902_224555
+  - start_gps: 1377839415
+    end_gps: 1377839447
+    label: GW230904_051013_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230904_051013
+  - start_gps: 1377839415
+    end_gps: 1377839447
+    label: GW230904_051013_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230904_051013
+  - start_gps: 1377876347
+    end_gps: 1377876379
+    label: GW230904_152545_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230904_152545
+  - start_gps: 1377876347
+    end_gps: 1377876379
+    label: GW230904_152545_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230904_152545
+  - start_gps: 1378497206
+    end_gps: 1378497238
+    label: GW230911_195324_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230911_195324
+  - start_gps: 1378497206
+    end_gps: 1378497238
+    label: GW230911_195324_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230911_195324
+  - start_gps: 1378725243
+    end_gps: 1378725275
+    label: GW230914_111401_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230914_111401
+  - start_gps: 1378725243
+    end_gps: 1378725275
+    label: GW230914_111401_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230914_111401
+  - start_gps: 1379195834
+    end_gps: 1379195866
+    label: GW230919_215712_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230919_215712
+  - start_gps: 1379195834
+    end_gps: 1379195866
+    label: GW230919_215712_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230919_215712
+  - start_gps: 1379227631
+    end_gps: 1379227663
+    label: GW230920_064709_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230920_064709
+  - start_gps: 1379227631
+    end_gps: 1379227663
+    label: GW230920_064709_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230920_064709
+  - start_gps: 1379229086
+    end_gps: 1379229118
+    label: GW230920_071124_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230920_071124
+  - start_gps: 1379229086
+    end_gps: 1379229118
+    label: GW230920_071124_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230920_071124
+  - start_gps: 1379383426
+    end_gps: 1379383458
+    label: GW230922_020344_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230922_020344
+  - start_gps: 1379383426
+    end_gps: 1379383458
+    label: GW230922_020344_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230922_020344
+  - start_gps: 1379390820
+    end_gps: 1379390852
+    label: GW230922_040658_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230922_040658
+  - start_gps: 1379390820
+    end_gps: 1379390852
+    label: GW230922_040658_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230922_040658
+  - start_gps: 1379594695
+    end_gps: 1379594727
+    label: GW230924_124453_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230924_124453
+  - start_gps: 1379594695
+    end_gps: 1379594727
+    label: GW230924_124453_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230924_124453
+  - start_gps: 1379687999
+    end_gps: 1379688031
+    label: GW230925_143957_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230925_143957
+  - start_gps: 1379687999
+    end_gps: 1379688031
+    label: GW230925_143957_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230925_143957
+  - start_gps: 1379824651
+    end_gps: 1379824683
+    label: GW230927_043729_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230927_043729
+  - start_gps: 1379824651
+    end_gps: 1379824683
+    label: GW230927_043729_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230927_043729
+  - start_gps: 1379864314
+    end_gps: 1379864346
+    label: GW230927_153832_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230927_153832
+  - start_gps: 1379864314
+    end_gps: 1379864346
+    label: GW230927_153832_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230927_153832
+  - start_gps: 1379973509
+    end_gps: 1379973541
+    label: GW230928_215827_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230928_215827
+  - start_gps: 1379973509
+    end_gps: 1379973541
+    label: GW230928_215827_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230928_215827
+  - start_gps: 1380107252
+    end_gps: 1380107284
+    label: GW230930_110730_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230930_110730
+  - start_gps: 1380107252
+    end_gps: 1380107284
+    label: GW230930_110730_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW230930_110730
+  - start_gps: 1380204142
+    end_gps: 1380204174
+    label: GW231001_140220_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231001_140220
+  - start_gps: 1380204142
+    end_gps: 1380204174
+    label: GW231001_140220_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231001_140220
+  - start_gps: 1380292758
+    end_gps: 1380292790
+    label: GW231002_143916_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231002_143916
+  - start_gps: 1380292758
+    end_gps: 1380292790
+    label: GW231002_143916_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231002_143916
+  - start_gps: 1380497028
+    end_gps: 1380497060
+    label: GW231004_232346_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231004_232346
+  - start_gps: 1380497028
+    end_gps: 1380497060
+    label: GW231004_232346_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231004_232346
+  - start_gps: 1380507033
+    end_gps: 1380507065
+    label: GW231005_021030_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231005_021030
+  - start_gps: 1380507033
+    end_gps: 1380507065
+    label: GW231005_021030_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231005_021030
+  - start_gps: 1380532551
+    end_gps: 1380532583
+    label: GW231005_091549_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231005_091549
+  - start_gps: 1380532551
+    end_gps: 1380532583
+    label: GW231005_091549_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231005_091549
+  - start_gps: 1380552297
+    end_gps: 1380552329
+    label: GW231005_144455_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231005_144455
+  - start_gps: 1380552297
+    end_gps: 1380552329
+    label: GW231005_144455_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231005_144455
+  - start_gps: 1380810323
+    end_gps: 1380810355
+    label: GW231008_142521_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231008_142521
+  - start_gps: 1380810323
+    end_gps: 1380810355
+    label: GW231008_142521_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231008_142521
+  - start_gps: 1381240506
+    end_gps: 1381240538
+    label: GW231013_135504_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231013_135504
+  - start_gps: 1381240506
+    end_gps: 1381240538
+    label: GW231013_135504_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231013_135504
+  - start_gps: 1381291535
+    end_gps: 1381291567
+    label: GW231014_040532_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231014_040532
+  - start_gps: 1381291535
+    end_gps: 1381291567
+    label: GW231014_040532_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231014_040532
+  - start_gps: 1381707039
+    end_gps: 1381707071
+    label: GW231018_233037_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231018_233037
+  - start_gps: 1381707039
+    end_gps: 1381707071
+    label: GW231018_233037_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231018_233037
+  - start_gps: 1381847389
+    end_gps: 1381847421
+    label: GW231020_142947_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231020_142947
+  - start_gps: 1381847389
+    end_gps: 1381847421
+    label: GW231020_142947_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231020_142947
+  - start_gps: 1382360826
+    end_gps: 1382360858
+    label: GW231026_130704_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231026_130704
+  - start_gps: 1382360826
+    end_gps: 1382360858
+    label: GW231026_130704_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231026_130704
+  - start_gps: 1382542208
+    end_gps: 1382542240
+    label: GW231028_153006_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231028_153006
+  - start_gps: 1382542208
+    end_gps: 1382542240
+    label: GW231028_153006_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231028_153006
+  - start_gps: 1382613310
+    end_gps: 1382613342
+    label: GW231029_111508_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231029_111508
+  - start_gps: 1382613310
+    end_gps: 1382613342
+    label: GW231029_111508_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231029_111508
+  - start_gps: 1382937736
+    end_gps: 1382937768
+    label: GW231102_052214_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231102_052214
+  - start_gps: 1382937736
+    end_gps: 1382937768
+    label: GW231102_052214_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231102_052214
+  - start_gps: 1382944658
+    end_gps: 1382944690
+    label: GW231102_071736_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231102_071736
+  - start_gps: 1382944658
+    end_gps: 1382944690
+    label: GW231102_071736_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231102_071736
+  - start_gps: 1383002675
+    end_gps: 1383002707
+    label: GW231102_232433_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231102_232433
+  - start_gps: 1383002675
+    end_gps: 1383002707
+    label: GW231102_232433_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231102_232433
+  - start_gps: 1383140060
+    end_gps: 1383140092
+    label: GW231104_133418_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231104_133418
+  - start_gps: 1383140060
+    end_gps: 1383140092
+    label: GW231104_133418_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231104_133418
+  - start_gps: 1383483104
+    end_gps: 1383483136
+    label: GW231108_125142_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231108_125142
+  - start_gps: 1383483104
+    end_gps: 1383483136
+    label: GW231108_125142_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231108_125142
+  - start_gps: 1383624202
+    end_gps: 1383624234
+    label: GW231110_040320_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231110_040320
+  - start_gps: 1383624202
+    end_gps: 1383624234
+    label: GW231110_040320_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231110_040320
+  - start_gps: 1383913585
+    end_gps: 1383913617
+    label: GW231113_122623_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231113_122623
+  - start_gps: 1383913585
+    end_gps: 1383913617
+    label: GW231113_122623_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231113_122623
+  - start_gps: 1383922843
+    end_gps: 1383922875
+    label: GW231113_150041_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231113_150041
+  - start_gps: 1383922843
+    end_gps: 1383922875
+    label: GW231113_150041_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231113_150041
+  - start_gps: 1383941059
+    end_gps: 1383941091
+    label: GW231113_200417_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231113_200417
+  - start_gps: 1383941059
+    end_gps: 1383941091
+    label: GW231113_200417_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231113_200417
+  - start_gps: 1383971533
+    end_gps: 1383971565
+    label: GW231114_043211_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231114_043211
+  - start_gps: 1383971533
+    end_gps: 1383971565
+    label: GW231114_043211_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231114_043211
+  - start_gps: 1384304188
+    end_gps: 1384304220
+    label: GW231118_005626_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231118_005626
+  - start_gps: 1384304188
+    end_gps: 1384304220
+    label: GW231118_005626_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231118_005626
+  - start_gps: 1384326844
+    end_gps: 1384326876
+    label: GW231118_071402_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231118_071402
+  - start_gps: 1384326844
+    end_gps: 1384326876
+    label: GW231118_071402_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231118_071402
+  - start_gps: 1384333564
+    end_gps: 1384333596
+    label: GW231118_090602_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231118_090602
+  - start_gps: 1384333564
+    end_gps: 1384333596
+    label: GW231118_090602_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231118_090602
+  - start_gps: 1384415570
+    end_gps: 1384415602
+    label: GW231119_075248_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231119_075248
+  - start_gps: 1384415570
+    end_gps: 1384415602
+    label: GW231119_075248_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231119_075248
+  - start_gps: 1384482065
+    end_gps: 1384482097
+    label: GW231120_022103_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231120_022103
+  - start_gps: 1384482065
+    end_gps: 1384482097
+    label: GW231120_022103_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231120_022103
+  - start_gps: 1384782872
+    end_gps: 1384782904
+    label: GW231123_135430_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231123_135430
+  - start_gps: 1384782872
+    end_gps: 1384782904
+    label: GW231123_135430_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231123_135430
+  - start_gps: 1384996170
+    end_gps: 1384996202
+    label: GW231126_010928_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231126_010928
+  - start_gps: 1384996170
+    end_gps: 1384996202
+    label: GW231126_010928_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231126_010928
+  - start_gps: 1385139182
+    end_gps: 1385139214
+    label: GW231127_165300_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231127_165300
+  - start_gps: 1385139182
+    end_gps: 1385139214
+    label: GW231127_165300_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231127_165300
+  - start_gps: 1385281067
+    end_gps: 1385281099
+    label: GW231129_081745_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231129_081745
+  - start_gps: 1385281067
+    end_gps: 1385281099
+    label: GW231129_081745_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231129_081745
+  - start_gps: 1385716010
+    end_gps: 1385716042
+    label: GW231204_090648_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231204_090648
+  - start_gps: 1385716010
+    end_gps: 1385716042
+    label: GW231204_090648_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231204_090648
+  - start_gps: 1385859991
+    end_gps: 1385860023
+    label: GW231206_010629_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231206_010629
+  - start_gps: 1385859991
+    end_gps: 1385860023
+    label: GW231206_010629_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231206_010629
+  - start_gps: 1385940696
+    end_gps: 1385940728
+    label: GW231206_233134_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231206_233134
+  - start_gps: 1385940696
+    end_gps: 1385940728
+    label: GW231206_233134_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231206_233134
+  - start_gps: 1385941143
+    end_gps: 1385941175
+    label: GW231206_233901_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231206_233901
+  - start_gps: 1385941143
+    end_gps: 1385941175
+    label: GW231206_233901_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231206_233901
+  - start_gps: 1386501259
+    end_gps: 1386501291
+    label: GW231213_111417_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231213_111417
+  - start_gps: 1386501259
+    end_gps: 1386501291
+    label: GW231213_111417_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231213_111417
+  - start_gps: 1387128848
+    end_gps: 1387128880
+    label: GW231220_173406_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231220_173406
+  - start_gps: 1387128848
+    end_gps: 1387128880
+    label: GW231220_173406_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231220_173406
+  - start_gps: 1387201843
+    end_gps: 1387201875
+    label: GW231221_135041_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231221_135041
+  - start_gps: 1387201843
+    end_gps: 1387201875
+    label: GW231221_135041_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231221_135041
+  - start_gps: 1387337318
+    end_gps: 1387337350
+    label: GW231223_032836_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231223_032836
+  - start_gps: 1387337318
+    end_gps: 1387337350
+    label: GW231223_032836_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231223_032836
+  - start_gps: 1387353057
+    end_gps: 1387353089
+    label: GW231223_075055_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231223_075055
+  - start_gps: 1387353057
+    end_gps: 1387353089
+    label: GW231223_075055_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231223_075055
+  - start_gps: 1387398381
+    end_gps: 1387398413
+    label: GW231223_202619_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231223_202619
+  - start_gps: 1387398381
+    end_gps: 1387398413
+    label: GW231223_202619_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231223_202619
+  - start_gps: 1387421004
+    end_gps: 1387421036
+    label: GW231224_024321_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231224_024321
+  - start_gps: 1387421004
+    end_gps: 1387421036
+    label: GW231224_024321_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231224_024321
+  - start_gps: 1387620922
+    end_gps: 1387620954
+    label: GW231226_101520_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231226_101520
+  - start_gps: 1387620922
+    end_gps: 1387620954
+    label: GW231226_101520_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231226_101520
+  - start_gps: 1387990879
+    end_gps: 1387990911
+    label: GW231230_170116_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231230_170116
+  - start_gps: 1387990879
+    end_gps: 1387990911
+    label: GW231230_170116_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231230_170116
+  - start_gps: 1388059309
+    end_gps: 1388059341
+    label: GW231231_120147_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231231_120147
+  - start_gps: 1388059309
+    end_gps: 1388059341
+    label: GW231231_120147_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231231_120147
+  - start_gps: 1388072418
+    end_gps: 1388072450
+    label: GW231231_154016_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231231_154016
+  - start_gps: 1388072418
+    end_gps: 1388072450
+    label: GW231231_154016_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW231231_154016
+  - start_gps: 1388422174
+    end_gps: 1388422206
+    label: GW240104_164932_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW240104_164932
+  - start_gps: 1388422174
+    end_gps: 1388422206
+    label: GW240104_164932_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW240104_164932
+  - start_gps: 1388502705
+    end_gps: 1388502737
+    label: GW240105_151143_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW240105_151143
+  - start_gps: 1388502705
+    end_gps: 1388502737
+    label: GW240105_151143_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW240105_151143
+  - start_gps: 1388626337
+    end_gps: 1388626369
+    label: GW240107_013215_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW240107_013215
+  - start_gps: 1388626337
+    end_gps: 1388626369
+    label: GW240107_013215_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW240107_013215
+  - start_gps: 1388811873
+    end_gps: 1388811905
+    label: GW240109_050431_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW240109_050431
+  - start_gps: 1388811873
+    end_gps: 1388811905
+    label: GW240109_050431_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW240109_050431
+  - start_gps: 1420878125
+    end_gps: 1420878157
+    label: GW250114_082203_H1
+    type: signal
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW250114_082203
+  - start_gps: 1420878125
+    end_gps: 1420878157
+    label: GW250114_082203_L1
+    type: signal
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+    known_event: GW250114_082203
+  noise_segments:
+  - start_gps: 1126259000
+    end_gps: 1126259032
+    label: noise_H1_001
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259000
+    end_gps: 1126259032
+    label: noise_L1_001
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259100
+    end_gps: 1126259132
+    label: noise_H1_002
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259100
+    end_gps: 1126259132
+    label: noise_L1_002
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259200
+    end_gps: 1126259232
+    label: noise_H1_003
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259200
+    end_gps: 1126259232
+    label: noise_L1_003
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259300
+    end_gps: 1126259332
+    label: noise_H1_004
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259300
+    end_gps: 1126259332
+    label: noise_L1_004
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259400
+    end_gps: 1126259432
+    label: noise_H1_005
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259400
+    end_gps: 1126259432
+    label: noise_L1_005
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259500
+    end_gps: 1126259532
+    label: noise_H1_006
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259500
+    end_gps: 1126259532
+    label: noise_L1_006
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259600
+    end_gps: 1126259632
+    label: noise_H1_007
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259600
+    end_gps: 1126259632
+    label: noise_L1_007
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259700
+    end_gps: 1126259732
+    label: noise_H1_008
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259700
+    end_gps: 1126259732
+    label: noise_L1_008
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259800
+    end_gps: 1126259832
+    label: noise_H1_009
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259800
+    end_gps: 1126259832
+    label: noise_L1_009
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259900
+    end_gps: 1126259932
+    label: noise_H1_010
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1126259900
+    end_gps: 1126259932
+    label: noise_L1_010
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136000
+    end_gps: 1135136032
+    label: noise_H1_011
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136000
+    end_gps: 1135136032
+    label: noise_L1_011
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136100
+    end_gps: 1135136132
+    label: noise_H1_012
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136100
+    end_gps: 1135136132
+    label: noise_L1_012
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136200
+    end_gps: 1135136232
+    label: noise_H1_013
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136200
+    end_gps: 1135136232
+    label: noise_L1_013
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136300
+    end_gps: 1135136332
+    label: noise_H1_014
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136300
+    end_gps: 1135136332
+    label: noise_L1_014
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136400
+    end_gps: 1135136432
+    label: noise_H1_015
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136400
+    end_gps: 1135136432
+    label: noise_L1_015
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136500
+    end_gps: 1135136532
+    label: noise_H1_016
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136500
+    end_gps: 1135136532
+    label: noise_L1_016
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136600
+    end_gps: 1135136632
+    label: noise_H1_017
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136600
+    end_gps: 1135136632
+    label: noise_L1_017
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136700
+    end_gps: 1135136732
+    label: noise_H1_018
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136700
+    end_gps: 1135136732
+    label: noise_L1_018
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136800
+    end_gps: 1135136832
+    label: noise_H1_019
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136800
+    end_gps: 1135136832
+    label: noise_L1_019
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136900
+    end_gps: 1135136932
+    label: noise_H1_020
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1135136900
+    end_gps: 1135136932
+    label: noise_L1_020
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167559800
+    end_gps: 1167559832
+    label: noise_H1_021
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167559800
+    end_gps: 1167559832
+    label: noise_L1_021
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167559900
+    end_gps: 1167559932
+    label: noise_H1_022
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167559900
+    end_gps: 1167559932
+    label: noise_L1_022
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560000
+    end_gps: 1167560032
+    label: noise_H1_023
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560000
+    end_gps: 1167560032
+    label: noise_L1_023
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560100
+    end_gps: 1167560132
+    label: noise_H1_024
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560100
+    end_gps: 1167560132
+    label: noise_L1_024
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560200
+    end_gps: 1167560232
+    label: noise_H1_025
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560200
+    end_gps: 1167560232
+    label: noise_L1_025
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560300
+    end_gps: 1167560332
+    label: noise_H1_026
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560300
+    end_gps: 1167560332
+    label: noise_L1_026
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560400
+    end_gps: 1167560432
+    label: noise_H1_027
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560400
+    end_gps: 1167560432
+    label: noise_L1_027
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560500
+    end_gps: 1167560532
+    label: noise_H1_028
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560500
+    end_gps: 1167560532
+    label: noise_L1_028
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560600
+    end_gps: 1167560632
+    label: noise_H1_029
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560600
+    end_gps: 1167560632
+    label: noise_L1_029
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560700
+    end_gps: 1167560732
+    label: noise_H1_030
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1167560700
+    end_gps: 1167560732
+    label: noise_L1_030
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922400
+    end_gps: 1180922432
+    label: noise_H1_031
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922400
+    end_gps: 1180922432
+    label: noise_L1_031
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922500
+    end_gps: 1180922532
+    label: noise_H1_032
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922500
+    end_gps: 1180922532
+    label: noise_L1_032
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922600
+    end_gps: 1180922632
+    label: noise_H1_033
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922600
+    end_gps: 1180922632
+    label: noise_L1_033
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922700
+    end_gps: 1180922732
+    label: noise_H1_034
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922700
+    end_gps: 1180922732
+    label: noise_L1_034
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922800
+    end_gps: 1180922832
+    label: noise_H1_035
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922800
+    end_gps: 1180922832
+    label: noise_L1_035
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922900
+    end_gps: 1180922932
+    label: noise_H1_036
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180922900
+    end_gps: 1180922932
+    label: noise_L1_036
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180923000
+    end_gps: 1180923032
+    label: noise_H1_037
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180923000
+    end_gps: 1180923032
+    label: noise_L1_037
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180923100
+    end_gps: 1180923132
+    label: noise_H1_038
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180923100
+    end_gps: 1180923132
+    label: noise_L1_038
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180923200
+    end_gps: 1180923232
+    label: noise_H1_039
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180923200
+    end_gps: 1180923232
+    label: noise_L1_039
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180923300
+    end_gps: 1180923332
+    label: noise_H1_040
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1180923300
+    end_gps: 1180923332
+    label: noise_L1_040
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186741800
+    end_gps: 1186741832
+    label: noise_H1_041
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186741800
+    end_gps: 1186741832
+    label: noise_L1_041
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186741900
+    end_gps: 1186741932
+    label: noise_H1_042
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186741900
+    end_gps: 1186741932
+    label: noise_L1_042
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742000
+    end_gps: 1186742032
+    label: noise_H1_043
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742000
+    end_gps: 1186742032
+    label: noise_L1_043
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742100
+    end_gps: 1186742132
+    label: noise_H1_044
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742100
+    end_gps: 1186742132
+    label: noise_L1_044
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742200
+    end_gps: 1186742232
+    label: noise_H1_045
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742200
+    end_gps: 1186742232
+    label: noise_L1_045
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742300
+    end_gps: 1186742332
+    label: noise_H1_046
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742300
+    end_gps: 1186742332
+    label: noise_L1_046
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742400
+    end_gps: 1186742432
+    label: noise_H1_047
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742400
+    end_gps: 1186742432
+    label: noise_L1_047
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742500
+    end_gps: 1186742532
+    label: noise_H1_048
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742500
+    end_gps: 1186742532
+    label: noise_L1_048
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742600
+    end_gps: 1186742632
+    label: noise_H1_049
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742600
+    end_gps: 1186742632
+    label: noise_L1_049
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742700
+    end_gps: 1186742732
+    label: noise_H1_050
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1186742700
+    end_gps: 1186742732
+    label: noise_L1_050
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187008800
+    end_gps: 1187008832
+    label: noise_H1_051
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187008800
+    end_gps: 1187008832
+    label: noise_L1_051
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187008900
+    end_gps: 1187008932
+    label: noise_H1_052
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187008900
+    end_gps: 1187008932
+    label: noise_L1_052
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009000
+    end_gps: 1187009032
+    label: noise_H1_053
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009000
+    end_gps: 1187009032
+    label: noise_L1_053
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009100
+    end_gps: 1187009132
+    label: noise_H1_054
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009100
+    end_gps: 1187009132
+    label: noise_L1_054
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009200
+    end_gps: 1187009232
+    label: noise_H1_055
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009200
+    end_gps: 1187009232
+    label: noise_L1_055
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009300
+    end_gps: 1187009332
+    label: noise_H1_056
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009300
+    end_gps: 1187009332
+    label: noise_L1_056
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009400
+    end_gps: 1187009432
+    label: noise_H1_057
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009400
+    end_gps: 1187009432
+    label: noise_L1_057
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009500
+    end_gps: 1187009532
+    label: noise_H1_058
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009500
+    end_gps: 1187009532
+    label: noise_L1_058
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009600
+    end_gps: 1187009632
+    label: noise_H1_059
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009600
+    end_gps: 1187009632
+    label: noise_L1_059
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009700
+    end_gps: 1187009732
+    label: noise_H1_060
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1187009700
+    end_gps: 1187009732
+    label: noise_L1_060
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082200
+    end_gps: 1239082232
+    label: noise_H1_061
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082200
+    end_gps: 1239082232
+    label: noise_L1_061
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082300
+    end_gps: 1239082332
+    label: noise_H1_062
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082300
+    end_gps: 1239082332
+    label: noise_L1_062
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082400
+    end_gps: 1239082432
+    label: noise_H1_063
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082400
+    end_gps: 1239082432
+    label: noise_L1_063
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082500
+    end_gps: 1239082532
+    label: noise_H1_064
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082500
+    end_gps: 1239082532
+    label: noise_L1_064
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082600
+    end_gps: 1239082632
+    label: noise_H1_065
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082600
+    end_gps: 1239082632
+    label: noise_L1_065
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082700
+    end_gps: 1239082732
+    label: noise_H1_066
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082700
+    end_gps: 1239082732
+    label: noise_L1_066
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082800
+    end_gps: 1239082832
+    label: noise_H1_067
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082800
+    end_gps: 1239082832
+    label: noise_L1_067
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082900
+    end_gps: 1239082932
+    label: noise_H1_068
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239082900
+    end_gps: 1239082932
+    label: noise_L1_068
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239083000
+    end_gps: 1239083032
+    label: noise_H1_069
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239083000
+    end_gps: 1239083032
+    label: noise_L1_069
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239083100
+    end_gps: 1239083132
+    label: noise_H1_070
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1239083100
+    end_gps: 1239083132
+    label: noise_L1_070
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215400
+    end_gps: 1240215432
+    label: noise_H1_071
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215400
+    end_gps: 1240215432
+    label: noise_L1_071
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215500
+    end_gps: 1240215532
+    label: noise_H1_072
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215500
+    end_gps: 1240215532
+    label: noise_L1_072
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215600
+    end_gps: 1240215632
+    label: noise_H1_073
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215600
+    end_gps: 1240215632
+    label: noise_L1_073
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215700
+    end_gps: 1240215732
+    label: noise_H1_074
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215700
+    end_gps: 1240215732
+    label: noise_L1_074
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215800
+    end_gps: 1240215832
+    label: noise_H1_075
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215800
+    end_gps: 1240215832
+    label: noise_L1_075
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215900
+    end_gps: 1240215932
+    label: noise_H1_076
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240215900
+    end_gps: 1240215932
+    label: noise_L1_076
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240216000
+    end_gps: 1240216032
+    label: noise_H1_077
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240216000
+    end_gps: 1240216032
+    label: noise_L1_077
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240216100
+    end_gps: 1240216132
+    label: noise_H1_078
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240216100
+    end_gps: 1240216132
+    label: noise_L1_078
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240216200
+    end_gps: 1240216232
+    label: noise_H1_079
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240216200
+    end_gps: 1240216232
+    label: noise_L1_079
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240216300
+    end_gps: 1240216332
+    label: noise_H1_080
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1240216300
+    end_gps: 1240216332
+    label: noise_L1_080
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242442900
+    end_gps: 1242442932
+    label: noise_H1_081
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242442900
+    end_gps: 1242442932
+    label: noise_L1_081
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443000
+    end_gps: 1242443032
+    label: noise_H1_082
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443000
+    end_gps: 1242443032
+    label: noise_L1_082
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443100
+    end_gps: 1242443132
+    label: noise_H1_083
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443100
+    end_gps: 1242443132
+    label: noise_L1_083
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443200
+    end_gps: 1242443232
+    label: noise_H1_084
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443200
+    end_gps: 1242443232
+    label: noise_L1_084
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443300
+    end_gps: 1242443332
+    label: noise_H1_085
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443300
+    end_gps: 1242443332
+    label: noise_L1_085
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443400
+    end_gps: 1242443432
+    label: noise_H1_086
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443400
+    end_gps: 1242443432
+    label: noise_L1_086
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443500
+    end_gps: 1242443532
+    label: noise_H1_087
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443500
+    end_gps: 1242443532
+    label: noise_L1_087
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443600
+    end_gps: 1242443632
+    label: noise_H1_088
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443600
+    end_gps: 1242443632
+    label: noise_L1_088
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443700
+    end_gps: 1242443732
+    label: noise_H1_089
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443700
+    end_gps: 1242443732
+    label: noise_L1_089
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443800
+    end_gps: 1242443832
+    label: noise_H1_090
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1242443800
+    end_gps: 1242443832
+    label: noise_L1_090
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852200
+    end_gps: 1249852232
+    label: noise_H1_091
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852200
+    end_gps: 1249852232
+    label: noise_L1_091
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852300
+    end_gps: 1249852332
+    label: noise_H1_092
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852300
+    end_gps: 1249852332
+    label: noise_L1_092
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852400
+    end_gps: 1249852432
+    label: noise_H1_093
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852400
+    end_gps: 1249852432
+    label: noise_L1_093
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852500
+    end_gps: 1249852532
+    label: noise_H1_094
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852500
+    end_gps: 1249852532
+    label: noise_L1_094
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852600
+    end_gps: 1249852632
+    label: noise_H1_095
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852600
+    end_gps: 1249852632
+    label: noise_L1_095
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852700
+    end_gps: 1249852732
+    label: noise_H1_096
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852700
+    end_gps: 1249852732
+    label: noise_L1_096
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852800
+    end_gps: 1249852832
+    label: noise_H1_097
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852800
+    end_gps: 1249852832
+    label: noise_L1_097
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852900
+    end_gps: 1249852932
+    label: noise_H1_098
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249852900
+    end_gps: 1249852932
+    label: noise_L1_098
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249853000
+    end_gps: 1249853032
+    label: noise_H1_099
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249853000
+    end_gps: 1249853032
+    label: noise_L1_099
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249853100
+    end_gps: 1249853132
+    label: noise_H1_100
+    type: noise
+    detector: H1
+    duration: 32
+    sample_rate: 4096
+  - start_gps: 1249853100
+    end_gps: 1249853132
+    label: noise_L1_100
+    type: noise
+    detector: L1
+    duration: 32
+    sample_rate: 4096
+preprocessing:
+  cwt:
+    sample_rate: 4096
+    target_height: 8
+    use_analytic: true
+    fmin: 20.0
+    fmax: 512.0
+    n_scales: 8
+    wavelet: cmor1.5-1.0
+    k_pad: 10.0
+    k_coi: 6.0
+model:
+  model_type: cwt_lstm
+  input_height: 8
+  input_width: 131072
+  latent_dim: 32
+  lstm_hidden: 64
+  dropout: 0.1
+  training:
+    batch_size: 8
+    num_epochs: 50
+    learning_rate: 0.001
+    optimizer: adam
+    scheduler: reduce_on_plateau
+    early_stopping_patience: 10
+    validation_split: 0.2
+    loss_function: mse
+    augmentation:
+      enabled: false
+      noise_level: 0.01
+      time_shift: 0.1
+  save:
+    model_dir: models/
+    checkpoint_dir: models/checkpoints/
+    best_model_name: best_cwt_lstm_model.pth
+    final_model_name: final_cwt_lstm_model.pth
+    save_every_n_epochs: 10
+  anomaly_detection:
+    threshold_percentile: 95.0
+    reconstruction_error_threshold: null
+    min_anomaly_score: 0.5
+pipeline:
+  run_management:
+    create_unique_dirs: true
+    run_metadata_file: run_metadata.json
+    include_git_hash: true
+    include_timestamp: true
+  data_flow:
+    use_preprocessed_data: true
+    preprocessed_data_dir: data/processed/
+    train_on_noise_only: true
+    test_on_all_data: true
+  output:
+    results_dir: results/
+    plots_dir: results/plots/
+    logs_dir: results/logs/
+    reports_dir: results/reports/

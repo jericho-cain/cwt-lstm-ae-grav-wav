@@ -6,6 +6,7 @@ scipy>=1.7.0
 torch>=1.9.0
 scikit-learn
 seaborn>=1.0.0
+h5py>=3.0.0
 
 # Data processing
 pywt>=1.1.0
@@ -25,5 +26,5 @@ flake8>=3.9.0
 
 # Optional: For real GWOSC data access
 gwosc>=0.8.0  # For accessing GWOSC event information
-# gwpy>=2.0.0  # Uncomment when implementing real GWOSC API
+gwpy>=3.0.0  # For fetching open data with science-mode segments
 # ligo-gracedb>=2.0.0  # Uncomment for GraceDB access

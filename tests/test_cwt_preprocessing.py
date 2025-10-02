@@ -56,8 +56,9 @@ class TestCWTBasic(unittest.TestCase):
         self.assertGreaterEqual(freqs.min(), 20)
         self.assertLessEqual(freqs.max(), 200.1)  # Allow small floating point error
         
-        # Check that CWT coefficients are complex
-        self.assertTrue(np.iscomplexobj(C))
+        # Check that CWT coefficients are real (magnitude from Morlet wavelet)
+        self.assertFalse(np.iscomplexobj(C))
+        self.assertTrue(np.isrealobj(C))
     
     def test_cwt_clean_edge_cases(self):
         """Test CWT with edge cases."""

@@ -145,7 +145,7 @@ def test_metrics_evaluator():
             print(f"  [MISSING] {filename}")
     
     print(f"\nTest completed! Check {output_dir} for output files.")
-    return True
+    assert True  # Test passes if we get here
 
 
 if __name__ == "__main__":

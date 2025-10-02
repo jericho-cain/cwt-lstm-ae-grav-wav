@@ -325,8 +325,8 @@ class MetricsEvaluator:
         signal_mean = np.mean(signal_scores)
         separation = abs(signal_mean - noise_mean)
         
-        stats_text = (f'Noise μ={noise_mean:.3f}\n'
-                     f'Signal μ={signal_mean:.3f}\n'
+        stats_text = (f'Noise mean={noise_mean:.3f}\n'
+                     f'Signal mean={signal_mean:.3f}\n'
                      f'Separation={separation:.3f}')
         
         ax.text(0.02, 0.98, stats_text, transform=ax.transAxes,

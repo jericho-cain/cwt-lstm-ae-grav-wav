@@ -139,8 +139,8 @@ class AnomalyDetector:
         reconstruction_errors = []
         
         with torch.no_grad():
-            for i in range(0, len(data_tensor), 32):  # Process in batches
-                batch = data_tensor[i:i+32]
+            for i in range(0, len(data_tensor), 8):  # Process in smaller batches to avoid memory issues
+                batch = data_tensor[i:i+8]
                 
                 # Forward pass
                 reconstructed, _ = self.model(batch)

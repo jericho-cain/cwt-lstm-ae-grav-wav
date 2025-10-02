@@ -27,8 +27,8 @@ def cwt_clean(
     fs: float, 
     fmin: float = 20.0, 
     fmax: float = 512.0, 
-    n_scales: int = 8,
-    wavelet: str = 'cmor1.5-1.0', 
+    n_scales: int = 64,
+    wavelet: str = 'morl', 
     k_pad: float = 10.0, 
     k_coi: float = 6.0
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
@@ -73,28 +73,46 @@ def cwt_clean(
     >>> C, freqs, scales, mask = cwt_clean(x, fs=4096, fmin=20, fmax=512)
     >>> print(f"CWT shape: {C.shape}, frequencies: {len(freqs)}")
     """
-    dt = 1.0 / fs
-    w = pywt.ContinuousWavelet(wavelet)
-    fc = pywt.central_frequency(w)
-    freqs = np.logspace(np.log10(fmin), np.log10(fmax), n_scales)
-    scales = fc / (freqs * dt)
+    # Use legacy CWT implementation for compatibility
+    if wavelet == 'morl':
+        # Legacy Morlet wavelet implementation
+        freqs = np.logspace(np.log10(fmin), np.log10(fmax), n_scales)
+        scales = fs / freqs
+        
+        # Compute CWT using legacy method
+        coefficients, frequencies = pywt.cwt(x, scales, wavelet, sampling_period=1/fs)
+        
+        # Return magnitude (scalogram) - convert to float32 immediately
+        C = np.abs(coefficients).astype(np.float32)
+        
+        # Create dummy mask (legacy doesn't use COI)
+        mask = np.ones_like(C, dtype=bool)
+        
+        return C, freqs, scales, mask
+    else:
+        # Use new analytic wavelet implementation
+        dt = 1.0 / fs
+        w = pywt.ContinuousWavelet(wavelet)
+        fc = pywt.central_frequency(w)
+        freqs = np.logspace(np.log10(fmin), np.log10(fmax), n_scales)
+        scales = fc / (freqs * dt)
 
-    # Reflection padding to avoid FFT wrap-around
-    pad = int(np.ceil(k_pad * scales.max()))
-    xpad = np.pad(x, (pad, pad), mode='reflect')
+        # Reflection padding to avoid FFT wrap-around
+        pad = int(np.ceil(k_pad * scales.max()))
+        xpad = np.pad(x, (pad, pad), mode='reflect')
 
-    Cpad, _ = pywt.cwt(xpad, scales, w, sampling_period=dt)
-    C = Cpad[:, pad:-pad]  # back to original length
+        Cpad, _ = pywt.cwt(xpad, scales, w, sampling_period=dt)
+        C = Cpad[:, pad:-pad]  # back to original length
 
-    # Cone-of-influence mask
-    T = C.shape[1]
-    mask = np.ones_like(C, dtype=bool)
-    for i, s in enumerate(scales):
-        m = int(np.ceil(k_coi * s))
-        mask[i, :m] = False
-        mask[i, T-m:] = False
+        # Cone-of-influence mask
+        T = C.shape[1]
+        mask = np.ones_like(C, dtype=bool)
+        for i, s in enumerate(scales):
+            m = int(np.ceil(k_coi * s))
+            mask[i, :m] = False
+            mask[i, T-m:] = False
 
-    return C, freqs, scales, mask
+        return C, freqs, scales, mask
 
 
 def peak_time_from_cwt(
@@ -150,8 +168,8 @@ def peak_time_from_cwt(
 def fixed_preprocess_with_cwt(
     strain_data: np.ndarray,
     sample_rate: int,
-    target_height: int = 8,
-    use_analytic: bool = True,
+    target_height: int = 64,
+    use_analytic: bool = False,
     fmin: float = 20.0,
     fmax: float = 512.0
 ) -> np.ndarray:
@@ -215,19 +233,23 @@ def fixed_preprocess_with_cwt(
             if np.std(strain) < 1e-20:
                 strain = strain + np.random.normal(0, 1e-20, size=strain.shape)
 
-            # Apply preprocessing
+            # Apply legacy preprocessing pipeline
+            # High-pass filter to remove low-frequency noise
+            from scipy.signal import butter, sosfiltfilt
             sos = butter(4, 20, btype='highpass', fs=sample_rate, output='sos')
             filtered = sosfiltfilt(sos, strain)
+            
+            # Whiten the data
             whitened = (filtered - np.mean(filtered)) / (np.std(filtered) + 1e-10)
 
             # Choose wavelet
             wavelet = 'cmor1.5-1.0' if use_analytic else 'morl'
             
-            # Compute FIXED CWT
+            # Compute CWT
             C, freqs, scales, mask = cwt_clean(
                 whitened, 
                 sample_rate, 
-                n_scales=target_height,
+                n_scales=64,  # Use 64 scales like legacy
                 wavelet=wavelet,
                 fmin=fmin,
                 fmax=fmax

@@ -73,7 +73,7 @@ def test_post_processor():
     print("    " + "\n    ".join(report.split("\n")[:10]))
     
     print("[OK] PostProcessor tests passed!")
-    return True
+    assert True  # Test passes if we get here
 
 
 def test_empty_detections():
@@ -109,7 +109,7 @@ def test_empty_detections():
     assert "No gravitational wave signals detected" in report
     
     print("[OK] Empty detections test passed!")
-    return True
+    assert True  # Test passes if we get here
 
 
 def main():

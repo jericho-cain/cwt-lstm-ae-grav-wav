@@ -5,7 +5,7 @@ schema_version: "2.0"
 
 downloader_schema:
   type: object
-  required: ["data_directories", "detectors", "observing_runs", "download_params"]
+  required: ["data_directories", "detectors", "observing_runs", "download_parameters"]
   properties:
     data_directories:
       type: object
@@ -101,51 +101,51 @@ downloader_schema:
             type: string
             description: "Name of known GW event"
     
-    download_params:
+    download_parameters:
       type: object
-      required: ["segment_duration", "sample_rate", "retry_attempts"]
+      required: ["max_concurrent", "timeout_seconds", "retry_attempts", "retry_delay"]
       properties:
-        segment_duration:
+        max_concurrent:
           type: integer
-          description: "Default segment duration in seconds"
-        sample_rate:
+          minimum: 1
+          maximum: 10
+          description: "Maximum concurrent downloads"
+        timeout_seconds:
           type: integer
-          description: "Default sample rate in Hz"
+          minimum: 30
+          maximum: 600
+          description: "Timeout for individual downloads"
         retry_attempts:
           type: integer
           minimum: 1
           maximum: 10
           description: "Number of retry attempts for failed downloads"
-        timeout_seconds:
+        retry_delay:
           type: integer
-          default: 30
-          description: "Timeout for individual downloads"
-        verify_data_quality:
-          type: boolean
-          default: true
-          description: "Whether to verify data quality after download"
-        check_nan_inf:
-          type: boolean
-          default: true
-          description: "Whether to check for NaN/Inf values"
-    
-    safety:
-      type: object
-      properties:
-        require_confirmation:
-          type: boolean
-          default: true
-          description: "Require user confirmation before downloading"
-        backup_existing:
-          type: boolean
-          default: true
-          description: "Backup existing files before overwriting"
-        max_concurrent_downloads:
-          type: integer
-          default: 3
           minimum: 1
-          maximum: 10
-          description: "Maximum concurrent downloads"
+          maximum: 60
+          description: "Delay between retry attempts in seconds"
+    
+    data_quality:
+      type: object
+      required: ["validate_downloads", "check_file_integrity", "max_nan_percentage", "max_inf_percentage"]
+      properties:
+        validate_downloads:
+          type: boolean
+          description: "Whether to validate downloads"
+        check_file_integrity:
+          type: boolean
+          description: "Whether to check file integrity"
+        max_nan_percentage:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: "Maximum percentage of NaN values allowed"
+        max_inf_percentage:
+          type: number
+          minimum: 0
+          maximum: 100
+          description: "Maximum percentage of Inf values allowed"
 
 # CWT Preprocessing Schema
 preprocessing_schema:

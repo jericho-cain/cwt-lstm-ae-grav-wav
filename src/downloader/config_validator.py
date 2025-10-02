@@ -148,8 +148,8 @@ class ConfigValidator:
         self._validate_segments(downloader_config.get('signal_segments', []), 'signal', errors, warnings)
         
         # Validate download parameters
-        if 'download_params' in downloader_config:
-            params = downloader_config['download_params']
+        if 'download_parameters' in downloader_config:
+            params = downloader_config['download_parameters']
             if 'segment_duration' in params and params['segment_duration'] <= 0:
                 errors.append("segment_duration must be positive")
             if 'sample_rate' in params and params['sample_rate'] <= 0:

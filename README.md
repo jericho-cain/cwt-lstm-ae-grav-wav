@@ -1,5 +1,7 @@
 # Gravitational Wave Hunter v2.0 - Development Lab Notebook
 
+![CWT-LSTM Autoencoder for Gravitational Wave Detection](cwt_lstm_ae_gw_banner.png)
+
 **Repository**: `cwt-lstm-ae-grav-wav`  
 **Status**: Private repository, active development  
 **Last Updated**: October 3, 2025 - Full Pipeline Complete with Performance Analysis  

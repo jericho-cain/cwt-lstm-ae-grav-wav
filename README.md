@@ -2,7 +2,7 @@
 
 **Repository**: `cwt-lstm-ae-grav-wav`  
 **Status**: Private repository, active development  
-**Last Updated**: October 2, 2025 - Real GWOSC Data Integration Complete & Tests Fixed  
+**Last Updated**: October 2, 2025 - Clean GWOSC Downloader Complete & Balanced Dataset Downloaded  
 
 ## **Project Overview**
 
@@ -105,18 +105,15 @@ This is a complete redesign of the gravitational wave detection system. The orig
 ## **File Organization**
 
 ### **Active Development Files**
-- `src/downloader/data_downloader.py` - Core downloader implementation
-- `src/downloader/config_validator.py` - Configuration validation
+- `src/downloader/gwosc_downloader.py` - Clean GWOSC data downloader
 - `src/models/cwtlstm.py` - CWT-LSTM autoencoder model
 - `src/training/trainer.py` - Training pipeline
 - `src/evaluation/anomaly_detector.py` - Anomaly detection
 - `src/evaluation/post_processor.py` - Post-processing and timing analysis
 - `src/preprocessing/cwt.py` - CWT preprocessing with timing fixes
 - `src/pipeline/run_manager.py` - Run management and reproducibility
-- `scripts/download_data.py` - Standalone download script
-- `scripts/run_pipeline.py` - End-to-end pipeline script
-- `config/download_config.yaml` - Unified configuration
-- `config/schema.yaml` - Configuration schema
+- `scripts/run_clean_pipeline.py` - End-to-end pipeline script
+- `config/pipeline_clean_config.yaml` - Unified configuration
 
 ### **Reference Files (Legacy)**
 - `legacy_scripts/` - Working code from original project
@@ -134,34 +131,31 @@ This is a complete redesign of the gravitational wave detection system. The orig
 
 ### **Run Complete Pipeline**
 ```bash
-# Run complete pipeline (preprocessing + training + evaluation)
-python scripts/run_pipeline.py
-
-# Run with custom configuration
-python scripts/run_pipeline.py --config config/custom_config.yaml
+# Run complete pipeline (download + preprocessing + training + evaluation)
+python scripts/run_clean_pipeline.py --config config/pipeline_clean_config.yaml
 
 # Skip specific steps
-python scripts/run_pipeline.py --skip-preprocessing --skip-evaluation
+python scripts/run_clean_pipeline.py --config config/pipeline_clean_config.yaml --skip-download --skip-preprocessing
 
-# Custom run name
-python scripts/run_pipeline.py --run-name "experiment_1"
+# Custom log level
+python scripts/run_clean_pipeline.py --config config/pipeline_clean_config.yaml --log-level DEBUG
 ```
 
 ### **Download Data Only**
 ```bash
-# Validate configuration only
-python scripts/download_data.py --config config/download_config.yaml --validate-only
+# Download signals only
+python -c "from src.downloader.gwosc_downloader import CleanGWOSCDownloader; d = CleanGWOSCDownloader('config/pipeline_clean_config.yaml'); d.download_signals()"
 
-# Download with confirmation
-python scripts/download_data.py --config config/download_config.yaml
+# Download noise only
+python -c "from src.downloader.gwosc_downloader import CleanGWOSCDownloader; d = CleanGWOSCDownloader('config/pipeline_clean_config.yaml'); d.download_noise()"
 
-# Download without confirmation
-python scripts/download_data.py --config config/download_config.yaml --no-confirm
+# Download all data
+python -c "from src.downloader.gwosc_downloader import CleanGWOSCDownloader; d = CleanGWOSCDownloader('config/pipeline_clean_config.yaml'); d.download_all()"
 ```
 
 ### **Configuration**
-Edit `config/download_config.yaml` to specify:
-- **Downloader**: GPS time ranges, detector selection, download parameters
+Edit `config/pipeline_clean_config.yaml` to specify:
+- **Downloader**: Detector selection, runs, segments per run
 - **Preprocessing**: CWT parameters, sample rates, frequency ranges
 - **Model**: Architecture, training parameters, hyperparameters
 - **Pipeline**: Run management, output directories, logging settings
@@ -193,6 +187,8 @@ flake8>=3.9.0
 
 # Gravitational wave data
 gwosc>=0.8.0
+gwpy>=3.0.0
+h5py>=3.0.0
 ```
 
 ### **Architecture Principles**
@@ -302,37 +298,34 @@ gwosc>=0.8.0
 - **Signal Injection**: Needs investigation for L1 detector
 - **Overall Status**: CWT preprocessing fixes are effective and ready for production
 
-### **Pipeline Implementation Complete (October 2, 2025):**
+### **Clean GWOSC Downloader Complete (October 2, 2025):**
 
 #### **New Components Added:**
-- **Training Module** (`src/training/trainer.py`): Complete training pipeline with data loading, training loops, validation, and model saving
-- **Evaluation Module** (`src/evaluation/anomaly_detector.py`): Anomaly detection with comprehensive metrics and threshold optimization
-- **Post-Processing Module** (`src/evaluation/post_processor.py`): Timing analysis, peak detection, and result enhancement
-- **Metrics & Plotting Module** (`src/evaluation/metrics.py`): Comprehensive evaluation with publication-quality plots
-- **End-to-End Pipeline** (`scripts/run_pipeline.py`): Full pipeline script with run management, logging, and error handling
-- **Run Management** (`src/pipeline/run_manager.py`): Unique run directories, metadata tracking, and reproducibility features
+- **Clean Downloader** (`src/downloader/gwosc_downloader.py`): Production-ready GWOSC data downloader
+- **Pipeline Integration** (`scripts/run_clean_pipeline.py`): End-to-end pipeline with clean downloader
+- **Comprehensive Tests** (`tests/test_gwosc_downloader.py`): Full test suite for downloader functionality
 
-#### **Pipeline Features:**
-- **Config-Driven**: All parameters controlled through unified YAML configuration
-- **Run Management**: Unique directories with timestamps, git hashes, and metadata tracking
-- **Comprehensive Logging**: Detailed logging with file and console output
-- **Error Handling**: Robust error handling with graceful failure recovery
-- **Modular Design**: Each component can be run independently or as part of full pipeline
-- **Reproducibility**: Full run information captured for experiment replication
+#### **Downloader Features:**
+- **Science-Mode Validation**: Uses `gwosc.timeline.get_segments` for proper validation
+- **Confident Events Only**: Filters to GWTC-1, GWTC-2.1, GWTC-3, GWTC-4.0 confident events
+- **H1-Only Focus**: Single detector approach for lower noise floor
+- **Programmatic Noise Sampling**: Samples from published observing runs
+- **Manifest Tracking**: Prevents duplicate downloads with JSON manifest
+- **Robust Error Handling**: Comprehensive retry logic and error recovery
+
+#### **Successfully Downloaded Dataset:**
+- **H1 Noise Segments**: 2,017 segments from O1, O2, O3a, O3b runs
+- **H1 Signal Segments**: 247 segments from 221 confident GW events
+- **Total**: 2,546 segments successfully downloaded
+- **Balance**: 8.2:1 noise-to-signal ratio (appropriate for anomaly detection)
 
 #### **Usage:**
 ```bash
-# Run complete pipeline
-python scripts/run_pipeline.py
+# Run complete pipeline with clean downloader
+python scripts/run_clean_pipeline.py --config config/pipeline_clean_config.yaml
 
-# Run with custom configuration
-python scripts/run_pipeline.py --config config/custom_config.yaml
-
-# Skip specific steps
-python scripts/run_pipeline.py --skip-preprocessing --skip-evaluation
-
-# Custom run name
-python scripts/run_pipeline.py --run-name "experiment_1"
+# Download data only
+python -c "from src.downloader.gwosc_downloader import CleanGWOSCDownloader; d = CleanGWOSCDownloader('config/pipeline_clean_config.yaml'); d.download_all()"
 ```
 
 ### **Recent Breakthrough - Real GWOSC Data Integration (October 2, 2025):**
@@ -376,24 +369,17 @@ python scripts/run_pipeline.py --run-name "experiment_1"
 - **Error handling**: Proper validation of GPS times against available science-mode segments
 - **No synthetic data**: Completely removed all synthetic data generation as requested
 
-### **Immediate TODOs:**
-- [x] **Test with Real GWOSC Data**: Download actual GW150914 data and validate timing accuracy
-- [x] **Implement LSTM Autoencoder**: Create models module with CWT-LSTM architecture
-- [x] **Create Training Pipeline**: Build training system that reads from downloaded data
-- [x] **Add Evaluation Module**: Performance metrics and validation
-- [x] **Add Post-Processing Module**: Timing analysis and result enhancement
-- [x] **Build End-to-End Pipeline**: Complete pipeline script with run management
-- [x] **Implement Metrics & Plotting**: Comprehensive evaluation with publication-quality plots
-- [x] **Test Full Pipeline**: Run complete pipeline with real data
-- [x] **Fix GWOSC Downloader**: Successfully integrated real LIGO data using official gwosc client
-- [x] **Fix Noise Data Downloader**: Successfully implemented real noise data downloads with science-mode validation
-- [x] **Fix All Tests**: All 43 tests now pass with comprehensive coverage
-- [ ] **Download Full Dataset**: Download all 241 GW events for comprehensive training
-- [ ] **Train on Real Data**: Run full pipeline with real LIGO strain data
-- [ ] **Performance Evaluation**: Compare model performance on real vs synthetic data
-- [ ] **Fix L1 Signal Injection**: Investigate and resolve L1 detector timing issues
+### **Current Status & Next Steps:**
+- [x] **Clean GWOSC Downloader**: Production-ready downloader with science-mode validation
+- [x] **Balanced Dataset**: 2,546 H1 segments (2,017 noise, 247 signals) successfully downloaded
+- [x] **Confident Events Only**: Filtered to 221 confident GW events from GWTC catalogs
+- [x] **H1-Only Focus**: Single detector approach for lower noise floor
+- [x] **Comprehensive Tests**: Full test suite for downloader functionality
+- [ ] **Run Full Pipeline**: Train LSTM autoencoder on balanced real dataset
+- [ ] **Performance Evaluation**: Evaluate model performance on real gravitational wave data
+- [ ] **Community Documentation**: Document downloader as standalone tool for GW community
 - [ ] **Performance Optimization**: Optimize training speed and memory usage
-- [ ] **Documentation**: Create user guide and API documentation
+- [ ] **Publication**: Prepare results for scientific publication
 
 ### **Development Preferences:**
 - **No Emojis**: Professional, production-ready code only

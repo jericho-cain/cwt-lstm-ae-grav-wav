@@ -1,0 +1,87 @@
+# Pipeline Configuration for Clean GWOSC Downloader
+# This config integrates the clean downloader with the existing pipeline
+
+# Data directories (compatible with existing pipeline)
+downloader:
+  data_directories:
+    raw_data: ./data/raw
+    processed_data: ./data/processed
+    manifest_file: ./data/download_manifest.json
+
+  # Data parameters
+  sample_rate: 4096  # Hz
+  duration: 32       # seconds
+
+  # Science mode validation
+  science_min_coverage: 0.80  # Minimum fraction of segment in science mode
+
+  # Download parameters
+  download_parameters:
+    max_concurrent: 4
+    timeout_seconds: 60
+    retry_attempts: 3
+    retry_delay: 1.0
+
+  # Signal download settings
+  signals:
+    # Specific events to download (if empty, will auto-discover)
+    events: []
+    
+    # Detectors to download
+    detectors: [H1] # Focus on H1 only - lower noise floor
+    
+    # Runs to search for events (if auto-discovery)
+    runs: [O1, O2, O3a, O3b, O4a]
+
+  # Noise download settings
+  noise:
+    # Runs to sample noise from
+    runs: [O1, O2, O3a, O3b]
+    
+    # Detectors to download
+    detectors: [H1] # Focus on H1 only - lower noise floor
+    
+    # Number of segments per run per detector
+    segments_per_run: 500 # Increased for better noise coverage
+    
+    # Minimum gap between segments (seconds)
+    min_gap: 64
+
+# Preprocessing configuration
+preprocessing:
+  cwt:
+    wavelet: 'morl'
+    scales: 64
+    target_height: 64
+    target_width: 1024
+    high_pass_freq: 20
+    whitening: true
+    log_transform: true
+    normalization: true
+
+# Model configuration
+model:
+  type: 'cwt_lstm'
+  input_height: 64
+  input_width: 1024
+  latent_dim: 32
+  lstm_hidden: 64
+  dropout: 0.2
+
+# Training configuration
+training:
+  batch_size: 16
+  learning_rate: 0.001
+  num_epochs: 50
+  early_stopping_patience: 10
+  validation_split: 0.2
+  
+  save:
+    save_every_n_epochs: 5
+    save_best: true
+
+# Pipeline configuration
+pipeline:
+  run_name: 'clean_gwosc_pipeline'
+  description: 'Pipeline using clean GWOSC downloader'
+  version: '2.0.0'

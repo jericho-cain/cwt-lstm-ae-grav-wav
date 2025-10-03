@@ -50,14 +50,11 @@ downloader:
 # Preprocessing configuration
 preprocessing:
   cwt:
-    wavelet: 'morl'
-    scales: 64
+    sample_rate: 4096
     target_height: 64
-    target_width: 1024
-    high_pass_freq: 20
-    whitening: true
-    log_transform: true
-    normalization: true
+    use_analytic: true
+    fmin: 20.0
+    fmax: 512.0
 
 # Model configuration
 model:
@@ -67,21 +64,39 @@ model:
   latent_dim: 32
   lstm_hidden: 64
   dropout: 0.2
+  
+  save:
+    model_dir: 'models'  # Will be updated to run-specific path
+    best_model_name: 'best_model.pth'
+    final_model_name: 'final_model.pth'
+    save_every_n_epochs: 5
+    save_best: true
+    
+  anomaly_detection:
+    threshold_method: 'percentile'  # Options: 'percentile', 'iqr', 'fixed'
+    threshold_percentile: 95.0      # For percentile method
+    threshold_multiplier: 1.5       # For IQR method
+    fixed_threshold: 0.5            # For fixed method
+    reconstruction_error_threshold: null  # Set to null for automatic threshold calculation
 
 # Training configuration
 training:
   batch_size: 16
   learning_rate: 0.001
   num_epochs: 50
-  early_stopping_patience: 10
+  early_stopping_patience: 3
   validation_split: 0.2
-  
-  save:
-    save_every_n_epochs: 5
-    save_best: true
+  optimizer: 'adam'
+  loss_function: 'mse'
+  scheduler: 'reduce_on_plateau'
 
 # Pipeline configuration
 pipeline:
   run_name: 'clean_gwosc_pipeline'
   description: 'Pipeline using clean GWOSC downloader'
   version: '2.0.0'
+  
+  data_flow:
+    preprocessed_data_dir: 'data/processed'
+    train_on_noise_only: true
+    sampling_strategy: 'conservative'  # Options: conservative (5), moderate (10), aggressive (20)

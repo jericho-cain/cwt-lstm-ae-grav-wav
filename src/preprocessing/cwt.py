@@ -264,6 +264,13 @@ def fixed_preprocess_with_cwt(
             if C.shape[0] != target_height:
                 zoom_factor = target_height / C.shape[0]
                 C = zoom(C, (zoom_factor, 1), order=1)
+            
+            # Downsample time dimension to reduce memory usage
+            # Target width should be much smaller than 131072
+            target_width = 1024  # Reasonable size for neural networks
+            if C.shape[1] > target_width:
+                time_zoom_factor = target_width / C.shape[1]
+                C = zoom(C, (1, time_zoom_factor), order=1)
 
             # Log transform and normalize
             C_clean = np.nan_to_num(C, nan=1e-10)

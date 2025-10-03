@@ -71,7 +71,7 @@ class PostProcessor:
         
         # Get timing parameters
         self.sample_rate = preprocessing_config['sample_rate']
-        self.segment_duration = self.config['downloader']['download_params']['segment_duration']
+        self.segment_duration = self.config['downloader']['duration']
         
         logger.info(f"Initialized post-processor with sample rate: {self.sample_rate} Hz")
         

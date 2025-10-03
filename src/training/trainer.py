@@ -92,9 +92,17 @@ class CWTModelTrainer:
         self.train_loader: Optional[DataLoader] = None
         self.val_loader: Optional[DataLoader] = None
         
+        # Test file lists for evaluation
+        self.test_noise_files: List[Path] = []
+        self.test_signal_files: List[Path] = []
+        
         self.best_val_loss = float('inf')
         self.train_losses: List[float] = []
         self.val_losses: List[float] = []
+        
+        # Setup training components
+        self.setup_model()
+        self.prepare_data()
         
         logger.info(f"Initialized trainer with device: {self.device}")
         
@@ -123,24 +131,108 @@ class CWTModelTrainer:
             
         logger.info(f"Found {len(cwt_files)} CWT data files")
         
+        # Load manifest to get proper labels FIRST
+        manifest_path = Path("data/download_manifest.json")
+        if manifest_path.exists():
+            with open(manifest_path, 'r') as f:
+                manifest = json.load(f)
+            
+            # Create mapping from GPS time to segment type
+            gps_to_type = {}
+            for download in manifest['downloads']:
+                if download.get('successful', False):
+                    gps_time = download.get('start_gps')
+                    segment_type = download.get('segment_type')
+                    if gps_time and segment_type:
+                        gps_to_type[gps_time] = segment_type
+        else:
+            logger.warning("No manifest found, defaulting all to noise")
+            gps_to_type = {}
+        
+        # Split files into train/test sets BEFORE loading
+        if data_config['train_on_noise_only']:
+            # Separate noise and signal files
+            noise_files = []
+            signal_files = []
+            
+            for file_path in cwt_files:
+                try:
+                    filename_parts = file_path.stem.split('_')
+                    if len(filename_parts) >= 2:
+                        gps_time = int(filename_parts[1])
+                        segment_type = gps_to_type.get(gps_time, 'noise')
+                        if segment_type == 'noise':
+                            noise_files.append(file_path)
+                        elif segment_type == 'signal':
+                            signal_files.append(file_path)
+                except (ValueError, IndexError):
+                    # Default to noise if parsing fails
+                    noise_files.append(file_path)
+            
+        # Split noise files into train/test (80/20 split)
+        np.random.seed(42)  # For reproducibility
+        torch.manual_seed(42)  # For PyTorch reproducibility
+        np.random.shuffle(noise_files)
+        split_idx = int(len(noise_files) * 0.8)
+        train_noise_files = noise_files[:split_idx]
+        test_noise_files = noise_files[split_idx:]
+        
+        logger.info(f"Split noise files: {len(train_noise_files)} train, {len(test_noise_files)} test")
+        logger.info(f"Signal files for testing: {len(signal_files)}")
+        
+        # Use only training noise files for model training
+        cwt_files = train_noise_files
+        
+        # Save test file lists for evaluation module
+        self.test_noise_files = test_noise_files
+        self.test_signal_files = signal_files
+        
         # Load and combine data
         cwt_data = []
         labels = []
         
+        # Get sampling strategy
+        sampling_strategy = data_config.get('sampling_strategy', 'conservative')
+        samples_per_file = {
+            'conservative': 5,
+            'moderate': 10, 
+            'aggressive': 20
+        }.get(sampling_strategy, 5)
+        
+        logger.info(f"Using {sampling_strategy} sampling: {samples_per_file} samples per file")
+        
         for file_path in cwt_files:
             data = np.load(file_path)
-            cwt_data.append(data)
             
-            # Determine label from filename
-            if 'noise' in file_path.name.lower():
-                labels.extend([0] * len(data))  # Noise = 0
-            elif 'signal' in file_path.name.lower():
-                labels.extend([1] * len(data))  # Signal = 1
+            # Each file contains 1 sample of shape (height, width)
+            # We need to add a batch dimension to make it (1, height, width)
+            if len(data.shape) == 2:
+                # Single sample: (height, width) -> (1, height, width)
+                sampled_data = data.reshape(1, data.shape[0], data.shape[1])
             else:
-                labels.extend([0] * len(data))  # Default to noise
+                # Already batched: (samples, height, width)
+                sampled_data = data
                 
-        # Combine all data
-        cwt_data = np.vstack(cwt_data)
+            cwt_data.append(sampled_data)
+            
+            # Extract GPS time from filename (H1_<GPS>_32s_cwt.npy)
+            try:
+                filename_parts = file_path.stem.split('_')
+                if len(filename_parts) >= 2:
+                    gps_time = int(filename_parts[1])
+                    segment_type = gps_to_type.get(gps_time, 'noise')
+                    label = 1 if segment_type == 'signal' else 0
+                else:
+                    label = 0  # Default to noise
+            except (ValueError, IndexError):
+                label = 0  # Default to noise if parsing fails
+                
+            labels.extend([label] * sampled_data.shape[0])
+                
+        # Combine all data properly
+        # Each element in cwt_data is (samples_per_file, 64, 131072)
+        # We need to concatenate along the first axis to get (total_samples, 64, 131072)
+        cwt_data = np.concatenate(cwt_data, axis=0)
         labels = np.array(labels)
         
         logger.info(f"Loaded CWT data: {cwt_data.shape}")
@@ -160,7 +252,7 @@ class CWTModelTrainer:
             logger.info(f"Training on all data: {len(train_data)} samples")
             
         # Create validation split
-        val_split = model_config['training']['validation_split']
+        val_split = self.config['training']['validation_split']
         if val_split > 0:
             train_size = int(len(train_data) * (1 - val_split))
             val_size = len(train_data) - train_size
@@ -173,7 +265,7 @@ class CWTModelTrainer:
             # Create validation data loader
             self.val_loader = DataLoader(
                 val_data,
-                batch_size=model_config['training']['batch_size'],
+                batch_size=self.config['training']['batch_size'],
                 shuffle=False
             )
             
@@ -184,7 +276,7 @@ class CWTModelTrainer:
         # Create training data loader
         self.train_loader = DataLoader(
             train_data,
-            batch_size=model_config['training']['batch_size'],
+            batch_size=self.config['training']['batch_size'],
             shuffle=True
         )
         
@@ -200,11 +292,11 @@ class CWTModelTrainer:
         logger.info("Setting up model...")
         
         model_config = self.config['model']
-        training_config = model_config['training']
+        training_config = self.config['training']
         
         # Create model
         self.model = create_model(
-            model_type=model_config['model_type'],
+            model_type=model_config['type'],
             input_height=model_config['input_height'],
             input_width=model_config['input_width'],
             latent_dim=model_config['latent_dim'],
@@ -255,7 +347,7 @@ class CWTModelTrainer:
             raise ValueError(f"Unsupported loss function: {training_config['loss_function']}")
             
         logger.info(f"Model setup complete:")
-        logger.info(f"  Model: {model_config['model_type']}")
+        logger.info(f"  Model: {model_config['type']}")
         logger.info(f"  Parameters: {sum(p.numel() for p in self.model.parameters()):,}")
         logger.info(f"  Optimizer: {training_config['optimizer']}")
         logger.info(f"  Loss: {training_config['loss_function']}")
@@ -386,7 +478,7 @@ class CWTModelTrainer:
         """
         logger.info("Starting training...")
         
-        training_config = self.config['model']['training']
+        training_config = self.config['training']
         num_epochs = training_config['num_epochs']
         patience = training_config['early_stopping_patience']
         
@@ -412,13 +504,18 @@ class CWTModelTrainer:
                 else:
                     self.scheduler.step()
                     
-            # Check for best model
-            is_best = val_loss < self.best_val_loss
+            # Check for best model with minimum improvement threshold
+            min_improvement = 1e-3  # Minimum improvement threshold (0.001)
+            improvement = self.best_val_loss - val_loss
+            is_best = improvement > min_improvement
+            
             if is_best:
                 self.best_val_loss = val_loss
                 patience_counter = 0
+                logger.info(f"  Best model! Improvement: {improvement:.6f}")
             else:
                 patience_counter += 1
+                logger.info(f"  No significant improvement: {improvement:.6f} (threshold: {min_improvement:.6f})")
                 
             # Save checkpoint
             save_config = self.config['model']['save']

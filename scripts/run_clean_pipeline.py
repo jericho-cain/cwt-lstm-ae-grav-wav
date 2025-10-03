@@ -16,6 +16,7 @@ from pathlib import Path
 from typing import Dict, Any, Optional
 import yaml
 import numpy as np
+import json
 
 # Add src to path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
@@ -137,23 +138,37 @@ def preprocess_data(config: Dict[str, Any]) -> None:
     processed_data_dir.mkdir(parents=True, exist_ok=True)
     
     # Initialize preprocessor
-    preprocessor = CWTPreprocessor(config['preprocessing']['cwt'])
+    cwt_config = config['preprocessing']['cwt']
+    preprocessor = CWTPreprocessor(
+        sample_rate=cwt_config['sample_rate'],
+        target_height=cwt_config['target_height'],
+        use_analytic=cwt_config['use_analytic'],
+        fmin=cwt_config['fmin'],
+        fmax=cwt_config['fmax']
+    )
     
-    # Process all raw files
-    raw_files = list(raw_data_dir.glob("*.npz"))
-    logger.info(f"Processing {len(raw_files)} raw files")
+    # Process H1 files only
+    all_raw_files = list(raw_data_dir.glob("*.npz"))
+    raw_files = [f for f in all_raw_files if f.name.startswith("H1_")]
+    logger.info(f"Processing {len(raw_files)} H1 files (out of {len(all_raw_files)} total)")
     
     for i, raw_file in enumerate(raw_files):
         try:
+            # Check if already processed
+            processed_file = processed_data_dir / f"{raw_file.stem}_cwt.npy"
+            if processed_file.exists():
+                if (i + 1) % 100 == 0:
+                    logger.info(f"Skipped {i + 1}/{len(raw_files)} files (already processed)")
+                continue
+            
             # Load raw data
             data = np.load(raw_file)
             strain = data['strain']
             
             # Process with CWT
             cwt_data = preprocessor.process(strain.reshape(1, -1))[0]
-            
+        
             # Save processed data
-            processed_file = processed_data_dir / f"{raw_file.stem}_cwt.npy"
             np.save(processed_file, cwt_data)
             
             if (i + 1) % 100 == 0:
@@ -184,13 +199,21 @@ def train_model(config: Dict[str, Any], run_dir: Path) -> str:
     logger = logging.getLogger(__name__)
     
     # Initialize trainer
-    trainer = CWTModelTrainer(config)
+    trainer = CWTModelTrainer("config/pipeline_clean_config.yaml")
+    
+    # Update model save directory to run-specific path
+    model_config = config['model']['save']
+    model_config['model_dir'] = str(run_dir / "models")
     
     # Train model
-    model_path = trainer.train(run_dir)
+    training_results = trainer.train()
+    
+    # Extract model path from config
+    model_config = config['model']['save']
+    model_path = Path(model_config['model_dir']) / model_config['final_model_name']
     
     logger.info(f"Model training completed. Model saved to {model_path}")
-    return model_path
+    return str(model_path)
 
 
 def evaluate_model(config: Dict[str, Any], model_path: str, run_dir: Path) -> Dict[str, Any]:
@@ -214,18 +237,121 @@ def evaluate_model(config: Dict[str, Any], model_path: str, run_dir: Path) -> Di
     logger = logging.getLogger(__name__)
     
     # Initialize detector
-    detector = AnomalyDetector(model_path, config)
+    detector = AnomalyDetector(model_path, "config/pipeline_clean_config.yaml")
+    
+    # Load test data for evaluation
+    logger.info("Loading test data for evaluation...")
+    processed_dir = Path("data/processed")
+    
+    # Load manifest to get proper labels (same logic as trainer)
+    manifest_path = Path("data/download_manifest.json")
+    if manifest_path.exists():
+        with open(manifest_path, 'r') as f:
+            manifest = json.load(f)
+        
+        # Create mapping from GPS time to segment type
+        gps_to_type = {}
+        for download in manifest['downloads']:
+            if download.get('successful', False):
+                gps_time = download.get('start_gps')
+                segment_type = download.get('segment_type')
+                if gps_time and segment_type:
+                    gps_to_type[gps_time] = segment_type
+    else:
+        logger.warning("No manifest found, defaulting all to noise")
+        gps_to_type = {}
+    
+    # Find all CWT files and split into train/test (same logic as trainer)
+    cwt_files = list(processed_dir.glob("*.npy"))
+    logger.info(f"Found {len(cwt_files)} CWT data files")
+    
+    # Separate noise and signal files
+    noise_files = []
+    signal_files = []
+    
+    for file_path in cwt_files:
+        try:
+            filename_parts = file_path.stem.split('_')
+            if len(filename_parts) >= 2:
+                gps_time = int(filename_parts[1])
+                segment_type = gps_to_type.get(gps_time, 'noise')
+                if segment_type == 'noise':
+                    noise_files.append(file_path)
+                elif segment_type == 'signal':
+                    signal_files.append(file_path)
+        except (ValueError, IndexError):
+            # Default to noise if parsing fails
+            noise_files.append(file_path)
+    
+    # Split noise files into train/test (80/20 split) - same as trainer
+    np.random.seed(42)  # For reproducibility
+    np.random.shuffle(noise_files)
+    split_idx = int(len(noise_files) * 0.8)
+    train_noise_files = noise_files[:split_idx]
+    test_noise_files = noise_files[split_idx:]
+    
+    logger.info(f"Split noise files: {len(train_noise_files)} train, {len(test_noise_files)} test")
+    logger.info(f"Signal files for testing: {len(signal_files)}")
+    
+    # Load and combine test data
+    test_data = []
+    test_labels = []
+    
+    # Load test noise data (label = 0)
+    for file_path in test_noise_files:
+        data = np.load(file_path)
+        if len(data.shape) == 2:
+            data = data.reshape(1, data.shape[0], data.shape[1])
+        test_data.append(data)
+        test_labels.extend([0] * data.shape[0])
+    
+    # Load signal data (label = 1)
+    for file_path in signal_files:
+        data = np.load(file_path)
+        if len(data.shape) == 2:
+            data = data.reshape(1, data.shape[0], data.shape[1])
+        test_data.append(data)
+        test_labels.extend([1] * data.shape[0])
+    
+    # Combine all test data
+    if test_data:
+        test_data = np.concatenate(test_data, axis=0)
+        test_labels = np.array(test_labels)
+        logger.info(f"Loaded test data: {test_data.shape}, labels: {np.sum(test_labels)} signals, {np.sum(1-test_labels)} noise")
+    else:
+        logger.warning("No test data found!")
+        return {}
     
     # Run anomaly detection
-    results = detector.detect_anomalies()
+    results = detector.detect_anomalies(test_data, test_labels)
     
-    # Post-process results
-    post_processor = PostProcessor()
-    processed_results = post_processor.process_results(results)
+    # Save results to run directory
+    results_file = run_dir / "evaluation_results.json"
+    with open(results_file, 'w') as f:
+        json.dump(results, f, indent=2, default=str)
     
-    # Calculate metrics
+    logger.info(f"Evaluation results saved to {results_file}")
+    
+    # Generate plots using MetricsEvaluator
+    from evaluation.metrics import MetricsEvaluator
+    
     metrics_evaluator = MetricsEvaluator()
-    metrics = metrics_evaluator.evaluate(processed_results, run_dir)
+    
+    # Calculate metrics for plotting (using the same data)
+    metrics_evaluator.calculate_metrics(
+        y_true=test_labels,
+        y_scores=results['reconstruction_errors'],
+        y_pred=results['predictions']
+    )
+    
+    # Create comprehensive plots
+    plots_dir = run_dir / "results"
+    metrics_evaluator.create_comprehensive_plots(str(plots_dir))
+    
+    logger.info(f"Evaluation plots saved to {plots_dir}")
+    
+    # The results already contain all metrics from detect_anomalies
+    metrics = results
     
     logger.info(f"Model evaluation completed. Results saved to {run_dir}")
     return metrics

@@ -88,7 +88,7 @@ class AnomalyDetector:
         
         # Load model (we need to determine the model class from config)
         model_config = self.config['model']
-        model_type = model_config['model_type']
+        model_type = model_config['type']
         
         if model_type == 'cwt_lstm':
             from models import CWT_LSTM_Autoencoder

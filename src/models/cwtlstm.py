@@ -92,33 +92,23 @@ class CWT_LSTM_Autoencoder(nn.Module):
         self.spatial_encoder = nn.Sequential(
             nn.Conv2d(1, 16, kernel_size=3, padding=1),
             nn.ReLU(),
-            nn.Dropout2d(dropout),
             nn.AdaptiveAvgPool2d((8, 8)),  # Immediate downsampling to avoid large intermediates
             nn.Conv2d(16, 32, kernel_size=3, padding=1),
             nn.ReLU(),
-            nn.Dropout2d(dropout),
             nn.AdaptiveAvgPool2d((4, 4))  # Final small spatial dimensions
         )
         
         # Simple linear encoder instead of LSTM for memory efficiency
-        self.temporal_encoder = nn.Sequential(
-            nn.Linear(32 * 4 * 4, lstm_hidden // 2),  # Flattened spatial features
-            nn.ReLU(),
-            nn.Dropout(dropout)
+        self.temporal_encoder = nn.Linear(
+            32 * 4 * 4,  # Flattened spatial features (32 channels * 4*4 spatial)
+            lstm_hidden // 2  # Reduce hidden size by half
         )
         
         # Latent space
-        self.to_latent = nn.Sequential(
-            nn.Linear(lstm_hidden // 2, latent_dim),
-            nn.Tanh()  # Bounded latent space
-        )
+        self.to_latent = nn.Linear(lstm_hidden // 2, latent_dim)
         
         # Decoder - simplified to match encoder
-        self.from_latent = nn.Sequential(
-            nn.Linear(latent_dim, lstm_hidden // 2),
-            nn.ReLU(),
-            nn.Dropout(dropout)
-        )
+        self.from_latent = nn.Linear(latent_dim, lstm_hidden // 2)
         
         # Spatial decoder - ultra-compact to avoid memory explosion
         self.spatial_decoder = nn.Sequential(

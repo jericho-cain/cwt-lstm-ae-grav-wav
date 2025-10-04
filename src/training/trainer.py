@@ -204,6 +204,15 @@ class CWTModelTrainer:
         for file_path in cwt_files:
             data = np.load(file_path)
             
+            # Validate CWT data shape
+            expected_shape = (8, 4096)  # Match EC2 dimensions (height, width)
+            if data.shape != expected_shape:
+                logger.error(f"CWT data validation failed for {file_path.name}")
+                logger.error(f"Expected: {expected_shape}, Got: {data.shape}")
+                logger.error("This indicates incorrect CWT preprocessing. Check preprocessing step.")
+                raise ValueError(f"CWT data shape mismatch: expected {expected_shape}, got {data.shape}")
+            
+            # Apply sampling strategy - only take a subset of samples per file
             # Each file contains 1 sample of shape (height, width)
             # We need to add a batch dimension to make it (1, height, width)
             if len(data.shape) == 2:
@@ -212,6 +221,10 @@ class CWTModelTrainer:
             else:
                 # Already batched: (samples, height, width)
                 sampled_data = data
+                
+            # Apply sampling - take only the first samples_per_file samples
+            if sampled_data.shape[0] > samples_per_file:
+                sampled_data = sampled_data[:samples_per_file]
                 
             cwt_data.append(sampled_data)
             
@@ -230,13 +243,18 @@ class CWTModelTrainer:
             labels.extend([label] * sampled_data.shape[0])
                 
         # Combine all data properly
-        # Each element in cwt_data is (samples_per_file, 64, 131072)
-        # We need to concatenate along the first axis to get (total_samples, 64, 131072)
+        # Each element in cwt_data is (1, 8, 4096) - one sample per file
+        # We need to concatenate along the first axis to get (total_samples, 8, 4096)
         cwt_data = np.concatenate(cwt_data, axis=0)
         labels = np.array(labels)
         
         logger.info(f"Loaded CWT data: {cwt_data.shape}")
         logger.info(f"Labels: {np.sum(labels)} signals, {np.sum(1-labels)} noise")
+        
+        # Memory check - warn if data is too large
+        memory_gb = cwt_data.nbytes / (1024**3)
+        if memory_gb > 2.0:  # Warn if > 2GB
+            logger.warning(f"Large dataset loaded: {memory_gb:.2f} GB. Consider reducing batch size or using fewer files.")
         
         # Filter data based on training strategy
         if data_config['train_on_noise_only']:
@@ -257,8 +275,10 @@ class CWTModelTrainer:
             train_size = int(len(train_data) * (1 - val_split))
             val_size = len(train_data) - train_size
             
+            # Reshape data to (samples, channels, height, width) for 4D model input
+            train_data_tensor = torch.FloatTensor(train_data).unsqueeze(1)  # Add channel dimension
             train_data, val_data = random_split(
-                TensorDataset(torch.FloatTensor(train_data).unsqueeze(1)),
+                TensorDataset(train_data_tensor),
                 [train_size, val_size]
             )
             
@@ -271,7 +291,9 @@ class CWTModelTrainer:
             
             logger.info(f"Validation split: {val_size} samples")
         else:
-            train_data = TensorDataset(torch.FloatTensor(train_data).unsqueeze(1))
+            # Reshape data to (samples, channels, height, width) for 4D model input
+            train_data_tensor = torch.FloatTensor(train_data).unsqueeze(1)  # Add channel dimension
+            train_data = TensorDataset(train_data_tensor)
             
         # Create training data loader
         self.train_loader = DataLoader(
@@ -315,8 +337,9 @@ class CWTModelTrainer:
         elif training_config['optimizer'].lower() == 'sgd':
             self.optimizer = optim.SGD(
                 self.model.parameters(),
-                lr=training_config['learning_rate'],
-                momentum=0.9
+                lr=float(training_config['learning_rate']),
+                momentum=float(training_config.get('momentum', 0.9)),
+                weight_decay=float(training_config.get('weight_decay', 1e-5))
             )
         else:
             raise ValueError(f"Unsupported optimizer: {training_config['optimizer']}")
@@ -486,6 +509,16 @@ class CWTModelTrainer:
         patience_counter = 0
         start_time = datetime.now()
         
+        # Get early stopping configuration
+        monitor = training_config.get('early_stopping_monitor', 'val_loss')
+        min_delta = training_config.get('early_stopping_min_delta', 1e-3)
+        
+        # Initialize best loss tracking based on monitor
+        if monitor == 'train_loss':
+            best_loss = float('inf')
+        else:  # val_loss
+            best_loss = self.best_val_loss
+        
         for epoch in range(num_epochs):
             epoch_start = datetime.now()
             
@@ -505,17 +538,20 @@ class CWTModelTrainer:
                     self.scheduler.step()
                     
             # Check for best model with minimum improvement threshold
-            min_improvement = 1e-3  # Minimum improvement threshold (0.001)
-            improvement = self.best_val_loss - val_loss
-            is_best = improvement > min_improvement
+            current_loss = train_loss if monitor == 'train_loss' else val_loss
+            improvement = best_loss - current_loss
+            is_best = improvement > min_delta
             
             if is_best:
-                self.best_val_loss = val_loss
+                best_loss = current_loss
+                # Also update best_val_loss for backward compatibility
+                if monitor == 'val_loss':
+                    self.best_val_loss = val_loss
                 patience_counter = 0
                 logger.info(f"  Best model! Improvement: {improvement:.6f}")
             else:
                 patience_counter += 1
-                logger.info(f"  No significant improvement: {improvement:.6f} (threshold: {min_improvement:.6f})")
+                logger.info(f"  No significant improvement: {improvement:.6f} (threshold: {min_delta:.6f})")
                 
             # Save checkpoint
             save_config = self.config['model']['save']

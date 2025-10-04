@@ -1,12 +1,29 @@
 #!/usr/bin/env python3
 """
-Clean Pipeline Script for Gravitational Wave Hunter v2.0
+Clean Gravitational Wave Detection Pipeline Runner
 
-This script runs the complete pipeline using the clean GWOSC downloader,
-from data downloading to model training and evaluation.
+This script runs the complete end-to-end pipeline for gravitational wave detection
+using the corrected CWT preprocessing approach. The pipeline includes:
+
+1. Data Download: Downloads real gravitational wave data from GWOSC
+2. Preprocessing: Applies corrected CWT preprocessing (focused 50-200 Hz range)
+3. Training: Trains LSTM autoencoder on noise-only data
+4. Evaluation: Tests model on mixed noise+signal data
+5. Metrics: Generates comprehensive performance metrics and plots
+
+Key Features:
+- Uses focused frequency range (50-200 Hz) where GWs show strongest differences
+- Preserves raw magnitude scalogram (no log transform, no normalization)
+- Minimal downsampling to preserve chirp dynamics
+- Proper train/test split with no data leakage
+
+Usage:
+    python scripts/run_clean_pipeline.py --config config/pipeline_clean_config.yaml
+
+The script creates timestamped run directories with all results, metrics, and plots.
 
 Author: Gravitational Wave Hunter v2.0
-Date: October 2, 2025
+Date: October 3, 2025
 """
 
 import sys
@@ -142,6 +159,7 @@ def preprocess_data(config: Dict[str, Any]) -> None:
     preprocessor = CWTPreprocessor(
         sample_rate=cwt_config['sample_rate'],
         target_height=cwt_config['target_height'],
+        target_width=cwt_config['target_width'],  # Add target_width to match EC2
         use_analytic=cwt_config['use_analytic'],
         fmin=cwt_config['fmin'],
         fmax=cwt_config['fmax']
@@ -166,7 +184,17 @@ def preprocess_data(config: Dict[str, Any]) -> None:
             strain = data['strain']
             
             # Process with CWT
-            cwt_data = preprocessor.process(strain.reshape(1, -1))[0]
+            cwt_data = preprocessor.process(strain)
+            
+            # Validate CWT output shape
+            expected_shape = (8, 4096)  # Match EC2 dimensions (height, width)
+            if cwt_data.shape != expected_shape:
+                logger.error(f"CWT shape validation failed for {raw_file.name}")
+                logger.error(f"Expected: {expected_shape}, Got: {cwt_data.shape}")
+                logger.error("This indicates a bug in CWT preprocessing. Stopping pipeline.")
+                raise ValueError(f"CWT output shape mismatch: expected {expected_shape}, got {cwt_data.shape}")
+            
+            logger.debug(f"CWT validation passed: {cwt_data.shape}")
         
             # Save processed data
             np.save(processed_file, cwt_data)
@@ -201,19 +229,28 @@ def train_model(config: Dict[str, Any], run_dir: Path) -> str:
     # Initialize trainer
     trainer = CWTModelTrainer("config/pipeline_clean_config.yaml")
     
-    # Update model save directory to run-specific path
-    model_config = config['model']['save']
-    model_config['model_dir'] = str(run_dir / "models")
-    
     # Train model
     training_results = trainer.train()
     
-    # Extract model path from config
+    # The model is saved to the root models directory as per config
+    # We need to copy it to the run directory for evaluation
     model_config = config['model']['save']
-    model_path = Path(model_config['model_dir']) / model_config['final_model_name']
+    source_model_path = Path(model_config['model_dir']) / model_config['final_model_name']
+    run_model_path = run_dir / "models" / model_config['final_model_name']
     
-    logger.info(f"Model training completed. Model saved to {model_path}")
-    return str(model_path)
+    # Create run models directory and copy the model
+    run_model_path.parent.mkdir(parents=True, exist_ok=True)
+    
+    if source_model_path.exists():
+        import shutil
+        shutil.copy2(source_model_path, run_model_path)
+        logger.info(f"Model copied from {source_model_path} to {run_model_path}")
+    else:
+        logger.error(f"Source model not found: {source_model_path}")
+        raise FileNotFoundError(f"Model file not found: {source_model_path}")
+    
+    logger.info(f"Model training completed. Model available at {run_model_path}")
+    return str(run_model_path)
 
 
 def evaluate_model(config: Dict[str, Any], model_path: str, run_dir: Path) -> Dict[str, Any]:

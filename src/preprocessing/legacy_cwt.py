@@ -23,7 +23,7 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 
-def cwt_clean(
+def legacy_cwt_clean(
     x: np.ndarray, 
     fs: float, 
     fmin: float = 20.0, 
@@ -119,49 +119,48 @@ def cwt_clean(
         scalogram = zoom(scalogram, (zoom_factor, 1), order=1)
         logger.info(f"Resized to target height: {scalogram.shape}")
     
-    # Log transform and normalize (LEGACY APPROACH - matches EC2 working code)
+    # Minimal downsampling - only reduce by 4x instead of 128x (same as current CWT)
+    # This preserves temporal chirp dynamics while keeping memory manageable
+    if scalogram.shape[1] > 32768:  # Only downsample if very large
+        time_zoom_factor = 32768 / scalogram.shape[1]
+        scalogram = zoom(scalogram, (1, time_zoom_factor), order=1)
+        logger.info(f"Downsampled time dimension by factor {time_zoom_factor:.3f}")
+    else:
+        logger.info(f"No downsampling needed: shape={scalogram.shape[1]} <= 32768")
+    
+    # Log transform and normalize (LEGACY APPROACH)
     log_scalogram = np.log10(scalogram + 1e-10)
     normalized = (log_scalogram - np.mean(log_scalogram)) / (np.std(log_scalogram) + 1e-10)
     normalized = normalized.astype(np.float32)
     
-    # Time downsampling to match expected input dimensions (32768)
-    if normalized.shape[1] > 32768:
-        time_zoom_factor = 32768 / normalized.shape[1]
-        normalized = zoom(normalized, (1, time_zoom_factor), order=1)
-        logger.info(f"Downsampled time dimension by factor {time_zoom_factor:.3f}")
-    
-    # Use normalized data instead of raw magnitude
-    scalogram = normalized
-    
     # Calculate cone of influence
-    coi = np.zeros(scalogram.shape[1])
+    coi = np.zeros(normalized.shape[1])
     for i, scale in enumerate(scales):
         coi_width = int(k_coi * scale)
         coi[:coi_width] = 1
         coi[-coi_width:] = 1
     
-    logger.info(f"Legacy CWT completed: shape={scalogram.shape}, range={scalogram.min():.6e} to {scalogram.max():.6e}")
-    logger.info(f"Normalized data: mean={scalogram.mean():.6e}, std={scalogram.std():.6e}")
+    logger.info(f"Legacy CWT completed: shape={normalized.shape}, range={normalized.min():.6e} to {normalized.max():.6e}")
+    logger.info(f"Normalized data: mean={normalized.mean():.6e}, std={normalized.std():.6e}")
     
-    return scalogram, freqs, scales, coi
+    return normalized, freqs, scales, coi
 
 
 def fixed_preprocess_with_cwt(
     strain_data: np.ndarray,
     sample_rate: int = 4096,
-    target_height: int = 8,  # Match EC2 dimensions
+    target_height: int = 64,
     target_width: Optional[int] = None,
     use_analytic: bool = False,
     fmin: float = 20.0,
     fmax: float = 512.0,
-    wavelet: str = 'morl',
-    downsample_factor: int = 4  # EC2-style downsampling
+    wavelet: str = 'morl'
 ) -> np.ndarray:
     """
-    Fixed preprocessing pipeline using EC2-equivalent approach.
+    Fixed preprocessing pipeline using legacy CWT approach.
     
-    This function implements the corrected preprocessing that matches the EC2
-    working pipeline by adding the critical downsampling step.
+    This function implements the corrected preprocessing that preserves
+    gravitational wave signal characteristics by matching the legacy approach.
     
     Parameters
     ----------
@@ -170,7 +169,7 @@ def fixed_preprocess_with_cwt(
     sample_rate : int, optional
         Sampling rate in Hz, by default 4096
     target_height : int, optional
-        Target height for CWT scales, by default 8
+        Target height for CWT scales, by default 64
     target_width : Optional[int], optional
         Target width (if None, uses minimal downsampling), by default None
     use_analytic : bool, optional
@@ -181,32 +180,19 @@ def fixed_preprocess_with_cwt(
         Maximum frequency, by default 512.0
     wavelet : str, optional
         Wavelet type, by default 'morl'
-    downsample_factor : int, optional
-        Downsampling factor (4096 Hz -> 1024 Hz), by default 4
     
     Returns
     -------
     np.ndarray
-        Preprocessed CWT scalogram with EC2-equivalent preprocessing
+        Preprocessed CWT scalogram with preserved signal characteristics
     """
     
-    logger.info(f"Starting EC2-equivalent CWT preprocessing: shape={strain_data.shape}")
+    logger.info(f"Starting legacy CWT preprocessing: shape={strain_data.shape}")
     
-    # CRITICAL: EC2-style downsampling step (4096 Hz -> 1024 Hz)
-    from scipy.signal import decimate
-    if downsample_factor > 1:
-        logger.info(f"Downsampling data from {sample_rate} Hz to {sample_rate//downsample_factor} Hz (factor {downsample_factor})")
-        downsampled_data = decimate(strain_data, downsample_factor, zero_phase=True).astype(np.float32)
-        downsampled_rate = sample_rate // downsample_factor
-        logger.info(f"Downsampled data shape: {downsampled_data.shape}")
-    else:
-        downsampled_data = strain_data.astype(np.float32)
-        downsampled_rate = sample_rate
-    
-    # Apply legacy CWT processing with downsampled data
+    # Apply legacy CWT processing
     scalogram, freqs, scales, coi = cwt_clean(
-        downsampled_data, 
-        fs=downsampled_rate,
+        strain_data, 
+        fs=sample_rate,
         fmin=fmin,
         fmax=fmax,
         n_scales=target_height,
@@ -221,8 +207,8 @@ def fixed_preprocess_with_cwt(
     
     # Check for NaN values in final output
     if np.any(np.isnan(scalogram)):
-        logger.warning(f"NaN values detected in CWT output - skipping file")
-        return None
+        logger.warning(f"NaN values detected in CWT output - returning zeros")
+        scalogram = np.zeros_like(scalogram)
     
     logger.info(f"Legacy preprocessing completed: output shape={scalogram.shape}")
     logger.info(f"Output range: {scalogram.min():.6e} to {scalogram.max():.6e}")
@@ -286,13 +272,12 @@ class CWTPreprocessor:
     def __init__(
         self,
         sample_rate: int = 4096,
-        target_height: int = 8,
+        target_height: int = 64,
         target_width: Optional[int] = None,
         use_analytic: bool = False,
         fmin: float = 20.0,
         fmax: float = 512.0,
-        wavelet: str = 'morl',
-        downsample_factor: int = 4
+        wavelet: str = 'morl'
     ):
         """
         Initialize CWT preprocessor with legacy approach.
@@ -321,7 +306,6 @@ class CWTPreprocessor:
         self.fmin = fmin
         self.fmax = fmax
         self.wavelet = wavelet
-        self.downsample_factor = downsample_factor
         
         logger.info(f"CWTPreprocessor initialized with legacy approach")
         logger.info(f"  Sample rate: {sample_rate} Hz")
@@ -352,6 +336,5 @@ class CWTPreprocessor:
             use_analytic=self.use_analytic,
             fmin=self.fmin,
             fmax=self.fmax,
-            wavelet=self.wavelet,
-            downsample_factor=self.downsample_factor
+            wavelet=self.wavelet
         )

@@ -42,28 +42,31 @@ downloader:
     detectors: [H1] # Focus on H1 only - lower noise floor
     
     # Number of segments per run per detector
-    segments_per_run: 500 # Increased for better noise coverage
+    segments_per_run: 50 # Reasonable amount for balanced dataset
     
     # Minimum gap between segments (seconds)
     min_gap: 64
 
-# Preprocessing configuration
+# Preprocessing configuration - EC2-EQUIVALENT APPROACH
 preprocessing:
   cwt:
     sample_rate: 4096
-    target_height: 64
-    use_analytic: true
-    fmin: 20.0
-    fmax: 512.0
+    downsample_factor: 4  # CRITICAL: EC2-style downsampling (4096 Hz -> 1024 Hz)
+    target_height: 8  # Match EC2 dimensions
+    target_width: 4096  # Match EC2 dimensions
+    use_analytic: false  # Use standard Morlet wavelet
+    fmin: 20.0  # Match EC2 frequency range
+    fmax: 512.0  # Match EC2 frequency range
+    wavelet: 'morl'  # Standard Morlet wavelet (legacy approach)
 
-# Model configuration
+# Model configuration - Updated for legacy CWT approach
 model:
   type: 'cwt_lstm'
-  input_height: 64
-  input_width: 1024
+  input_height: 8  # Match EC2 dimensions
+  input_width: 4096  # Match EC2 dimensions
   latent_dim: 32
   lstm_hidden: 64
-  dropout: 0.2
+  dropout: 0.0  # No dropout - matches legacy model exactly
   
   save:
     model_dir: 'models'  # Will be updated to run-specific path
@@ -79,14 +82,18 @@ model:
     fixed_threshold: 0.5            # For fixed method
     reconstruction_error_threshold: null  # Set to null for automatic threshold calculation
 
-# Training configuration
+# Training configuration - Updated to match legacy approach
 training:
-  batch_size: 16
-  learning_rate: 0.001
-  num_epochs: 50
+  batch_size: 1  # Match EC2 batch size exactly
+  learning_rate: 0.001  # Match EC2 learning rate exactly
+  num_epochs: 20  # Match EC2 epochs exactly
   early_stopping_patience: 3
-  validation_split: 0.2
-  optimizer: 'adam'
+  early_stopping_min_delta: 0.001  # Minimum improvement threshold
+  early_stopping_monitor: 'train_loss'  # Monitor training loss instead of validation
+  validation_split: 0.0  # Disable validation to match legacy approach
+  optimizer: 'sgd'  # Use SGD like legacy - more stable for autoencoders
+  momentum: 0.9  # SGD momentum
+  weight_decay: 0.00001  # SGD weight decay (1e-5 as decimal)
   loss_function: 'mse'
   scheduler: 'reduce_on_plateau'
 

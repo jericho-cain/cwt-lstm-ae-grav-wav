@@ -145,8 +145,9 @@ class AnomalyDetector:
                 # Forward pass
                 reconstructed, _ = self.model(batch)
                 
-                # Compute MSE reconstruction error
-                mse = torch.mean((reconstructed - batch)**2, dim=(1, 2, 3))
+                # Compute MSE reconstruction error with higher precision
+                # Use double precision to preserve small differences
+                mse = torch.mean((reconstructed.double() - batch.double())**2, dim=(1, 2, 3))
                 reconstruction_errors.extend(mse.cpu().numpy())
                 
         return np.array(reconstruction_errors)

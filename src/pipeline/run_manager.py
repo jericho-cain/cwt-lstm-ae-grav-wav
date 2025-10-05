@@ -59,7 +59,7 @@ class RunManager:
     def __init__(
         self, 
         base_dir: str = "runs/",
-        config_path: str = "config/download_config.yaml"
+        config_path: str = "config/pipeline_clean_config.yaml"
     ) -> None:
         self.base_dir = Path(base_dir)
         self.config_path = Path(config_path)
@@ -284,6 +284,15 @@ class RunManager:
         config_snapshot_path = self.current_run_dir / "config" / "config_snapshot.yaml"
         
         try:
+            if not self.config_path.exists():
+                logger.warning(f"Config file not found: {self.config_path}")
+                # Create a placeholder config file with error info
+                placeholder_content = f"# CONFIG FILE NOT FOUND\n# Expected path: {self.config_path}\n# This run was created without a valid config file.\n"
+                with open(config_snapshot_path, 'w') as f:
+                    f.write(placeholder_content)
+                self.run_metadata["config_hash"] = "not_found"
+                return
+            
             # Copy configuration file
             with open(self.config_path, 'r') as f:
                 config_content = f.read()
@@ -294,9 +303,17 @@ class RunManager:
             # Calculate config hash
             config_hash = hashlib.sha256(config_content.encode()).hexdigest()
             self.run_metadata["config_hash"] = config_hash
+            logger.info(f"Config snapshot saved to {config_snapshot_path}")
             
         except IOError as e:
-            logger.warning(f"Could not save config snapshot: {e}")
+            logger.error(f"Could not save config snapshot: {e}")
+            # Create error file
+            error_content = f"# ERROR SAVING CONFIG\n# Error: {e}\n# Original path: {self.config_path}\n"
+            try:
+                with open(config_snapshot_path, 'w') as f:
+                    f.write(error_content)
+            except:
+                pass  # If we can't even write the error, give up
             
     def add_model_info(self, model_info: Dict[str, Any]) -> None:
         """

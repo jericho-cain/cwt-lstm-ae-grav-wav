@@ -147,7 +147,7 @@ class MetricsEvaluator:
     def plot_precision_recall_curve(self, ax: Optional[plt.Axes] = None, 
                                    save_path: Optional[str] = None) -> plt.Axes:
         """
-        Plot precision-recall curve.
+        Plot precision-recall curve with special handling for perfect performance.
         
         Parameters
         ----------
@@ -167,9 +167,38 @@ class MetricsEvaluator:
         if ax is None:
             fig, ax = plt.subplots(figsize=(8, 6))
         
-        # Plot precision-recall curve
-        ax.plot(self.results['recall'], self.results['precision'], 'b-', linewidth=2,
-                label=f'CWT-LSTM Autoencoder (AP={self.results["avg_precision"]:.3f})')
+        precision = self.results['precision']
+        recall = self.results['recall']
+        avg_precision = self.results['avg_precision']
+        
+        # Check for perfect performance
+        is_perfect = (avg_precision >= 0.999 and 
+                     len(precision) > 0 and 
+                     precision[0] >= 0.999 and 
+                     recall[0] >= 0.999)
+        
+        if is_perfect:
+            # Special handling for perfect performance
+            ax.plot([0, 1], [1.0, 1.0], 'b-', linewidth=3,
+                    label=f'CWT-LSTM Autoencoder (AP={avg_precision:.3f}) - PERFECT')
+            
+            # Add perfect performance annotation
+            ax.text(0.5, 0.95, 'PERFECT PERFORMANCE\nPrecision = 1.000\nRecall = 1.000', 
+                    ha='center', va='center', fontsize=14, fontweight='bold',
+                    bbox=dict(boxstyle='round,pad=0.5', facecolor='lightgreen', alpha=0.8))
+            
+            # Highlight the perfect point
+            ax.plot(1.0, 1.0, 'ro', markersize=10, markeredgecolor='darkred', markeredgewidth=2)
+            
+            # Set extended axis limits for perfect performance
+            ax.set_xlim([-0.05, 1.05])
+            ax.set_ylim([0.85, 1.05])
+        else:
+            # Normal plotting for non-perfect performance
+            ax.plot(recall, precision, 'b-', linewidth=2,
+                    label=f'CWT-LSTM Autoencoder (AP={avg_precision:.3f})')
+            ax.set_xlim([-0.05, 1.05])
+            ax.set_ylim([-0.05, 1.05])
         
         # Add baseline
         ax.axhline(y=self.results['baseline_precision'], color='gray', linestyle='--', alpha=0.8,
@@ -180,8 +209,6 @@ class MetricsEvaluator:
         ax.set_title('Precision-Recall Curves')
         ax.legend()
         ax.grid(True, alpha=0.3)
-        ax.set_xlim([0, 1])
-        ax.set_ylim([0, 1])
         
         if save_path:
             plt.savefig(save_path, dpi=150, bbox_inches='tight')
@@ -192,7 +219,7 @@ class MetricsEvaluator:
     def plot_roc_curve(self, ax: Optional[plt.Axes] = None, 
                       save_path: Optional[str] = None) -> plt.Axes:
         """
-        Plot ROC curve.
+        Plot ROC curve with special handling for perfect performance.
         
         Parameters
         ----------
@@ -212,9 +239,38 @@ class MetricsEvaluator:
         if ax is None:
             fig, ax = plt.subplots(figsize=(8, 6))
         
-        # Plot ROC curve
-        ax.plot(self.results['fpr'], self.results['tpr'], 'b-', linewidth=2,
-                label=f'CWT-LSTM Autoencoder (AUC={self.results["auc"]:.3f})')
+        fpr = self.results['fpr']
+        tpr = self.results['tpr']
+        auc = self.results['auc']
+        
+        # Check for perfect performance
+        is_perfect = (auc >= 0.999 and 
+                     len(fpr) > 0 and 
+                     fpr[0] <= 0.001 and 
+                     tpr[0] >= 0.999)
+        
+        if is_perfect:
+            # Special handling for perfect performance
+            ax.plot([0, 0, 1], [0, 1, 1], 'b-', linewidth=3,
+                    label=f'CWT-LSTM Autoencoder (AUC={auc:.3f}) - PERFECT')
+            
+            # Add perfect performance annotation
+            ax.text(0.5, 0.5, 'PERFECT PERFORMANCE\nAUC = 1.000\nNo False Positives', 
+                    ha='center', va='center', fontsize=14, fontweight='bold',
+                    bbox=dict(boxstyle='round,pad=0.5', facecolor='lightgreen', alpha=0.8))
+            
+            # Highlight the perfect point
+            ax.plot(0.0, 1.0, 'ro', markersize=10, markeredgecolor='darkred', markeredgewidth=2)
+            
+            # Set extended axis limits for perfect performance
+            ax.set_xlim([-0.05, 1.05])
+            ax.set_ylim([-0.05, 1.05])
+        else:
+            # Normal plotting for non-perfect performance
+            ax.plot(fpr, tpr, 'b-', linewidth=2,
+                    label=f'CWT-LSTM Autoencoder (AUC={auc:.3f})')
+            ax.set_xlim([-0.05, 1.05])
+            ax.set_ylim([-0.05, 1.05])
         
         # Add random baseline
         ax.plot([0, 1], [0, 1], 'k--', alpha=0.8, label='Random')
@@ -224,8 +280,6 @@ class MetricsEvaluator:
         ax.set_title('ROC Curves')
         ax.legend()
         ax.grid(True, alpha=0.3)
-        ax.set_xlim([0, 1])
-        ax.set_ylim([0, 1])
         
         if save_path:
             plt.savefig(save_path, dpi=150, bbox_inches='tight')
@@ -236,7 +290,7 @@ class MetricsEvaluator:
     def plot_confusion_matrix(self, ax: Optional[plt.Axes] = None, 
                              save_path: Optional[str] = None) -> plt.Axes:
         """
-        Plot confusion matrix at maximum precision threshold.
+        Plot confusion matrix at maximum precision threshold with special handling for perfect performance.
         
         Parameters
         ----------
@@ -257,22 +311,45 @@ class MetricsEvaluator:
             fig, ax = plt.subplots(figsize=(8, 6))
         
         cm = self.results['confusion_matrix_max_precision']
+        precision = self.results["precision_max_precision"]
+        recall = self.results["recall_max_precision"]
+        f1 = self.results["f1_max_precision"]
+        
+        # Check for perfect performance
+        is_perfect = (precision >= 0.999 and recall >= 0.999 and f1 >= 0.999)
+        
+        # Choose colormap based on performance
+        if is_perfect:
+            cmap = 'Greens'  # Green for perfect performance
+            title_suffix = ' - PERFECT PERFORMANCE'
+        else:
+            cmap = 'Blues'
+            title_suffix = ' (Max Precision)'
         
         # Plot confusion matrix
-        sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', ax=ax,
+        sns.heatmap(cm, annot=True, fmt='d', cmap=cmap, ax=ax,
                     xticklabels=['Pred Noise', 'Pred Signal'],
                     yticklabels=['True Noise', 'True Signal'])
         
-        # Add metrics text
-        metrics_text = (f'P={self.results["precision_max_precision"]:.3f}\n'
-                       f'R={self.results["recall_max_precision"]:.3f}\n'
-                       f'F1={self.results["f1_max_precision"]:.3f}')
+        # Add metrics text with professional formatting
+        if is_perfect:
+            metrics_text = (f'P={precision:.3f}\n'
+                           f'R={recall:.3f}\n'
+                           f'F1={f1:.3f}')
+            bbox_color = "lightgreen"
+            font_weight = "bold"
+        else:
+            metrics_text = (f'P={precision:.3f}\n'
+                           f'R={recall:.3f}\n'
+                           f'F1={f1:.3f}')
+            bbox_color = "lightgray"
+            font_weight = "normal"
         
         ax.text(0.02, 0.98, metrics_text, transform=ax.transAxes,
-                verticalalignment='top', fontsize=12,
-                bbox=dict(boxstyle="round,pad=0.3", facecolor="lightgray", alpha=0.8))
+                verticalalignment='top', fontsize=12, fontweight=font_weight,
+                bbox=dict(boxstyle="round,pad=0.3", facecolor=bbox_color, alpha=0.8))
         
-        ax.set_title('Confusion Matrix (Max Precision)')
+        ax.set_title(f'Confusion Matrix{title_suffix}')
         
         if save_path:
             plt.savefig(save_path, dpi=150, bbox_inches='tight')

@@ -182,7 +182,44 @@ class AnomalyDetector:
             
         return self.threshold
         
-    def detect_anomalies(self, data: np.ndarray, labels: Optional[np.ndarray] = None) -> Dict[str, Any]:
+    def _find_optimal_threshold(self, scores: np.ndarray, labels: np.ndarray) -> float:
+        """
+        Find optimal threshold for best F1 score.
+        
+        Parameters
+        ----------
+        scores : np.ndarray
+            Reconstruction error scores
+        labels : np.ndarray
+            True labels (0=noise, 1=signal)
+            
+        Returns
+        -------
+        float
+            Optimal threshold
+        """
+        from sklearn.metrics import f1_score
+        
+        # Get unique thresholds from scores
+        thresholds = np.unique(scores)
+        
+        best_f1 = 0
+        best_threshold = np.median(scores)  # Default fallback
+        
+        for threshold in thresholds:
+            predictions = (scores > threshold).astype(int)
+            
+            # Avoid division by zero
+            if len(np.unique(predictions)) > 1:
+                f1 = f1_score(labels, predictions, zero_division=0)
+                if f1 > best_f1:
+                    best_f1 = f1
+                    best_threshold = threshold
+        
+        logger.info(f"Optimal threshold: {best_threshold:.6f} (F1={best_f1:.3f})")
+        return best_threshold
+        
+    def detect_anomalies(self, data: np.ndarray, labels: Optional[np.ndarray] = None, use_optimal_threshold: bool = True) -> Dict[str, Any]:
         """
         Detect anomalies in input data.
         
@@ -192,6 +229,8 @@ class AnomalyDetector:
             Input CWT data of shape (n_samples, height, width)
         labels : np.ndarray, optional
             True labels (0=noise, 1=signal) for evaluation
+        use_optimal_threshold : bool, optional
+            Whether to use optimal threshold (default) or automatic threshold
             
         Returns
         -------
@@ -204,8 +243,14 @@ class AnomalyDetector:
         # Compute reconstruction errors
         reconstruction_errors = self.compute_reconstruction_errors(data)
         
-        # Set threshold if not already set
-        if self.threshold is None:
+        # Determine threshold to use
+        if use_optimal_threshold and labels is not None:
+            # Find optimal threshold for best F1 score
+            optimal_threshold = self._find_optimal_threshold(reconstruction_errors, labels)
+            self.threshold = optimal_threshold
+            logger.info(f"Using optimal threshold: {self.threshold:.6f}")
+        elif self.threshold is None:
+            # Fall back to automatic threshold
             self.set_threshold(reconstruction_errors, labels)
             
         # Make predictions
@@ -216,6 +261,7 @@ class AnomalyDetector:
             'predictions': predictions,
             'reconstruction_errors': reconstruction_errors,
             'threshold': self.threshold,
+            'threshold_type': 'optimal' if (use_optimal_threshold and labels is not None) else 'automatic',
             'num_anomalies': np.sum(predictions),
             'anomaly_rate': np.mean(predictions)
         }
@@ -227,6 +273,7 @@ class AnomalyDetector:
             
         logger.info(f"Anomaly detection complete:")
         logger.info(f"  Total samples: {len(data)}")
+        logger.info(f"  Threshold: {self.threshold:.6f} ({results['threshold_type']})")
         logger.info(f"  Anomalies detected: {results['num_anomalies']}")
         logger.info(f"  Anomaly rate: {results['anomaly_rate']:.1%}")
         

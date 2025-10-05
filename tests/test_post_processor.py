@@ -36,7 +36,7 @@ def test_post_processor():
     cwt_data = np.random.randn(10, 8, 131072)  # 10 samples, 8x131072 CWT scalograms
     
     # Initialize post-processor
-    postprocessor = PostProcessor('config/download_config.yaml')
+    postprocessor = PostProcessor('config/pipeline_clean_config.yaml')
     
     # Test timing addition
     print("  Testing timing addition...")
@@ -93,7 +93,7 @@ def test_empty_detections():
     cwt_data = np.random.randn(5, 8, 131072)
     
     # Initialize post-processor
-    postprocessor = PostProcessor('config/download_config.yaml')
+    postprocessor = PostProcessor('config/pipeline_clean_config.yaml')
     
     # Test timing addition
     enhanced_results = postprocessor.add_timing(detection_results, cwt_data)

@@ -32,6 +32,16 @@ An unsupervised anomaly detection system for identifying gravitational wave sign
 - **ROC-AUC**: 1.000
 - **PR-AUC**: 1.000
 
+### Statistical Validation
+
+While the model achieved perfect performance on the held-out H1 test set (114 confirmed signals, 410 background segments), finite sample size requires statistical interpretation:
+
+- **Recall**: 95% confidence interval [0.967, 1.000] (Wilson score interval)
+- **Specificity**: 95% confidence interval [0.991, 1.000] 
+- **False Positive Rate**: Upper bound ~0.7% (rule of three approximation)
+
+The results demonstrate genuine signal-noise separation within this sample, but should be interpreted as statistically near-perfect rather than absolutely perfect. With larger test volumes, a small number of near-boundary cases would be expected.
+
 ## Installation
 
 ### Prerequisites

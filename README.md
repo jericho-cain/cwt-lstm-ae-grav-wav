@@ -199,7 +199,7 @@ If you use this system in your research, please cite:
 ```bibtex
 @software{cwt_lstm_grav_waves,
   title={CWT-LSTM Autoencoder for Gravitational Wave Detection},
-  author={Gravitational Wave Hunter v2.0},
+  author={Jericho Cain},
   year={2025},
   version={1.0.0},
   url={https://github.com/gravitational-wave-detection/cwt-lstm-ae-grav-wav}

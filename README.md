@@ -10,7 +10,7 @@
 
 ## Overview
 
-A state-of-the-art unsupervised anomaly detection system for identifying gravitational wave signals in LIGO detector noise using Continuous Wavelet Transform (CWT) and Long Short-Term Memory (LSTM) autoencoders. 
+An unsupervised anomaly detection system for identifying gravitational wave signals in LIGO detector noise using Continuous Wavelet Transform (CWT) and Long Short-Term Memory (LSTM) autoencoders. 
 
 ## Key Features
 
@@ -223,4 +223,4 @@ For questions, issues, or collaboration opportunities, please open an issue on G
 
 ---
 
-**Note**: This system has been validated on LIGO O1 data and achieves perfect performance metrics. Results may vary with different detector configurations or data quality conditions.
+**Note**: This system has been validated on LIGO O1 data and achieves perfect performance metrics. The model was trained and tested exclusively on H1 detector data. Results may vary with different detector configurations or data quality conditions.

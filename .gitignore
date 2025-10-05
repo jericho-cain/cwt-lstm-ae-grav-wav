@@ -158,3 +158,6 @@ runs/
 
 # Development documentation and notes
 development/
+
+# Test coverage reports - generated analysis files
+tests/test_coverage_report.md

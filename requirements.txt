@@ -9,7 +9,7 @@ seaborn>=0.11.0
 h5py>=3.0.0
 
 # Data processing
-pywt>=1.1.0
+PyWavelets>=1.1.0
 matplotlib>=3.4.0
 pandas>=1.3.0
 

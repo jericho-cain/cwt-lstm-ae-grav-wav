@@ -161,3 +161,7 @@ development/
 
 # Test coverage reports - generated analysis files
 tests/test_coverage_report.md
+
+# Legacy and alternative CWT implementations - kept local only
+src/preprocessing/cwt_fixed.py
+src/preprocessing/legacy_cwt.py

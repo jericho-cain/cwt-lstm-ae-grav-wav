@@ -1,8 +1,8 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 authors:
-  - family-names: "Gravitational Wave Hunter"
-    given-names: "v2.0"
+  - family-names: "CWT-LSTM-AE-Grav-Wav"
+    given-names: ""
     orcid: "https://orcid.org/0000-0000-0000-0000"
 title: "CWT-LSTM Autoencoder for Gravitational Wave Detection"
 version: 1.0.0
@@ -22,8 +22,8 @@ preferred-citation:
   type: software
   title: "CWT-LSTM Autoencoder for Gravitational Wave Detection"
   authors:
-    - family-names: "Gravitational Wave Hunter"
-      given-names: "v2.0"
+    - family-names: "CWT-LSTM-AE-Grav-Wav"
+      given-names: ""
   year: 2025
   url: "https://github.com/gravitational-wave-detection/cwt-lstm-ae-grav-wav"
   license: MIT

@@ -143,3 +143,12 @@ Thumbs.db
 
 # Test outputs
 test_metrics_output/
+
+# Analysis results - generated analysis files
+analysis_results/
+
+# Scripts directory - development and analysis scripts
+scripts/
+
+# Runs directory - experimental runs and checkpoints
+runs/

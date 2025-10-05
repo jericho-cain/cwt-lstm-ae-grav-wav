@@ -223,4 +223,4 @@ For questions, issues, or collaboration opportunities, please open an issue on G
 
 ---
 
-**Note**: This system has been validated on LIGO O1 data. The model was trained and tested exclusively on H1 detector data. Results may vary with different detector configurations or data quality conditions.
+**Note**: This system has been validated on LIGO O1, O2, and O3a data. The model was trained and tested exclusively on H1 detector data. Results may vary with different detector configurations or data quality conditions.

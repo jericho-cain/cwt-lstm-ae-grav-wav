@@ -152,6 +152,7 @@ analysis_results/
 
 # Scripts directory - development and analysis scripts
 scripts/
+!scripts/run_clean_pipeline.py
 
 # Runs directory - experimental runs and checkpoints
 runs/

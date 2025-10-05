@@ -22,7 +22,7 @@ Usage:
 
 The script creates timestamped run directories with all results, metrics, and plots.
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 3, 2025
 """
 

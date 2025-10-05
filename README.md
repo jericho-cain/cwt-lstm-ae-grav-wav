@@ -202,7 +202,7 @@ If you use this system in your research, please cite:
   author={Jericho Cain},
   year={2025},
   version={1.0.0},
-  url={https://github.com/gravitational-wave-detection/cwt-lstm-ae-grav-wav}
+  url={https://github.com/jericho-cain/cwt-lstm-ae-grav-wav}
 }
 ```
 

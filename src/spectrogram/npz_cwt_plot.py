@@ -29,14 +29,27 @@ Examples
 >>> strain, fs, meta = load_npz_any("H1_1126259462_32s.npz")
 >>> scalogram, freqs, scales = cwt_compute(strain, fs)
 >>> plot_cwt(scalogram, freqs, 32.0, mode="auto", save="gw150914.png")
+
+Command Line Examples
+---------------------
+# Working example for GW150914 with dual-panel layout and GraceDB lookup:
+python scripts/spectrogram_plot.py data/raw/H1_1126259462_32s.npz --lookup --mode dual --scales 256 --window 4.0 --zoom_ms 1000 --save results/visualizations/spectrograms/gw150914_dual.png
+
+# Auto mode (smart layout selection based on signal strength):
+python scripts/spectrogram_plot.py data/raw/H1_1126259462_32s.npz --lookup --mode auto --scales 256 --window 4.0 --save gw150914_auto.png
+
+# Single panel layout:
+python scripts/spectrogram_plot.py data/raw/H1_1126259462_32s.npz --lookup --mode single --scales 256 --window 4.0 --save gw150914_single.png
 """
 
 import re
 import json
 import argparse
 from pathlib import Path
+from typing import Tuple, Optional
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib.ticker import FuncFormatter
 
 # Optional deps (used if available)
 try:
@@ -291,7 +304,8 @@ def needs_zoom(L, t0, duration, win=0.3, threshold=0.6):
 
 def plot_cwt(scalogram: np.ndarray, freqs: np.ndarray, duration: float, 
              t0: Optional[float] = None, zoom_ms: float = 250, title: str = "", 
-             save: Optional[str] = None, clip_pct: float = 99.0, mode: str = "auto") -> float:
+             save: Optional[str] = None, clip_pct: float = 99.0, mode: str = "auto", 
+             window_start: float = 0.0) -> float:
     """
     Plot CWT spectrogram with smart layout selection.
     
@@ -366,7 +380,7 @@ def plot_cwt(scalogram: np.ndarray, freqs: np.ndarray, duration: float,
         gs = fig.add_gridspec(2, 1, height_ratios=[2.2, 1.0], hspace=0.18)
 
         ax1 = fig.add_subplot(gs[0, 0])
-        ax2 = fig.add_subplot(gs[1, 0], sharex=ax1, sharey=ax1)  # share y to keep ticks identical
+        ax2 = fig.add_subplot(gs[1, 0], sharey=ax1)  # share y to keep ticks identical, independent x
         
         # full view
         im1 = ax1.imshow(L, origin="lower", aspect="auto",
@@ -385,9 +399,15 @@ def plot_cwt(scalogram: np.ndarray, freqs: np.ndarray, duration: float,
         pretty_logfreq_axis(ax2, 20, 512, sparse=True)  # zoom panel: every other tick
         ax2.set_xlabel("Time [s]")
         ax2.set_ylabel("Frequency [Hz]")
+        
+        # Convert tick labels to absolute time for both panels
+        fmt = FuncFormatter(lambda val, pos: f"{window_start + val:.1f}")
+        ax1.xaxis.set_major_formatter(fmt)
+        ax2.xaxis.set_major_formatter(fmt)
 
         # give the zoom panel its own small title, lifted slightly to avoid clash
         ax2.set_title(f"Zoom ±{zoom_ms:.0f} ms around t0 = {t0:.3f} s", y=1.02, pad=2, fontsize=11)
+
 
         # colorbar for the whole figure, aligned with top axes
         cbar = fig.colorbar(im1, ax=ax1, fraction=0.046, pad=0.02)
@@ -402,13 +422,17 @@ def plot_cwt(scalogram: np.ndarray, freqs: np.ndarray, duration: float,
         
     else:
         # Single panel layout
-        fig, ax = plt.subplots(figsize=(12, 4.8))
+        fig, ax = plt.subplots(figsize=(12, 7.6))
         im = ax.imshow(L, origin="lower", aspect="auto",
                        extent=extent, vmin=v_min, vmax=v_max, cmap=cmap)
         pretty_logfreq_axis(ax, 20, 512, sparse=False)
         ax.set_xlabel("Time [s]")
         ax.set_ylabel("Frequency [Hz]")
         ax.set_title(f"{title} - CWT Spectrogram ({duration:.3f} s)")
+        
+        # Convert tick labels to absolute time
+        fmt = FuncFormatter(lambda val, pos: f"{window_start + val:.1f}")
+        ax.xaxis.set_major_formatter(fmt)
         
         # bottom tick marker at t0
         ax.plot([t0], [22], marker="v", color="red", markersize=7, clip_on=False)
@@ -477,6 +501,7 @@ def main() -> None:
     >>> # High-resolution dual panel
     >>> python npz_cwt_plot.py H1_1167559936_32s.npz --scales 256 --mode dual
     """
+    ap = argparse.ArgumentParser(description="Plot CWT spectrograms from gravitational wave data")
     ap.add_argument("npz", type=str, help="Path to .npz (e.g., H1_<gps>_32s.npz)")
     ap.add_argument("--duration", type=float, default=None,
                     help="Total seconds represented in file (default: parsed from filename or len/FS)")
@@ -515,6 +540,7 @@ def main() -> None:
         duration = len(strain) / fs  # infer from data
 
     # Optional: Extract window around signal for better contrast
+    window_start = 0.0
     if args.window is not None:
         # First get rough t0 estimate from full data
         w_full = whiten_gwpy_if_possible(strain, fs)
@@ -531,8 +557,9 @@ def main() -> None:
         end_idx = min(len(strain), start_idx + window_samples)
         
         strain_window = strain[start_idx:end_idx]
+        window_start = start_idx / fs  # Calculate the start time of the window
         duration = len(strain_window) / fs
-        print(f"Extracted {args.window}s window around t0={t0_rough:.3f}s")
+        print(f"Extracted {args.window}s window around t0={t0_rough:.3f}s, window starts at {window_start:.3f}s")
         
         # Re-whiten the windowed data
         w = whiten_gwpy_if_possible(strain_window, fs)
@@ -550,6 +577,7 @@ def main() -> None:
 
     # Determine t0
     t0 = args.t0
+    grace_event_name = None
     if t0 is None and args.lookup and gps is not None:
         name, t0_abs = grace_lookup_t0(det or "", gps)
         if t0_abs is not None:
@@ -557,6 +585,7 @@ def main() -> None:
             # If filename encodes a 32 s segment starting at 'gps', put t0 relative to that.
             # Common convention: files like H1_<gps>_32s.npz start at that <gps>.
             t0 = float(t0_abs - gps)
+            grace_event_name = name
             print(f"GraceDB: {name} at GPS {t0_abs} (t0={t0:.3f}s from segment start)")
     if t0 is None:
         # fallback: auto from CWT energy
@@ -567,13 +596,15 @@ def main() -> None:
     save_path = args.save or str(path.with_suffix("").as_posix() + f"_cwt.png")
 
     title_bits = []
+    if grace_event_name: title_bits.append(grace_event_name)
     if det: title_bits.append(det)
     if gps: title_bits.append(str(int(gps)))
     title_bits.append(f"{args.scales} scales")
     title = " ".join(title_bits)
 
     plot_cwt(scalogram, freqs, duration, t0=t0, zoom_ms=args.zoom_ms,
-             title=title, save=save_path, clip_pct=args.clip, mode=args.mode)
+             title=title, save=save_path, clip_pct=args.clip, mode=args.mode, 
+             window_start=window_start)
 
 if __name__ == "__main__":
     main()

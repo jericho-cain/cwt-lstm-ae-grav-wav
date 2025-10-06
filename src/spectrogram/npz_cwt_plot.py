@@ -422,7 +422,7 @@ def plot_cwt(scalogram: np.ndarray, freqs: np.ndarray, duration: float,
         
     else:
         # Single panel layout
-        fig, ax = plt.subplots(figsize=(12, 4.8))
+        fig, ax = plt.subplots(figsize=(12, 7.6))
         im = ax.imshow(L, origin="lower", aspect="auto",
                        extent=extent, vmin=v_min, vmax=v_max, cmap=cmap)
         pretty_logfreq_axis(ax, 20, 512, sparse=False)

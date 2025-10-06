@@ -123,6 +123,7 @@ checkpoints/
 logs/
 outputs/
 results/
+!results/visualizations/
 
 # IDE
 .vscode/

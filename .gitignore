@@ -124,6 +124,7 @@ logs/
 outputs/
 results/
 !results/visualizations/
+!results/visualizations/spectrograms/
 
 # IDE
 .vscode/

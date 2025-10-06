@@ -29,12 +29,24 @@ Examples
 >>> strain, fs, meta = load_npz_any("H1_1126259462_32s.npz")
 >>> scalogram, freqs, scales = cwt_compute(strain, fs)
 >>> plot_cwt(scalogram, freqs, 32.0, mode="auto", save="gw150914.png")
+
+Command Line Examples
+---------------------
+# Working example for GW150914 with dual-panel layout and GraceDB lookup:
+python scripts/spectrogram_plot.py data/raw/H1_1126259462_32s.npz --lookup --mode dual --scales 256 --save results/visualizations/spectrograms/gw150914_dual.png
+
+# Auto mode (smart layout selection based on signal strength):
+python scripts/spectrogram_plot.py data/raw/H1_1126259462_32s.npz --lookup --mode auto --save gw150914_auto.png
+
+# Single panel layout:
+python scripts/spectrogram_plot.py data/raw/H1_1126259462_32s.npz --lookup --mode single --save gw150914_single.png
 """
 
 import re
 import json
 import argparse
 from pathlib import Path
+from typing import Tuple, Optional
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -477,6 +489,7 @@ def main() -> None:
     >>> # High-resolution dual panel
     >>> python npz_cwt_plot.py H1_1167559936_32s.npz --scales 256 --mode dual
     """
+    ap = argparse.ArgumentParser(description="Plot CWT spectrograms from gravitational wave data")
     ap.add_argument("npz", type=str, help="Path to .npz (e.g., H1_<gps>_32s.npz)")
     ap.add_argument("--duration", type=float, default=None,
                     help="Total seconds represented in file (default: parsed from filename or len/FS)")

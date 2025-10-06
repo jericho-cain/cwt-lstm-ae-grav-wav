@@ -160,6 +160,14 @@ print(f"Recall: {results['recall']:.3f}")
 Raw Strain Data → CWT Preprocessing → LSTM Autoencoder → Reconstruction Error → Anomaly Detection
 ```
 
+### CWT Spectrogram Visualization
+
+The Continuous Wavelet Transform preprocessing converts raw gravitational wave strain data into time-frequency scalograms that preserve both temporal and spectral information. Here's an example of GW150914 (the first detected gravitational wave) processed through our CWT pipeline:
+
+![GW150914 CWT Spectrogram](results/visualizations/spectrograms/gw150914_h1_dual.png)
+
+*GW150914 gravitational wave signal visualized using our CWT preprocessing pipeline. The dual-panel view shows the full 4-second window (top) and a focused ±250ms zoom around the merger time (bottom). The characteristic chirp pattern from ~35Hz to ~250Hz is clearly visible, demonstrating how CWT preserves the time-frequency evolution critical for gravitational wave detection.*
+
 ## Performance Analysis
 
 The system achieves perfect performance through:

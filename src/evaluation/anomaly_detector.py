@@ -114,7 +114,7 @@ class AnomalyDetector:
         logger.info(f"Model loaded successfully")
         logger.info(f"Model info: {self.model.get_model_info()}")
         
-    def compute_reconstruction_errors(self, data: np.ndarray) -> np.ndarray:
+    def compute_reconstruction_errors(self, data: np.ndarray, scoring_strategy: str = 'mean') -> np.ndarray:
         """
         Compute reconstruction errors for input data.
         
@@ -122,6 +122,12 @@ class AnomalyDetector:
         ----------
         data : np.ndarray
             Input CWT data of shape (n_samples, height, width)
+        scoring_strategy : str, default='mean'
+            Strategy for computing reconstruction error:
+            - 'mean': Average over all dimensions (original method)
+            - 'percentile_99': 99th percentile of per-time errors
+            - 'max': Maximum per-time error
+            - 'top_k': Mean of top-k highest per-time errors (k=10)
             
         Returns
         -------
@@ -131,7 +137,7 @@ class AnomalyDetector:
         if self.model is None:
             raise ValueError("Model not loaded. Call load_model() first.")
             
-        logger.info(f"Computing reconstruction errors for {len(data)} samples")
+        logger.info(f"Computing reconstruction errors for {len(data)} samples using '{scoring_strategy}' strategy")
         
         # Convert to tensor and add channel dimension
         data_tensor = torch.FloatTensor(data).unsqueeze(1).to(self.device)
@@ -145,10 +151,39 @@ class AnomalyDetector:
                 # Forward pass
                 reconstructed, _ = self.model(batch)
                 
-                # Compute MSE reconstruction error with higher precision
-                # Use double precision to preserve small differences
-                mse = torch.mean((reconstructed.double() - batch.double())**2, dim=(1, 2, 3))
-                reconstruction_errors.extend(mse.cpu().numpy())
+                # Compute squared error per sample (don't reduce yet)
+                # Shape: (batch, 1, height, width)
+                squared_errors = (reconstructed.double() - batch.double())**2
+                
+                # Apply scoring strategy
+                if scoring_strategy == 'mean':
+                    # Original method: mean over all dimensions
+                    scores = torch.mean(squared_errors, dim=(1, 2, 3))
+                    
+                elif scoring_strategy == 'percentile_99':
+                    # Take 99th percentile of per-time errors
+                    # First, average over channel and height (frequency scales)
+                    per_time_errors = torch.mean(squared_errors, dim=(1, 2))  # Shape: (batch, width)
+                    # Then take 99th percentile over time
+                    scores = torch.quantile(per_time_errors, 0.99, dim=1)
+                    
+                elif scoring_strategy == 'max':
+                    # Maximum per-time error (after averaging over scales)
+                    per_time_errors = torch.mean(squared_errors, dim=(1, 2))  # Shape: (batch, width)
+                    scores = torch.max(per_time_errors, dim=1)[0]
+                    
+                elif scoring_strategy == 'top_k':
+                    # Mean of top-k highest per-time errors
+                    k = 10
+                    per_time_errors = torch.mean(squared_errors, dim=(1, 2))  # Shape: (batch, width)
+                    # Get top-k values for each sample
+                    top_k_values = torch.topk(per_time_errors, k=min(k, per_time_errors.shape[1]), dim=1)[0]
+                    scores = torch.mean(top_k_values, dim=1)
+                    
+                else:
+                    raise ValueError(f"Unknown scoring_strategy: {scoring_strategy}")
+                
+                reconstruction_errors.extend(scores.cpu().numpy())
                 
         return np.array(reconstruction_errors)
         
@@ -219,7 +254,7 @@ class AnomalyDetector:
         logger.info(f"Optimal threshold: {best_threshold:.6f} (F1={best_f1:.3f})")
         return best_threshold
         
-    def detect_anomalies(self, data: np.ndarray, labels: Optional[np.ndarray] = None, use_optimal_threshold: bool = True) -> Dict[str, Any]:
+    def detect_anomalies(self, data: np.ndarray, labels: Optional[np.ndarray] = None, use_optimal_threshold: bool = True, scoring_strategy: str = 'mean') -> Dict[str, Any]:
         """
         Detect anomalies in input data.
         
@@ -231,6 +266,8 @@ class AnomalyDetector:
             True labels (0=noise, 1=signal) for evaluation
         use_optimal_threshold : bool, optional
             Whether to use optimal threshold (default) or automatic threshold
+        scoring_strategy : str, default='mean'
+            Strategy for computing reconstruction error (see compute_reconstruction_errors)
             
         Returns
         -------
@@ -241,7 +278,7 @@ class AnomalyDetector:
             self.load_model()
             
         # Compute reconstruction errors
-        reconstruction_errors = self.compute_reconstruction_errors(data)
+        reconstruction_errors = self.compute_reconstruction_errors(data, scoring_strategy=scoring_strategy)
         
         # Determine threshold to use
         if use_optimal_threshold and labels is not None:

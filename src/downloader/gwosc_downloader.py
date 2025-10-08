@@ -131,7 +131,7 @@ class CleanGWOSCDownloader:
                 detector=detector,
                 start=start_gps,
                 end=start_gps + duration,
-                sample_rate=self.config['sample_rate'],
+                sample_rate=self.config['downloader']['sample_rate'],
                 format='hdf5'
             )
             
@@ -283,10 +283,13 @@ class CleanGWOSCDownloader:
         for event in events:
             try:
                 event_gps_time = event_gps(event)
-                start_gps = int(event_gps_time)
+                # Center the window on the merger time (keep decimal precision!)
+                start_gps = event_gps_time - duration / 2
                 
                 for detector in detectors:
-                    segment_id = f"{detector}_{start_gps}_{duration}s"
+                    # Use underscore instead of decimal for filename compatibility
+                    gps_str = str(start_gps).replace('.', '_')
+                    segment_id = f"{detector}_{gps_str}_{duration}s"
                     
                     # Check if already downloaded
                     if any(d.get('segment_id') == segment_id for d in self.manifest['downloads']):

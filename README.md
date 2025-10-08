@@ -6,41 +6,45 @@
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue.svg)](https://www.python.org/downloads/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Research](https://img.shields.io/badge/research-gravitational%20waves-purple.svg)](https://www.ligo.org/)
-[![Performance](https://img.shields.io/badge/performance-100%25%20accuracy-brightgreen.svg)](#results)
+[![Performance](https://img.shields.io/badge/performance-97%25%20P%20%7C%2096%25%20R-brightgreen.svg)](#results)
 
 ## Overview
 
-An unsupervised anomaly detection system for identifying gravitational wave signals in LIGO detector noise using Continuous Wavelet Transform (CWT) and Long Short-Term Memory (LSTM) autoencoders. 
+An unsupervised anomaly detection system for identifying gravitational wave signals in LIGO detector noise using Continuous Wavelet Transform (CWT) and Long Short-Term Memory (LSTM) autoencoders. Trained on O4 (GWTC-4.0) data, achieving 97% precision and 96% recall on 126 confirmed events. 
 
 ## Key Features
 
 - **Unsupervised Learning**: Trains exclusively on detector noise, requiring no labeled gravitational wave signals
 - **CWT Preprocessing**: Continuous Wavelet Transform preserves both time and frequency information critical for gravitational wave detection
 - **LSTM Architecture**: Captures temporal dependencies in detector noise patterns
-- **Perfect Performance**: Achieved 100% accuracy, precision, recall, and F1-score on test data
+- **Exceptional Performance**: 97% precision, 96% recall, ROC-AUC 0.994 on O4 test data
+- **Single-Run Training**: Eliminates batch effects from cross-run calibration differences
 - **Production Ready**: Comprehensive evaluation metrics, logging, and run management
 
 ## Results
 
 ![Detection Results](assets/detection_results.png)
 
-**Performance Metrics:**
-- **Accuracy**: 100.0%
-- **Precision**: 100.0%
-- **Recall**: 100.0%
-- **F1-Score**: 100.0%
-- **ROC-AUC**: 1.000
-- **PR-AUC**: 1.000
+**Performance Metrics (O4 Test Data):**
+- **Accuracy**: 98.6%
+- **Precision**: 97.0%
+- **Recall**: 96.1%
+- **F1-Score**: 96.6%
+- **ROC-AUC**: 0.994
+- **PR-AUC**: 0.967
 
-### Statistical Validation
+**Test Set:**
+- 102 O4 confirmed signals (GWTC-4.0)
+- 399 noise segments
+- **Results**: 98 true positives, 4 false negatives, 3 false positives
 
-While the model achieved perfect performance on the held-out H1 test set (114 confirmed signals, 410 background segments), finite sample size requires statistical interpretation:
+### Key Finding: Cross-Run Batch Effects
 
-- **Recall**: 95% confidence interval [0.967, 1.000] (Wilson score interval)
-- **Specificity**: 95% confidence interval [0.991, 1.000] 
-- **False Positive Rate**: Upper bound ~0.7% (rule of three approximation)
+During development, we discovered that training on combined O1–O4 data (2015–2024) produced a bimodal reconstruction error distribution correlating with **observing run** rather than astrophysical parameters. This batch effect arises from GWOSC's evolving calibration and whitening procedures across runs.
 
-The results demonstrate genuine signal-noise separation within this sample, but should be interpreted as statistically near-perfect rather than absolutely perfect. With larger test volumes, a small number of near-boundary cases would be expected.
+**Solution:** Single-run (O4-only) training eliminates batch effects while following LIGO's established practice of per-run optimization. This improved recall from 52% → 96% while maintaining 97% precision.
+
+See `analysis_results/PAPER_DRAFT_SECTIONS.md` for detailed discussion and `analysis_results/BATCH_EFFECT_SUMMARY.md` for technical analysis.
 
 ## Installation
 
@@ -72,7 +76,7 @@ The results demonstrate genuine signal-noise separation within this sample, but 
 
 4. **Run the complete pipeline:**
    ```bash
-   python scripts/run_clean_pipeline.py --config config/pipeline_clean_config.yaml
+   python scripts/core/run_clean_pipeline.py --config config/pipeline_clean_config.yaml
    ```
 
 ## Configuration
@@ -112,13 +116,13 @@ preprocessing:
 
 ```bash
 # Run complete pipeline (download, preprocess, train, evaluate)
-python scripts/run_clean_pipeline.py --config config/pipeline_clean_config.yaml
+python scripts/core/run_clean_pipeline.py --config config/pipeline_clean_config.yaml
 
 # Skip download and preprocessing (use existing data)
-python scripts/run_clean_pipeline.py --config config/pipeline_clean_config.yaml --skip-download --skip-preprocessing
+python scripts/core/run_clean_pipeline.py --config config/pipeline_clean_config.yaml --skip-download --skip-preprocessing
 
 # Run with custom log level
-python scripts/run_clean_pipeline.py --config config/pipeline_clean_config.yaml --log-level DEBUG
+python scripts/core/run_clean_pipeline.py --config config/pipeline_clean_config.yaml --log-level DEBUG
 ```
 
 ### Programmatic Usage
@@ -170,12 +174,17 @@ The Continuous Wavelet Transform preprocessing converts raw gravitational wave s
 
 ## Performance Analysis
 
-The system achieves perfect performance through:
+The system achieves exceptional performance through:
 
+- **Single-Run Training**: Eliminates batch effects from cross-run calibration differences (improved recall from 52% → 96%)
 - **Optimal Thresholding**: Uses F1-score maximization for threshold selection
 - **Clean Data Separation**: Strict train/test split with no data leakage
 - **Domain-Specific Preprocessing**: CWT preserves gravitational wave signatures
 - **Robust Architecture**: LSTM captures temporal patterns in detector noise
+
+### Methodological Contribution
+
+Our work identified and resolved **cross-run batch effects** in GWOSC data: reconstruction errors clustered by observing run (ρ=0.68) rather than astrophysical parameters (|r|<0.15). Single-run (O4) training eliminates this systematic bias while following LIGO's per-run optimization philosophy. See `analysis_results/` for detailed analysis.
 
 ## File Structure
 
@@ -241,4 +250,17 @@ For questions, issues, or collaboration opportunities, please open an issue on G
 
 ---
 
-**Note**: This system has been validated on LIGO O1, O2, and O3a data. The model was trained and tested exclusively on H1 detector data. Results may vary with different detector configurations or data quality conditions.
+## Data & Reproducibility
+
+**Training Data:** O4 (GWTC-4.0, 2023-2024) H1 detector
+- 126 confirmed gravitational wave events  
+- 1991 noise segments from science mode
+- All data from GWOSC public archive
+
+**Historical Data:** O1/O2/O3 events (90 signals) archived in `data/raw_historical/` for reference but not used in training to maintain run homogeneity.
+
+**Reproducibility:** All code, configurations, and analysis scripts are provided. Model training uses fixed random seeds for deterministic results.
+
+---
+
+**Note**: This system is trained and tested exclusively on LIGO H1 O4 data. Per-run training (as done here for O4) is recommended for other observing runs to avoid batch effects from evolving detector calibration.

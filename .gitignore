@@ -154,7 +154,8 @@ analysis_results/
 
 # Scripts directory - development and analysis scripts
 scripts/
-!scripts/run_clean_pipeline.py
+!scripts/core/
+!scripts/core/run_clean_pipeline.py
 !scripts/spectrogram_plot.py
 
 # Runs directory - experimental runs and checkpoints

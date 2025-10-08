@@ -1,0 +1,41 @@
+GRAVITATIONAL WAVE DETECTION METRICS REPORT
+==================================================
+
+OVERALL PERFORMANCE:
+  AUC-ROC: 0.994
+  Average Precision: 0.967
+  Baseline (Random): 0.204
+
+OPTIMAL OPERATING POINTS:
+  Max F1 Score: 0.966
+  Max F1 Threshold: 0.672
+  Max Precision: 1.000
+  Max Precision Recall: 0.245
+  Max Precision Threshold: 0.818
+
+CONFUSION MATRIX (OPTIMAL F1):
+  True Negatives: 396
+  False Positives: 3
+  False Negatives: 4
+  True Positives: 98
+  Precision: 0.970
+  Recall: 0.961
+  F1-Score: 0.966
+
+CONFUSION MATRIX (MAX PRECISION):
+  True Negatives: 399
+  False Positives: 0
+  False Negatives: 77
+  True Positives: 25
+  Precision: 1.000
+  Recall: 0.245
+  F1-Score: 0.394
+
+DATA STATISTICS:
+  Total Samples: 501
+  Noise Samples: 399
+  Signal Samples: 102
+  Signal Ratio: 0.204
+  Score Range: [0.287, 0.919]
+  Score Mean: 0.543
+  Score Std: 0.141

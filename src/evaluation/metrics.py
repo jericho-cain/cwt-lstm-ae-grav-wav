@@ -100,6 +100,16 @@ class MetricsEvaluator:
         else:
             high_precision_threshold = max_precision_threshold
         
+        # Calculate confusion matrix at optimal F1 threshold
+        y_pred_optimal_f1 = (y_scores >= optimal_f1_threshold).astype(int)
+        cm_optimal_f1 = confusion_matrix(y_true, y_pred_optimal_f1)
+        
+        # Calculate metrics at optimal F1
+        tn_f1, fp_f1, fn_f1, tp_f1 = cm_optimal_f1.ravel()
+        precision_f1 = tp_f1 / (tp_f1 + fp_f1) if (tp_f1 + fp_f1) > 0 else 0
+        recall_f1 = tp_f1 / (tp_f1 + fn_f1) if (tp_f1 + fn_f1) > 0 else 0
+        f1_f1 = 2 * (precision_f1 * recall_f1) / (precision_f1 + recall_f1) if (precision_f1 + recall_f1) > 0 else 0
+        
         # Calculate confusion matrix at maximum precision threshold
         y_pred_max_precision = (y_scores >= max_precision_threshold).astype(int)
         cm_max_precision = confusion_matrix(y_true, y_pred_max_precision)
@@ -125,6 +135,10 @@ class MetricsEvaluator:
             'auc': auc_score,
             'optimal_f1_threshold': optimal_f1_threshold,
             'optimal_f1': f1_scores[optimal_f1_idx] if len(f1_scores) > optimal_f1_idx else 0,
+            'confusion_matrix_optimal_f1': cm_optimal_f1,
+            'precision_optimal_f1': precision_f1,
+            'recall_optimal_f1': recall_f1,
+            'f1_optimal_f1': f1_f1,
             'max_precision_threshold': max_precision_threshold,
             'max_precision': precision[max_precision_idx],
             'max_precision_recall': recall[max_precision_idx],
@@ -136,7 +150,8 @@ class MetricsEvaluator:
             'baseline_precision': baseline_precision,
             'y_true': y_true,
             'y_scores': y_scores,
-            'y_pred_max_precision': y_pred_max_precision
+            'y_pred_max_precision': y_pred_max_precision,
+            'y_pred_optimal_f1': y_pred_optimal_f1
         }
         
         logger.info(f"Metrics calculated - AUC: {auc_score:.3f}, AP: {avg_precision:.3f}")
@@ -290,7 +305,7 @@ class MetricsEvaluator:
     def plot_confusion_matrix(self, ax: Optional[plt.Axes] = None, 
                              save_path: Optional[str] = None) -> plt.Axes:
         """
-        Plot confusion matrix at maximum precision threshold with special handling for perfect performance.
+        Plot confusion matrix at optimal F1 threshold with special handling for perfect performance.
         
         Parameters
         ----------
@@ -310,10 +325,10 @@ class MetricsEvaluator:
         if ax is None:
             fig, ax = plt.subplots(figsize=(8, 6))
         
-        cm = self.results['confusion_matrix_max_precision']
-        precision = self.results["precision_max_precision"]
-        recall = self.results["recall_max_precision"]
-        f1 = self.results["f1_max_precision"]
+        cm = self.results['confusion_matrix_optimal_f1']
+        precision = self.results["precision_optimal_f1"]
+        recall = self.results["recall_optimal_f1"]
+        f1 = self.results["f1_optimal_f1"]
         
         # Check for perfect performance
         is_perfect = (precision >= 0.999 and recall >= 0.999 and f1 >= 0.999)
@@ -393,9 +408,9 @@ class MetricsEvaluator:
         ax.hist(signal_scores, bins=30, alpha=0.7, label=f'Signals (n={len(signal_scores)})', 
                 color='red', density=True)
         
-        # Add optimal threshold line
-        ax.axvline(x=self.results['max_precision_threshold'], color='green', 
-                   linestyle='--', linewidth=2, label='Optimal Threshold')
+        # Add optimal F1 threshold line
+        ax.axvline(x=self.results['optimal_f1_threshold'], color='green', 
+                   linestyle='--', linewidth=2, label='Optimal F1 Threshold')
         
         # Calculate and display statistics
         noise_mean = np.mean(noise_scores)
@@ -504,13 +519,24 @@ class MetricsEvaluator:
             f.write(f"  Max Precision Recall: {self.results['max_precision_recall']:.3f}\n")
             f.write(f"  Max Precision Threshold: {self.results['max_precision_threshold']:.3f}\n\n")
             
-            # Confusion matrix at max precision
-            f.write("CONFUSION MATRIX (MAX PRECISION):\n")
-            cm = self.results['confusion_matrix_max_precision']
+            # Confusion matrix at optimal F1
+            f.write("CONFUSION MATRIX (OPTIMAL F1):\n")
+            cm = self.results['confusion_matrix_optimal_f1']
             f.write(f"  True Negatives: {cm[0, 0]}\n")
             f.write(f"  False Positives: {cm[0, 1]}\n")
             f.write(f"  False Negatives: {cm[1, 0]}\n")
             f.write(f"  True Positives: {cm[1, 1]}\n")
+            f.write(f"  Precision: {self.results['precision_optimal_f1']:.3f}\n")
+            f.write(f"  Recall: {self.results['recall_optimal_f1']:.3f}\n")
+            f.write(f"  F1-Score: {self.results['f1_optimal_f1']:.3f}\n\n")
+            
+            # Confusion matrix at max precision
+            f.write("CONFUSION MATRIX (MAX PRECISION):\n")
+            cm_max = self.results['confusion_matrix_max_precision']
+            f.write(f"  True Negatives: {cm_max[0, 0]}\n")
+            f.write(f"  False Positives: {cm_max[0, 1]}\n")
+            f.write(f"  False Negatives: {cm_max[1, 0]}\n")
+            f.write(f"  True Positives: {cm_max[1, 1]}\n")
             f.write(f"  Precision: {self.results['precision_max_precision']:.3f}\n")
             f.write(f"  Recall: {self.results['recall_max_precision']:.3f}\n")
             f.write(f"  F1-Score: {self.results['f1_max_precision']:.3f}\n\n")

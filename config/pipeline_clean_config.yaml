@@ -42,7 +42,7 @@ downloader:
     detectors: [H1] # Focus on H1 only - lower noise floor
     
     # Number of segments per run per detector
-    segments_per_run: 50 # Reasonable amount for balanced dataset
+    segments_per_run: 500 # ~2000 total noise segments (500 per run × 4 runs)
     
     # Minimum gap between segments (seconds)
     min_gap: 64
@@ -81,6 +81,7 @@ model:
     threshold_multiplier: 1.5       # For IQR method
     fixed_threshold: 0.5            # For fixed method
     reconstruction_error_threshold: null  # Set to null for automatic threshold calculation
+    scoring_strategy: 'mean'       # Options: 'mean', 'percentile_99', 'max', 'top_k'
 
 # Training configuration - Updated to match legacy approach
 training:

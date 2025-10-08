@@ -132,7 +132,10 @@ class CWTModelTrainer:
         logger.info(f"Found {len(cwt_files)} CWT data files")
         
         # Load manifest to get proper labels FIRST
-        manifest_path = Path("data/download_manifest.json")
+        # Try to get manifest from downloader config, fallback to default
+        downloader_config = self.config.get('downloader', {})
+        data_dirs = downloader_config.get('data_directories', {})
+        manifest_path = Path(data_dirs.get('manifest_file', 'data/download_manifest.json'))
         if manifest_path.exists():
             with open(manifest_path, 'r') as f:
                 manifest = json.load(f)
@@ -172,6 +175,10 @@ class CWTModelTrainer:
         # Split noise files into train/test (80/20 split)
         np.random.seed(42)  # For reproducibility
         torch.manual_seed(42)  # For PyTorch reproducibility
+        if torch.cuda.is_available():
+            torch.cuda.manual_seed_all(42)
+        torch.backends.cudnn.deterministic = True
+        torch.backends.cudnn.benchmark = False
         np.random.shuffle(noise_files)
         split_idx = int(len(noise_files) * 0.8)
         train_noise_files = noise_files[:split_idx]

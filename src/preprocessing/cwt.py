@@ -23,6 +23,72 @@ from pathlib import Path
 logger = logging.getLogger(__name__)
 
 
+def compute_global_normalization_stats(
+    training_noise_files: List[Path],
+    sample_rate: int = 4096,
+    fmin: float = 20.0
+) -> Tuple[float, float]:
+    """
+    Compute global whitening statistics from training noise files.
+    
+    This function computes the mean and standard deviation from a collection
+    of training noise files. These global statistics should be used for
+    whitening ALL files (train/val/test) to prevent batch effects across
+    different observing runs.
+    
+    Parameters
+    ----------
+    training_noise_files : List[Path]
+        List of training noise .npz files
+    sample_rate : int, optional
+        Sampling rate in Hz, by default 4096
+    fmin : float, optional
+        High-pass filter cutoff frequency, by default 20.0
+        
+    Returns
+    -------
+    Tuple[float, float]
+        (global_mean, global_std) - Statistics for whitening normalization
+    """
+    from scipy.signal import butter, sosfiltfilt
+    
+    logger.info(f"Computing global normalization from {len(training_noise_files)} training noise files...")
+    
+    all_filtered = []
+    
+    for i, noise_file in enumerate(training_noise_files):
+        try:
+            data = np.load(noise_file)
+            strain = data['strain']
+            
+            # Apply same high-pass filter as in cwt_clean
+            sos = butter(4, fmin, btype='high', fs=sample_rate, output='sos')
+            filtered = sosfiltfilt(sos, strain)
+            
+            all_filtered.append(filtered)
+            
+            if (i + 1) % 100 == 0:
+                logger.info(f"  Loaded {i + 1}/{len(training_noise_files)} files...")
+                
+        except Exception as e:
+            logger.warning(f"  Failed to load {noise_file.name}: {e}")
+            continue
+    
+    # Concatenate all training noise
+    combined_noise = np.concatenate(all_filtered)
+    logger.info(f"Combined {len(all_filtered)} files → {len(combined_noise)} samples")
+    
+    # Compute global statistics
+    global_mean = np.mean(combined_noise)
+    global_std = np.std(combined_noise)
+    
+    logger.info(f"Global normalization stats computed:")
+    logger.info(f"  Mean: {global_mean:.6e}")
+    logger.info(f"  Std:  {global_std:.6e}")
+    
+    return global_mean, global_std
+
+
 def cwt_clean(
     x: np.ndarray, 
     fs: float, 
@@ -31,7 +97,10 @@ def cwt_clean(
     n_scales: int = 64,
     wavelet: str = 'morl', 
     k_pad: float = 10.0, 
-    k_coi: float = 6.0
+    k_coi: float = 6.0,
+    global_mean: Optional[float] = None,
+    global_std: Optional[float] = None,
+    skip_whitening: bool = False
 ) -> Tuple[np.ndarray, np.ndarray, np.ndarray, np.ndarray]:
     """
     Legacy-style CWT implementation that preserves gravitational wave chirp features.
@@ -59,6 +128,12 @@ def cwt_clean(
         Padding factor, by default 10.0
     k_coi : float, optional
         Cone of influence factor, by default 6.0
+    global_mean : float, optional
+        Global mean for whitening (if None, uses per-file mean)
+    global_std : float, optional
+        Global std for whitening (if None, uses per-file std)
+    skip_whitening : bool, optional
+        If True, skip whitening step (use when data is already PSD-whitened)
     
     Returns
     -------
@@ -86,10 +161,21 @@ def cwt_clean(
         logger.warning(f"High-pass filtering failed: {e}")
         filtered = x
     
-    # Whitening (zero mean, unit variance) - same as legacy
+    # Whitening (zero mean, unit variance)
     try:
-        whitened = (filtered - np.mean(filtered)) / (np.std(filtered) + 1e-10)
-        logger.debug(f"Whitening applied: mean={whitened.mean():.6e}, std={whitened.std():.6e}")
+        if skip_whitening:
+            # Data already PSD-whitened, skip this step
+            whitened = filtered
+            logger.debug(f"Skipping whitening (data already PSD-whitened)")
+        elif global_mean is not None and global_std is not None:
+            # Use GLOBAL statistics (recommended - prevents batch effects)
+            whitened = (filtered - global_mean) / (global_std + 1e-10)
+            logger.debug(f"Global whitening applied: mean={global_mean:.6e}, std={global_std:.6e}")
+        else:
+            # Fall back to per-file whitening (legacy - causes batch effects)
+            whitened = (filtered - np.mean(filtered)) / (np.std(filtered) + 1e-10)
+            logger.warning("Using per-file whitening (may cause batch effects across observing runs)")
+        logger.debug(f"Whitened output: mean={whitened.mean():.6e}, std={whitened.std():.6e}")
     except Exception as e:
         logger.warning(f"Whitening failed: {e}")
         whitened = filtered
@@ -155,7 +241,10 @@ def fixed_preprocess_with_cwt(
     fmin: float = 20.0,
     fmax: float = 512.0,
     wavelet: str = 'morl',
-    downsample_factor: int = 4  # EC2-style downsampling
+    downsample_factor: int = 4,  # EC2-style downsampling
+    global_mean: Optional[float] = None,
+    global_std: Optional[float] = None,
+    skip_whitening: bool = False
 ) -> np.ndarray:
     """
     Fixed preprocessing pipeline using EC2-equivalent approach.
@@ -210,7 +299,10 @@ def fixed_preprocess_with_cwt(
         fmin=fmin,
         fmax=fmax,
         n_scales=target_height,
-        wavelet=wavelet
+        wavelet=wavelet,
+        global_mean=global_mean,
+        global_std=global_std,
+        skip_whitening=skip_whitening
     )
     
     # Apply minimal downsampling if target width specified
@@ -292,7 +384,10 @@ class CWTPreprocessor:
         fmin: float = 20.0,
         fmax: float = 512.0,
         wavelet: str = 'morl',
-        downsample_factor: int = 4
+        downsample_factor: int = 4,
+        global_mean: Optional[float] = None,
+        global_std: Optional[float] = None,
+        skip_whitening: bool = False
     ):
         """
         Initialize CWT preprocessor with legacy approach.
@@ -313,6 +408,12 @@ class CWTPreprocessor:
             Maximum frequency, by default 512.0
         wavelet : str, optional
             Wavelet type, by default 'morl'
+        global_mean : float, optional
+            Global mean for whitening normalization
+        global_std : float, optional
+            Global std for whitening normalization
+        skip_whitening : bool, optional
+            If True, skip whitening (use when data is already PSD-whitened)
         """
         self.sample_rate = sample_rate
         self.target_height = target_height
@@ -322,6 +423,9 @@ class CWTPreprocessor:
         self.fmax = fmax
         self.wavelet = wavelet
         self.downsample_factor = downsample_factor
+        self.global_mean = global_mean
+        self.global_std = global_std
+        self.skip_whitening = skip_whitening
         
         logger.info(f"CWTPreprocessor initialized with legacy approach")
         logger.info(f"  Sample rate: {sample_rate} Hz")
@@ -329,6 +433,12 @@ class CWTPreprocessor:
         logger.info(f"  Target width: {target_width}")
         logger.info(f"  Frequency range: {fmin}-{fmax} Hz")
         logger.info(f"  Wavelet: {wavelet}")
+        if skip_whitening:
+            logger.info(f"  Whitening: SKIPPED (data already PSD-whitened)")
+        elif global_mean is not None and global_std is not None:
+            logger.info(f"  Global normalization: mean={global_mean:.6e}, std={global_std:.6e}")
+        else:
+            logger.warning(f"  Using per-file whitening (may cause batch effects)")
     
     def process(self, strain_data: np.ndarray) -> np.ndarray:
         """
@@ -353,5 +463,8 @@ class CWTPreprocessor:
             fmin=self.fmin,
             fmax=self.fmax,
             wavelet=self.wavelet,
-            downsample_factor=self.downsample_factor
+            downsample_factor=self.downsample_factor,
+            global_mean=self.global_mean,
+            global_std=self.global_std,
+            skip_whitening=self.skip_whitening
         )

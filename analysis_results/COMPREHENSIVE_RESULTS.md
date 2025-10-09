@@ -184,13 +184,13 @@ All three false positives show:
 ### Spectrograms
 
 **GPS 1266182317** (RE=0.818):
-![FP 1266182317](../../analysis_results/fp_1266182317_spectrogram.png)
+![FP 1266182317](fp_1266182317_spectrogram.png)
 
 **GPS 1244843719** (RE=0.773):
-![FP 1244843719](../../analysis_results/fp_1244843719_spectrogram.png)
+![FP 1244843719](fp_1244843719_spectrogram.png)
 
 **GPS 1128737714** (RE=0.788):
-![FP 1128737714](../../analysis_results/fp_1128737714_spectrogram.png)
+![FP 1128737714](fp_1128737714_spectrogram.png)
 
 ### Utility of Flagging Glitches
 

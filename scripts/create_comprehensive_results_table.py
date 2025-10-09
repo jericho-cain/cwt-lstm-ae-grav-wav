@@ -339,7 +339,8 @@ Generated from run: run_20251007_174718_846c89d3
 """
     
     # Save the README
-    readme_path = Path('COMPREHENSIVE_RESULTS.md')
+    readme_path = Path('analysis_results/COMPREHENSIVE_RESULTS.md')
+    readme_path.parent.mkdir(exist_ok=True)
     with open(readme_path, 'w') as f:
         f.write(readme_content)
     
@@ -350,7 +351,7 @@ Generated from run: run_20251007_174718_846c89d3
     csv_table['status_order'] = csv_table['final_status'].map(status_order)
     csv_table = csv_table.sort_values(['status_order', 'gps']).drop('status_order', axis=1)
     
-    csv_path = Path('comprehensive_results_table.csv')
+    csv_path = Path('analysis_results/comprehensive_results_table.csv')
     csv_table.to_csv(csv_path, index=False)
     print(f"CSV version saved to: {csv_path}")
     

@@ -128,6 +128,9 @@ This table shows the comprehensive results for the O4-only CWT-LSTM autoencoder 
 |  | 1266182317.0 |  | FP | Noise | 0.8177495020995457 | 1 | 0 |  |  |  |  |  |  |  |  | H1_1266182317_32s_cwt.npy |
 
 
+## Data Sources
+Physical parameters (SNR, masses, distance, FAR, p_astro) are from the **Gravitational-wave Transient Catalog (GWTC)** maintained by the LIGO/Virgo/KAGRA collaboration: https://gwosc.org/eventapi/html/GWTC/?pagesize=all
+
 ## Column Abbreviations:
 - **SNR**: network_matched_filter_snr (Network SNR from official analysis)
 - **M1**: mass_1_source (Primary mass in solar masses)

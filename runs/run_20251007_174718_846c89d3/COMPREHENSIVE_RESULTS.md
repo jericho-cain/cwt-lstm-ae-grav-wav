@@ -9,6 +9,13 @@ This table shows the comprehensive results for the O4-only CWT-LSTM autoencoder 
 - Signals: 102
 - False Positive Noise: 3
 
+## Important Notes:
+- All 102 signals in detailed_results.npz are O4 signals (not O3/O4 mix)
+- O4 GPS range: 1368449966.2 to 1388811889.8 (includes ~1.37 billion range)
+- Some signals have missing physical parameters in events.csv (not yet fully populated)
+- False positive noise samples naturally have no physical parameters
+- GPS-to-event matching uses 1000s tolerance to handle center vs detection time differences
+
 ## Status Categories
 - **TP**: True Positive (signal correctly detected)
 - **FN**: False Negative (signal missed)

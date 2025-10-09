@@ -127,9 +127,40 @@ def main():
     results_df['event_shortName'] = [info['shortName'] for info in event_info]
     results_df['event_catalog'] = [info['catalog'] for info in event_info]
     
-    # Merge with events.csv on GPS time
-    print("Merging with events.csv...")
-    merged_df = results_df.merge(events_df, on='gps', how='left', suffixes=('_result', '_event'))
+    # Merge with events.csv on GPS time to get physical parameters
+    print("Merging with events.csv for physical parameters...")
+    
+    # First, try exact GPS matches
+    exact_merge = results_df.merge(events_df, on='gps', how='left', suffixes=('_result', '_event'))
+    
+    # For rows that didn't match exactly, try to find closest GPS time
+    def find_closest_event(row):
+        if pd.notna(row['name']) and pd.notna(row['catalog']):  # Already matched
+            return row
+        
+        gps_time = row['gps']
+        if pd.isna(gps_time):
+            return row
+            
+        # Find closest GPS time in events.csv
+        closest_gps = None
+        min_diff = float('inf')
+        for _, event_row in events_df.iterrows():
+            if pd.notna(event_row['gps']):
+                diff = abs(event_row['gps'] - gps_time)
+                if diff < min_diff and diff <= 1000.0:  # Within 1000 seconds
+                    min_diff = diff
+                    closest_gps = event_row
+        
+        if closest_gps is not None:
+            # Update row with closest event data
+            for col in events_df.columns:
+                if col not in ['gps']:  # Don't overwrite the GPS time
+                    row[col] = closest_gps[col]
+        
+        return row
+    
+    merged_df = exact_merge.apply(find_closest_event, axis=1)
     
     # Add signal/noise classification
     merged_df['data_type'] = merged_df['true_label'].map({0: 'Noise', 1: 'Signal'})

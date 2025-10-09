@@ -25,7 +25,7 @@ An unsupervised anomaly detection system for identifying gravitational wave sign
 
 ![Detection Results](assets/detection_results.png)
 
-📊 **[View Comprehensive Results & Analysis](analysis_results/COMPREHENSIVE_RESULTS.md)** - Detailed breakdown of all 105 test samples with false positive/negative analysis
+**[View Comprehensive Results & Analysis](analysis_results/COMPREHENSIVE_RESULTS.md)** - Detailed breakdown of all 105 test samples with false positive/negative analysis
 
 **Performance Metrics (O4 Test Data):**
 - **Accuracy**: 98.6%

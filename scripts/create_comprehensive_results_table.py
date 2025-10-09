@@ -230,6 +230,27 @@ def main():
         'far', 'p_astro', 'filename'
     ]
     
+    # Create column name mapping for abbreviations
+    column_mapping = {
+        'event_name': 'event_name',
+        'gps': 'gps',
+        'event_catalog': 'catalog',
+        'final_status': 'status',
+        'data_type': 'type',
+        'reconstruction_error': 'RE',
+        'prediction': 'pred',
+        'true_label': 'label',
+        'network_matched_filter_snr': 'SNR',
+        'mass_1_source': 'M1',
+        'mass_2_source': 'M2',
+        'total_mass_source': 'Mtot',
+        'chirp_mass_source': 'Mc',
+        'luminosity_distance': 'D',
+        'far': 'FAR',
+        'p_astro': 'p_astro',
+        'filename': 'filename'
+    }
+    
     # Create final table
     final_table = filtered_df[columns_to_include].copy()
     
@@ -237,6 +258,9 @@ def main():
     status_order = {'TP': 1, 'FN': 2, 'Excluded': 3, 'Unconfirmed': 4, 'NaN_in_data': 5, 'FP': 6}
     final_table['status_order'] = final_table['final_status'].map(status_order)
     final_table = final_table.sort_values(['status_order', 'gps']).drop('status_order', axis=1)
+    
+    # Rename columns to abbreviations
+    final_table = final_table.rename(columns=column_mapping)
     
     # Create README content
     readme_content = f"""# O4-Only Gravitational Wave Detection Results
@@ -281,23 +305,25 @@ This table shows the comprehensive results for the O4-only CWT-LSTM autoencoder 
     
     readme_content += f"""
 
+## Column Abbreviations:
+- **SNR**: network_matched_filter_snr (Network SNR from official analysis)
+- **M1**: mass_1_source (Primary mass in solar masses)
+- **M2**: mass_2_source (Secondary mass in solar masses)  
+- **Mtot**: total_mass_source (Total mass in solar masses)
+- **Mc**: chirp_mass_source (Chirp mass in solar masses)
+- **D**: luminosity_distance (Distance in Mpc)
+- **RE**: reconstruction_error (Autoencoder reconstruction error)
+- **FAR**: far (False alarm rate)
+- **p_astro**: p_astro (Probability of astrophysical origin)
+
 ## Column Descriptions
 - **event_name**: Official GW event name (e.g., GW150914)
 - **gps**: GPS time of event
-- **event_catalog**: Source catalog (GWTC-4.0, etc.)
-- **final_status**: Detection/processing status
-- **data_type**: Signal or Noise
-- **reconstruction_error**: Autoencoder reconstruction error
-- **prediction**: Model prediction (0=noise, 1=signal)
-- **true_label**: Ground truth label (0=noise, 1=signal)
-- **network_matched_filter_snr**: Network SNR from official analysis
-- **mass_1_source**: Primary mass (solar masses)
-- **mass_2_source**: Secondary mass (solar masses)
-- **total_mass_source**: Total mass (solar masses)
-- **chirp_mass_source**: Chirp mass (solar masses)
-- **luminosity_distance**: Distance (Mpc)
-- **far**: False alarm rate
-- **p_astro**: Probability of astrophysical origin
+- **catalog**: Source catalog (GWTC-4.0, etc.)
+- **status**: Detection/processing status (TP/FN/FP)
+- **type**: Signal or Noise
+- **pred**: Model prediction (0=noise, 1=signal)
+- **label**: Ground truth label (0=noise, 1=signal)
 - **filename**: Processed data filename
 
 ## Performance Summary
@@ -316,14 +342,18 @@ Generated from run: run_20251007_174718_846c89d3
     
     print(f"Comprehensive results table saved to: {readme_path}")
     
-    # Also save as CSV for easy analysis
+    # Also save as CSV for easy analysis (use original column names for CSV compatibility)
+    csv_table = filtered_df[columns_to_include].copy()
+    csv_table['status_order'] = csv_table['final_status'].map(status_order)
+    csv_table = csv_table.sort_values(['status_order', 'gps']).drop('status_order', axis=1)
+    
     csv_path = Path('comprehensive_results_table.csv')
-    final_table.to_csv(csv_path, index=False)
+    csv_table.to_csv(csv_path, index=False)
     print(f"CSV version saved to: {csv_path}")
     
     # Print summary statistics
     print("\nStatus Summary:")
-    status_counts = final_table['final_status'].value_counts()
+    status_counts = final_table['status'].value_counts()
     for status, count in status_counts.items():
         print(f"  {status}: {count}")
 

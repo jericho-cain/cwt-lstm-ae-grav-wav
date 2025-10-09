@@ -9,13 +9,6 @@ This table shows the comprehensive results for the O4-only CWT-LSTM autoencoder 
 - Signals: 102
 - False Positive Noise: 3
 
-## Important Notes:
-- All 102 signals in detailed_results.npz are O4 signals (not O3/O4 mix)
-- O4 GPS range: 1368449966.2 to 1388811889.8 (includes ~1.37 billion range)
-- Some signals have missing physical parameters in events.csv (not yet fully populated)
-- False positive noise samples naturally have no physical parameters
-- GPS-to-event matching uses 1000s tolerance to handle center vs detection time differences
-
 ## Status Categories
 - **TP**: True Positive (signal correctly detected)
 - **FN**: False Negative (signal missed)
@@ -26,7 +19,7 @@ This table shows the comprehensive results for the O4-only CWT-LSTM autoencoder 
 
 ## Results Table
 
-| event_name | gps | event_catalog | final_status | data_type | reconstruction_error | prediction | true_label | network_matched_filter_snr | mass_1_source | mass_2_source | total_mass_source | chirp_mass_source | luminosity_distance | far | p_astro | filename |
+| event_name | gps | catalog | status | type | RE | pred | label | SNR | M1 | M2 | Mtot | Mc | D | FAR | p_astro | filename |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | GW230601_224134 | 1369694496.1 | GWTC-4.0 | TP | Signal | 0.8913390273870545 | 1 | 1 | 13.4 | 66.0 | 44.0 | 109.0 | 45.7 | 3400.0 | 1e-05 | 0.99 | H1_1369694496.1_32s_cwt.npy |
 | GW230603_174756 | 1369849678.9 | GWTC-4.0 | TP | Signal | 0.8473370981860776 | 1 | 1 | 8.0 |  |  |  |  |  | 8.4 | 0.73 | H1_1369849678.9_32s_cwt.npy |
@@ -135,23 +128,25 @@ This table shows the comprehensive results for the O4-only CWT-LSTM autoencoder 
 |  | 1266182317.0 |  | FP | Noise | 0.8177495020995457 | 1 | 0 |  |  |  |  |  |  |  |  | H1_1266182317_32s_cwt.npy |
 
 
+## Column Abbreviations:
+- **SNR**: network_matched_filter_snr (Network SNR from official analysis)
+- **M1**: mass_1_source (Primary mass in solar masses)
+- **M2**: mass_2_source (Secondary mass in solar masses)  
+- **Mtot**: total_mass_source (Total mass in solar masses)
+- **Mc**: chirp_mass_source (Chirp mass in solar masses)
+- **D**: luminosity_distance (Distance in Mpc)
+- **RE**: reconstruction_error (Autoencoder reconstruction error)
+- **FAR**: far (False alarm rate)
+- **p_astro**: p_astro (Probability of astrophysical origin)
+
 ## Column Descriptions
 - **event_name**: Official GW event name (e.g., GW150914)
 - **gps**: GPS time of event
-- **event_catalog**: Source catalog (GWTC-4.0, etc.)
-- **final_status**: Detection/processing status
-- **data_type**: Signal or Noise
-- **reconstruction_error**: Autoencoder reconstruction error
-- **prediction**: Model prediction (0=noise, 1=signal)
-- **true_label**: Ground truth label (0=noise, 1=signal)
-- **network_matched_filter_snr**: Network SNR from official analysis
-- **mass_1_source**: Primary mass (solar masses)
-- **mass_2_source**: Secondary mass (solar masses)
-- **total_mass_source**: Total mass (solar masses)
-- **chirp_mass_source**: Chirp mass (solar masses)
-- **luminosity_distance**: Distance (Mpc)
-- **far**: False alarm rate
-- **p_astro**: Probability of astrophysical origin
+- **catalog**: Source catalog (GWTC-4.0, etc.)
+- **status**: Detection/processing status (TP/FN/FP)
+- **type**: Signal or Noise
+- **pred**: Model prediction (0=noise, 1=signal)
+- **label**: Ground truth label (0=noise, 1=signal)
 - **filename**: Processed data filename
 
 ## Performance Summary

@@ -19,112 +19,114 @@ This table shows the comprehensive results for the O4-only CWT-LSTM autoencoder 
 
 ## Results Table
 
-name shortName          gps catalog final_status data_type  reconstruction_error  prediction  true_label  network_matched_filter_snr  mass_1_source  mass_2_source  total_mass_source  chirp_mass_source  luminosity_distance  far  p_astro                    filename
- NaN       NaN 1369694496.1     NaN           TP    Signal              0.891339           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1369694496.1_32s_cwt.npy
- NaN       NaN 1369849678.9     NaN           TP    Signal              0.847337           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1369849678.9_32s_cwt.npy
- NaN       NaN 1369983225.5     NaN           TP    Signal              0.779584           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1369983225.5_32s_cwt.npy
- NaN       NaN 1370054747.5     NaN           TP    Signal              0.918383           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1370054747.5_32s_cwt.npy
- NaN       NaN 1370880508.0     NaN           TP    Signal              0.855694           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1370880508.0_32s_cwt.npy
- NaN       NaN 1371119152.0     NaN           TP    Signal              0.892015           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1371119152.0_32s_cwt.npy
- NaN       NaN 1371641465.7     NaN           TP    Signal              0.844859           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1371641465.7_32s_cwt.npy
- NaN       NaN 1371678586.5     NaN           TP    Signal              0.817084           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1371678586.5_32s_cwt.npy
- NaN       NaN 1371763017.0     NaN           TP    Signal              0.852669           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1371763017.0_32s_cwt.npy
- NaN       NaN 1371866019.8     NaN           TP    Signal              0.795074           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1371866019.8_32s_cwt.npy
- NaN       NaN 1372029122.4     NaN           TP    Signal              0.865124           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372029122.4_32s_cwt.npy
- NaN       NaN 1372144021.0     NaN           TP    Signal              0.867237           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372144021.0_32s_cwt.npy
- NaN       NaN 1372165088.9     NaN           TP    Signal              0.820938           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372165088.9_32s_cwt.npy
- NaN       NaN 1372203934.4     NaN           TP    Signal              0.848513           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372203934.4_32s_cwt.npy
- NaN       NaN 1372359295.7     NaN           TP    Signal              0.864486           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372359295.7_32s_cwt.npy
- NaN       NaN 1372471933.2     NaN           TP    Signal              0.873735           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372471933.2_32s_cwt.npy
- NaN       NaN 1372675415.2     NaN           TP    Signal              0.919469           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372675415.2_32s_cwt.npy
- NaN       NaN 1372768849.3     NaN           TP    Signal              0.827210           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372768849.3_32s_cwt.npy
- NaN       NaN 1372829827.1     NaN           TP    Signal              0.900240           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372829827.1_32s_cwt.npy
- NaN       NaN 1372835941.4     NaN           TP    Signal              0.877469           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372835941.4_32s_cwt.npy
- NaN       NaN 1372892977.5     NaN           TP    Signal              0.897955           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372892977.5_32s_cwt.npy
- NaN       NaN 1372919687.1     NaN           TP    Signal              0.826611           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372919687.1_32s_cwt.npy
- NaN       NaN 1372940849.2     NaN           TP    Signal              0.842935           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1372940849.2_32s_cwt.npy
- NaN       NaN 1373187847.9     NaN           TP    Signal              0.826355           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1373187847.9_32s_cwt.npy
- NaN       NaN 1373624501.1     NaN           TP    Signal              0.870160           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1373624501.1_32s_cwt.npy
- NaN       NaN 1374013596.8     NaN           TP    Signal              0.756610           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1374013596.8_32s_cwt.npy
- NaN       NaN 1374142716.4     NaN           TP    Signal              0.765959           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1374142716.4_32s_cwt.npy
- NaN       NaN 1374568590.9     NaN           TP    Signal              0.754592           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1374568590.9_32s_cwt.npy
- NaN       NaN 1374654199.2     NaN           TP    Signal              0.755564           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1374654199.2_32s_cwt.npy
- NaN       NaN 1375068854.4     NaN           TP    Signal              0.719091           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1375068854.4_32s_cwt.npy
- NaN       NaN 1375242172.0     NaN           TP    Signal              0.694047           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1375242172.0_32s_cwt.npy
- NaN       NaN 1375389643.9     NaN           TP    Signal              0.686891           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1375389643.9_32s_cwt.npy
- NaN       NaN 1375476647.4     NaN           TP    Signal              0.747873           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1375476647.4_32s_cwt.npy
- NaN       NaN 1375759278.3     NaN           TP    Signal              0.772782           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1375759278.3_32s_cwt.npy
- NaN       NaN 1376029162.5     NaN           TP    Signal              0.764488           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1376029162.5_32s_cwt.npy
- NaN       NaN 1376500752.4     NaN           TP    Signal              0.725844           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1376500752.4_32s_cwt.npy
- NaN       NaN 1376780619.5     NaN           TP    Signal              0.766713           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1376780619.5_32s_cwt.npy
- NaN       NaN 1376835926.6     NaN           TP    Signal              0.748879           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1376835926.6_32s_cwt.npy
- NaN       NaN 1376883049.7     NaN           TP    Signal              0.777930           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1376883049.7_32s_cwt.npy
- NaN       NaN 1376920413.9     NaN           TP    Signal              0.776630           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1376920413.9_32s_cwt.npy
- NaN       NaN 1376972016.5     NaN           TP    Signal              0.741309           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1376972016.5_32s_cwt.npy
- NaN       NaN 1377413266.2     NaN           TP    Signal              0.695996           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1377413266.2_32s_cwt.npy
- NaN       NaN 1377482056.1     NaN           TP    Signal              0.762120           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1377482056.1_32s_cwt.npy
- NaN       NaN 1377524783.7     NaN           TP    Signal              0.754795           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1377524783.7_32s_cwt.npy
- NaN       NaN 1377710672.8     NaN           TP    Signal              0.739557           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1377710672.8_32s_cwt.npy
- NaN       NaN 1377839415.1     NaN           TP    Signal              0.758365           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1377839415.1_32s_cwt.npy
- NaN       NaN 1377876347.2     NaN           TP    Signal              0.752122           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1377876347.2_32s_cwt.npy
- NaN       NaN 1378497206.2     NaN           TP    Signal              0.741052           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1378497206.2_32s_cwt.npy
- NaN       NaN 1378725243.7     NaN           TP    Signal              0.673235           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1378725243.7_32s_cwt.npy
- NaN       NaN 1379383426.9     NaN           TP    Signal              0.745900           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1379383426.9_32s_cwt.npy
- NaN       NaN 1379390820.1     NaN           TP    Signal              0.760181           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1379390820.1_32s_cwt.npy
- NaN       NaN 1379594695.8     NaN           TP    Signal              0.784053           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1379594695.8_32s_cwt.npy
- NaN       NaN 1379687999.5     NaN           TP    Signal              0.717424           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1379687999.5_32s_cwt.npy
- NaN       NaN 1379824651.1     NaN           TP    Signal              0.758872           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1379824651.1_32s_cwt.npy
- NaN       NaN 1379864314.9     NaN           TP    Signal              0.731164           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1379864314.9_32s_cwt.npy
- NaN       NaN 1379973509.1     NaN           TP    Signal              0.751251           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1379973509.1_32s_cwt.npy
- NaN       NaN 1380107252.4     NaN           TP    Signal              0.746996           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1380107252.4_32s_cwt.npy
- NaN       NaN 1380292758.7     NaN           TP    Signal              0.708138           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1380292758.7_32s_cwt.npy
- NaN       NaN 1380497028.3     NaN           TP    Signal              0.762834           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1380497028.3_32s_cwt.npy
- NaN       NaN 1380507033.0     NaN           TP    Signal              0.708479           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1380507033.0_32s_cwt.npy
- NaN       NaN 1380532551.5     NaN           TP    Signal              0.704497           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1380532551.5_32s_cwt.npy
- NaN       NaN 1380552297.4     NaN           TP    Signal              0.761325           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1380552297.4_32s_cwt.npy
- NaN       NaN 1380810323.8     NaN           TP    Signal              0.704049           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1380810323.8_32s_cwt.npy
- NaN       NaN 1381240506.4     NaN           TP    Signal              0.782026           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1381240506.4_32s_cwt.npy
- NaN       NaN 1381291535.0     NaN           TP    Signal              0.775210           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1381291535.0_32s_cwt.npy
- NaN       NaN 1381847389.6     NaN           TP    Signal              0.797898           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1381847389.6_32s_cwt.npy
- NaN       NaN 1382542208.3     NaN           TP    Signal              0.729291           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1382542208.3_32s_cwt.npy
- NaN       NaN 1382937736.4     NaN           TP    Signal              0.726118           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1382937736.4_32s_cwt.npy
- NaN       NaN 1382944658.4     NaN           TP    Signal              0.671607           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1382944658.4_32s_cwt.npy
- NaN       NaN 1383002675.5     NaN           TP    Signal              0.805181           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1383002675.5_32s_cwt.npy
- NaN       NaN 1383140060.9     NaN           TP    Signal              0.720500           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1383140060.9_32s_cwt.npy
- NaN       NaN 1383483104.5     NaN           TP    Signal              0.733748           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1383483104.5_32s_cwt.npy
- NaN       NaN 1383913585.9     NaN           TP    Signal              0.856572           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1383913585.9_32s_cwt.npy
- NaN       NaN 1383922843.4     NaN           TP    Signal              0.818496           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1383922843.4_32s_cwt.npy
- NaN       NaN 1383941059.9     NaN           TP    Signal              0.742122           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1383941059.9_32s_cwt.npy
- NaN       NaN 1383971533.2     NaN           TP    Signal              0.760870           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1383971533.2_32s_cwt.npy
- NaN       NaN 1384304188.8     NaN           TP    Signal              0.744578           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1384304188.8_32s_cwt.npy
- NaN       NaN 1384326844.2     NaN           TP    Signal              0.730590           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1384326844.2_32s_cwt.npy
- NaN       NaN 1384333564.0     NaN           TP    Signal              0.782819           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1384333564.0_32s_cwt.npy
- NaN       NaN 1384415570.1     NaN           TP    Signal              0.711617           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1384415570.1_32s_cwt.npy
- NaN       NaN 1384482065.0     NaN           TP    Signal              0.757880           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1384482065.0_32s_cwt.npy
- NaN       NaN 1384782872.7     NaN           TP    Signal              0.812916           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1384782872.7_32s_cwt.npy
- NaN       NaN 1384996170.3     NaN           TP    Signal              0.759436           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1384996170.3_32s_cwt.npy
- NaN       NaN 1385139182.9     NaN           TP    Signal              0.792616           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1385139182.9_32s_cwt.npy
- NaN       NaN 1386501259.9     NaN           TP    Signal              0.759802           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1386501259.9_32s_cwt.npy
- NaN       NaN 1387201843.3     NaN           TP    Signal              0.750535           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1387201843.3_32s_cwt.npy
- NaN       NaN 1387337318.1     NaN           TP    Signal              0.724853           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1387337318.1_32s_cwt.npy
- NaN       NaN 1387353057.3     NaN           TP    Signal              0.780533           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1387353057.3_32s_cwt.npy
- NaN       NaN 1387398381.0     NaN           TP    Signal              0.775478           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1387398381.0_32s_cwt.npy
- NaN       NaN 1387421004.0     NaN           TP    Signal              0.808706           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1387421004.0_32s_cwt.npy
- NaN       NaN 1387620922.3     NaN           TP    Signal              0.803601           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1387620922.3_32s_cwt.npy
- NaN       NaN 1387990879.0     NaN           TP    Signal              0.760355           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1387990879.0_32s_cwt.npy
- NaN       NaN 1388059309.6     NaN           TP    Signal              0.725575           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1388059309.6_32s_cwt.npy
- NaN       NaN 1388072418.7     NaN           TP    Signal              0.772380           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1388072418.7_32s_cwt.npy
- NaN       NaN 1388422174.6     NaN           TP    Signal              0.842770           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1388422174.6_32s_cwt.npy
- NaN       NaN 1388502705.2     NaN           TP    Signal              0.773559           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1388502705.2_32s_cwt.npy
- NaN       NaN 1388626337.7     NaN           TP    Signal              0.815405           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1388626337.7_32s_cwt.npy
- NaN       NaN 1388811873.8     NaN           TP    Signal              0.759017           1           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1388811873.8_32s_cwt.npy
- NaN       NaN 1379227631.3     NaN           FN    Signal              0.636733           0           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1379227631.3_32s_cwt.npy
- NaN       NaN 1379229086.7     NaN           FN    Signal              0.636733           0           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1379229086.7_32s_cwt.npy
- NaN       NaN 1385281067.6     NaN           FN    Signal              0.643088           0           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1385281067.6_32s_cwt.npy
- NaN       NaN 1385716010.9     NaN           FN    Signal              0.614755           0           1                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN H1_1385716010.9_32s_cwt.npy
- NaN       NaN 1128737714.0     NaN           FP     Noise              0.787666           1           0                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN   H1_1128737714_32s_cwt.npy
- NaN       NaN 1244843719.0     NaN           FP     Noise              0.772584           1           0                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN   H1_1244843719_32s_cwt.npy
- NaN       NaN 1266182317.0     NaN           FP     Noise              0.817750           1           0                         NaN            NaN            NaN                NaN                NaN                  NaN  NaN      NaN   H1_1266182317_32s_cwt.npy
+| name | shortName | gps | catalog | final_status | data_type | reconstruction_error | prediction | true_label | network_matched_filter_snr | mass_1_source | mass_2_source | total_mass_source | chirp_mass_source | luminosity_distance | far | p_astro | filename |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+|  |  | 1369694496.1 |  | TP | Signal | 0.8913390273870545 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1369694496.1_32s_cwt.npy |
+|  |  | 1369849678.9 |  | TP | Signal | 0.8473370981860776 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1369849678.9_32s_cwt.npy |
+|  |  | 1369983225.5 |  | TP | Signal | 0.7795843599334995 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1369983225.5_32s_cwt.npy |
+|  |  | 1370054747.5 |  | TP | Signal | 0.9183831077758499 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1370054747.5_32s_cwt.npy |
+|  |  | 1370880508.0 |  | TP | Signal | 0.8556936035313559 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1370880508.0_32s_cwt.npy |
+|  |  | 1371119152.0 |  | TP | Signal | 0.8920146719228937 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1371119152.0_32s_cwt.npy |
+|  |  | 1371641465.7 |  | TP | Signal | 0.8448593344487008 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1371641465.7_32s_cwt.npy |
+|  |  | 1371678586.5 |  | TP | Signal | 0.8170841174218578 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1371678586.5_32s_cwt.npy |
+|  |  | 1371763017.0 |  | TP | Signal | 0.852669484900642 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1371763017.0_32s_cwt.npy |
+|  |  | 1371866019.8 |  | TP | Signal | 0.7950735682143595 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1371866019.8_32s_cwt.npy |
+|  |  | 1372029122.4 |  | TP | Signal | 0.8651235419830707 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372029122.4_32s_cwt.npy |
+|  |  | 1372144021.0 |  | TP | Signal | 0.8672374714421786 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372144021.0_32s_cwt.npy |
+|  |  | 1372165088.9 |  | TP | Signal | 0.8209381027066254 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372165088.9_32s_cwt.npy |
+|  |  | 1372203934.4 |  | TP | Signal | 0.8485128330986444 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372203934.4_32s_cwt.npy |
+|  |  | 1372359295.7 |  | TP | Signal | 0.8644858398602799 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372359295.7_32s_cwt.npy |
+|  |  | 1372471933.2 |  | TP | Signal | 0.8737347319152058 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372471933.2_32s_cwt.npy |
+|  |  | 1372675415.2 |  | TP | Signal | 0.9194688420037018 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372675415.2_32s_cwt.npy |
+|  |  | 1372768849.3 |  | TP | Signal | 0.827209756811187 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372768849.3_32s_cwt.npy |
+|  |  | 1372829827.1 |  | TP | Signal | 0.9002398360400152 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372829827.1_32s_cwt.npy |
+|  |  | 1372835941.4 |  | TP | Signal | 0.8774685266678366 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372835941.4_32s_cwt.npy |
+|  |  | 1372892977.5 |  | TP | Signal | 0.8979546593705567 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372892977.5_32s_cwt.npy |
+|  |  | 1372919687.1 |  | TP | Signal | 0.82661059984839 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372919687.1_32s_cwt.npy |
+|  |  | 1372940849.2 |  | TP | Signal | 0.8429350850613424 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1372940849.2_32s_cwt.npy |
+|  |  | 1373187847.9 |  | TP | Signal | 0.8263545104896203 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1373187847.9_32s_cwt.npy |
+|  |  | 1373624501.1 |  | TP | Signal | 0.870159635200087 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1373624501.1_32s_cwt.npy |
+|  |  | 1374013596.8 |  | TP | Signal | 0.7566100205850633 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1374013596.8_32s_cwt.npy |
+|  |  | 1374142716.4 |  | TP | Signal | 0.7659588366780579 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1374142716.4_32s_cwt.npy |
+|  |  | 1374568590.9 |  | TP | Signal | 0.7545918238021894 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1374568590.9_32s_cwt.npy |
+|  |  | 1374654199.2 |  | TP | Signal | 0.755563846337515 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1374654199.2_32s_cwt.npy |
+|  |  | 1375068854.4 |  | TP | Signal | 0.7190907011007637 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1375068854.4_32s_cwt.npy |
+|  |  | 1375242172.0 |  | TP | Signal | 0.6940466761994322 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1375242172.0_32s_cwt.npy |
+|  |  | 1375389643.9 |  | TP | Signal | 0.686890838585968 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1375389643.9_32s_cwt.npy |
+|  |  | 1375476647.4 |  | TP | Signal | 0.7478729805698999 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1375476647.4_32s_cwt.npy |
+|  |  | 1375759278.3 |  | TP | Signal | 0.7727822937915659 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1375759278.3_32s_cwt.npy |
+|  |  | 1376029162.5 |  | TP | Signal | 0.7644878594526333 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1376029162.5_32s_cwt.npy |
+|  |  | 1376500752.4 |  | TP | Signal | 0.7258443693669642 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1376500752.4_32s_cwt.npy |
+|  |  | 1376780619.5 |  | TP | Signal | 0.7667134032186063 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1376780619.5_32s_cwt.npy |
+|  |  | 1376835926.6 |  | TP | Signal | 0.7488789743653411 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1376835926.6_32s_cwt.npy |
+|  |  | 1376883049.7 |  | TP | Signal | 0.7779304769066339 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1376883049.7_32s_cwt.npy |
+|  |  | 1376920413.9 |  | TP | Signal | 0.7766300070885186 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1376920413.9_32s_cwt.npy |
+|  |  | 1376972016.5 |  | TP | Signal | 0.7413087922225291 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1376972016.5_32s_cwt.npy |
+|  |  | 1377413266.2 |  | TP | Signal | 0.695995554446997 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1377413266.2_32s_cwt.npy |
+|  |  | 1377482056.1 |  | TP | Signal | 0.7621200862066816 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1377482056.1_32s_cwt.npy |
+|  |  | 1377524783.7 |  | TP | Signal | 0.7547947086684865 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1377524783.7_32s_cwt.npy |
+|  |  | 1377710672.8 |  | TP | Signal | 0.7395570777053786 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1377710672.8_32s_cwt.npy |
+|  |  | 1377839415.1 |  | TP | Signal | 0.7583650655006344 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1377839415.1_32s_cwt.npy |
+|  |  | 1377876347.2 |  | TP | Signal | 0.7521218394438955 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1377876347.2_32s_cwt.npy |
+|  |  | 1378497206.2 |  | TP | Signal | 0.7410522004629116 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1378497206.2_32s_cwt.npy |
+|  |  | 1378725243.7 |  | TP | Signal | 0.6732351701971755 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1378725243.7_32s_cwt.npy |
+|  |  | 1379383426.9 |  | TP | Signal | 0.7458998413052259 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1379383426.9_32s_cwt.npy |
+|  |  | 1379390820.1 |  | TP | Signal | 0.7601813818601313 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1379390820.1_32s_cwt.npy |
+|  |  | 1379594695.8 |  | TP | Signal | 0.7840531927913534 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1379594695.8_32s_cwt.npy |
+|  |  | 1379687999.5 |  | TP | Signal | 0.7174237090112865 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1379687999.5_32s_cwt.npy |
+|  |  | 1379824651.1 |  | TP | Signal | 0.7588719389068812 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1379824651.1_32s_cwt.npy |
+|  |  | 1379864314.9 |  | TP | Signal | 0.7311642401833782 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1379864314.9_32s_cwt.npy |
+|  |  | 1379973509.1 |  | TP | Signal | 0.7512506670447245 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1379973509.1_32s_cwt.npy |
+|  |  | 1380107252.4 |  | TP | Signal | 0.7469957841275983 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1380107252.4_32s_cwt.npy |
+|  |  | 1380292758.7 |  | TP | Signal | 0.7081376865744192 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1380292758.7_32s_cwt.npy |
+|  |  | 1380497028.3 |  | TP | Signal | 0.7628342447028114 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1380497028.3_32s_cwt.npy |
+|  |  | 1380507033.0 |  | TP | Signal | 0.7084789580040664 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1380507033.0_32s_cwt.npy |
+|  |  | 1380532551.5 |  | TP | Signal | 0.7044972198236288 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1380532551.5_32s_cwt.npy |
+|  |  | 1380552297.4 |  | TP | Signal | 0.7613247609843297 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1380552297.4_32s_cwt.npy |
+|  |  | 1380810323.8 |  | TP | Signal | 0.7040491311414714 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1380810323.8_32s_cwt.npy |
+|  |  | 1381240506.4 |  | TP | Signal | 0.7820255553497177 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1381240506.4_32s_cwt.npy |
+|  |  | 1381291535.0 |  | TP | Signal | 0.7752101073572579 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1381291535.0_32s_cwt.npy |
+|  |  | 1381847389.6 |  | TP | Signal | 0.7978979919912335 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1381847389.6_32s_cwt.npy |
+|  |  | 1382542208.3 |  | TP | Signal | 0.7292913715723415 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1382542208.3_32s_cwt.npy |
+|  |  | 1382937736.4 |  | TP | Signal | 0.7261177673965213 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1382937736.4_32s_cwt.npy |
+|  |  | 1382944658.4 |  | TP | Signal | 0.6716073500990636 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1382944658.4_32s_cwt.npy |
+|  |  | 1383002675.5 |  | TP | Signal | 0.8051806823251401 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1383002675.5_32s_cwt.npy |
+|  |  | 1383140060.9 |  | TP | Signal | 0.720499869325353 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1383140060.9_32s_cwt.npy |
+|  |  | 1383483104.5 |  | TP | Signal | 0.7337482445454038 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1383483104.5_32s_cwt.npy |
+|  |  | 1383913585.9 |  | TP | Signal | 0.8565716331579145 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1383913585.9_32s_cwt.npy |
+|  |  | 1383922843.4 |  | TP | Signal | 0.8184961157242487 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1383922843.4_32s_cwt.npy |
+|  |  | 1383941059.9 |  | TP | Signal | 0.7421215026086714 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1383941059.9_32s_cwt.npy |
+|  |  | 1383971533.2 |  | TP | Signal | 0.7608701298791832 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1383971533.2_32s_cwt.npy |
+|  |  | 1384304188.8 |  | TP | Signal | 0.7445777729692111 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1384304188.8_32s_cwt.npy |
+|  |  | 1384326844.2 |  | TP | Signal | 0.7305902011726434 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1384326844.2_32s_cwt.npy |
+|  |  | 1384333564.0 |  | TP | Signal | 0.7828185686404393 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1384333564.0_32s_cwt.npy |
+|  |  | 1384415570.1 |  | TP | Signal | 0.711616998123062 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1384415570.1_32s_cwt.npy |
+|  |  | 1384482065.0 |  | TP | Signal | 0.7578796019385837 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1384482065.0_32s_cwt.npy |
+|  |  | 1384782872.7 |  | TP | Signal | 0.8129158107395436 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1384782872.7_32s_cwt.npy |
+|  |  | 1384996170.3 |  | TP | Signal | 0.7594357941744987 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1384996170.3_32s_cwt.npy |
+|  |  | 1385139182.9 |  | TP | Signal | 0.7926162524049795 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1385139182.9_32s_cwt.npy |
+|  |  | 1386501259.9 |  | TP | Signal | 0.7598022223972748 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1386501259.9_32s_cwt.npy |
+|  |  | 1387201843.3 |  | TP | Signal | 0.7505350206748749 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1387201843.3_32s_cwt.npy |
+|  |  | 1387337318.1 |  | TP | Signal | 0.7248532775857698 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1387337318.1_32s_cwt.npy |
+|  |  | 1387353057.3 |  | TP | Signal | 0.7805333825158969 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1387353057.3_32s_cwt.npy |
+|  |  | 1387398381.0 |  | TP | Signal | 0.7754778428345932 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1387398381.0_32s_cwt.npy |
+|  |  | 1387421004.0 |  | TP | Signal | 0.8087064379357716 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1387421004.0_32s_cwt.npy |
+|  |  | 1387620922.3 |  | TP | Signal | 0.8036006880418372 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1387620922.3_32s_cwt.npy |
+|  |  | 1387990879.0 |  | TP | Signal | 0.760354517507904 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1387990879.0_32s_cwt.npy |
+|  |  | 1388059309.6 |  | TP | Signal | 0.725575176228358 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1388059309.6_32s_cwt.npy |
+|  |  | 1388072418.7 |  | TP | Signal | 0.7723798178763986 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1388072418.7_32s_cwt.npy |
+|  |  | 1388422174.6 |  | TP | Signal | 0.8427704081104328 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1388422174.6_32s_cwt.npy |
+|  |  | 1388502705.2 |  | TP | Signal | 0.7735590500523326 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1388502705.2_32s_cwt.npy |
+|  |  | 1388626337.7 |  | TP | Signal | 0.8154054055752736 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1388626337.7_32s_cwt.npy |
+|  |  | 1388811873.8 |  | TP | Signal | 0.7590167635253623 | 1 | 1 |  |  |  |  |  |  |  |  | H1_1388811873.8_32s_cwt.npy |
+|  |  | 1379227631.3 |  | FN | Signal | 0.6367327797765155 | 0 | 1 |  |  |  |  |  |  |  |  | H1_1379227631.3_32s_cwt.npy |
+|  |  | 1379229086.7 |  | FN | Signal | 0.6367327797765155 | 0 | 1 |  |  |  |  |  |  |  |  | H1_1379229086.7_32s_cwt.npy |
+|  |  | 1385281067.6 |  | FN | Signal | 0.6430883532337158 | 0 | 1 |  |  |  |  |  |  |  |  | H1_1385281067.6_32s_cwt.npy |
+|  |  | 1385716010.9 |  | FN | Signal | 0.614754973359127 | 0 | 1 |  |  |  |  |  |  |  |  | H1_1385716010.9_32s_cwt.npy |
+|  |  | 1128737714.0 |  | FP | Noise | 0.7876663633843093 | 1 | 0 |  |  |  |  |  |  |  |  | H1_1128737714_32s_cwt.npy |
+|  |  | 1244843719.0 |  | FP | Noise | 0.7725837163179405 | 1 | 0 |  |  |  |  |  |  |  |  | H1_1244843719_32s_cwt.npy |
+|  |  | 1266182317.0 |  | FP | Noise | 0.8177495020995457 | 1 | 0 |  |  |  |  |  |  |  |  | H1_1266182317_32s_cwt.npy |
+
 
 ## Column Descriptions
 - **name**: Official GW event name

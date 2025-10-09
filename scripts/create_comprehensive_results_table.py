@@ -161,8 +161,22 @@ This table shows the comprehensive results for the O4-only CWT-LSTM autoencoder 
 
 """
     
-    # Add the table as markdown (simple format)
-    readme_content += final_table.to_string(index=False)
+    # Add the table as proper markdown
+    # Create markdown table header
+    columns = final_table.columns.tolist()
+    readme_content += "| " + " | ".join(columns) + " |\n"
+    readme_content += "| " + " | ".join(["---"] * len(columns)) + " |\n"
+    
+    # Add table rows
+    for _, row in final_table.iterrows():
+        row_values = []
+        for col in columns:
+            value = row[col]
+            if pd.isna(value):
+                row_values.append("")
+            else:
+                row_values.append(str(value))
+        readme_content += "| " + " | ".join(row_values) + " |\n"
     
     readme_content += f"""
 

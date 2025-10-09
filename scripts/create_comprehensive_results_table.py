@@ -17,12 +17,18 @@ def main():
     # Load the detailed results
     detailed_results_path = Path('runs/run_20251007_174718_846c89d3/detailed_results.npz')
     events_csv_path = Path('analysis_results/events.csv')
+    manifest_path = Path('data/download_manifest.json')
     
     print("Loading detailed results...")
     detailed_data = np.load(detailed_results_path, allow_pickle=True)
     
     print("Loading events.csv...")
     events_df = pd.read_csv(events_csv_path)
+    
+    print("Loading manifest...")
+    import json
+    with open(manifest_path, 'r') as f:
+        manifest = json.load(f)
     
     # Extract data from detailed_results.npz
     reconstruction_errors = detailed_data['reconstruction_errors']
@@ -56,6 +62,70 @@ def main():
         return None
     
     results_df['gps'] = results_df['filename'].apply(extract_gps_from_filename)
+    
+    # For signals, we need to match with manifest to get the actual event names
+    # The GPS time in the filename should match the GPS time in the manifest
+    print("Matching signal filenames with event names from manifest...")
+    
+    # Create a mapping from GPS time to event name using manifest
+    gps_to_event = {}
+    for download in manifest['downloads']:
+        if download['segment_type'] == 'signal' and download.get('event'):
+            gps_time = download['start_gps']
+            # Determine catalog based on GPS time
+            if gps_time >= 1380000000:  # O4 events (2024+)
+                catalog = 'GWTC-4.0'
+            elif gps_time >= 1230000000:  # O3 events (2019-2020)
+                catalog = 'GWTC-3.0'
+            elif gps_time >= 1160000000:  # O2 events (2017)
+                catalog = 'GWTC-2.0'
+            else:  # O1 events (2015-2016)
+                catalog = 'GWTC-1.0'
+            
+            gps_to_event[gps_time] = {
+                'name': download['event'],
+                'shortName': download['event'],  # Use same as name for now
+                'catalog': catalog
+            }
+    
+    # Also try to match with events.csv for additional metadata
+    events_gps_to_info = {}
+    for _, event_row in events_df.iterrows():
+        if pd.notna(event_row['gps']):
+            events_gps_to_info[event_row['gps']] = {
+                'name': event_row['name'],
+                'shortName': event_row['shortName'],
+                'catalog': event_row['catalog']
+            }
+    
+    # Add event names to results_df
+    def get_event_info(gps_time):
+        # First try exact match in events.csv
+        if gps_time in events_gps_to_info:
+            return events_gps_to_info[gps_time]
+        
+        # Try to find closest GPS time in events.csv (within 1000 second tolerance)
+        closest_gps = None
+        min_diff = float('inf')
+        for event_gps in events_gps_to_info.keys():
+            diff = abs(event_gps - gps_time)
+            if diff < min_diff and diff <= 1000.0:  # Within 1000 seconds (~16 minutes)
+                min_diff = diff
+                closest_gps = event_gps
+        
+        if closest_gps is not None:
+            return events_gps_to_info[closest_gps]
+        
+        # Fall back to manifest
+        if gps_time in gps_to_event:
+            return gps_to_event[gps_time]
+        
+        return {'name': None, 'shortName': None, 'catalog': None}
+    
+    event_info = results_df['gps'].apply(get_event_info)
+    results_df['event_name'] = [info['name'] for info in event_info]
+    results_df['event_shortName'] = [info['shortName'] for info in event_info]
+    results_df['event_catalog'] = [info['catalog'] for info in event_info]
     
     # Merge with events.csv on GPS time
     print("Merging with events.csv...")
@@ -122,7 +192,7 @@ def main():
     
     # Select columns for the final table
     columns_to_include = [
-        'name', 'shortName', 'gps', 'catalog', 'final_status', 'data_type',
+        'event_name', 'gps', 'event_catalog', 'final_status', 'data_type',
         'reconstruction_error', 'prediction', 'true_label',
         'network_matched_filter_snr', 'mass_1_source', 'mass_2_source',
         'total_mass_source', 'chirp_mass_source', 'luminosity_distance',
@@ -181,10 +251,9 @@ This table shows the comprehensive results for the O4-only CWT-LSTM autoencoder 
     readme_content += f"""
 
 ## Column Descriptions
-- **name**: Official GW event name
-- **shortName**: Short event identifier
+- **event_name**: Official GW event name (e.g., GW150914)
 - **gps**: GPS time of event
-- **catalog**: Source catalog (GWTC-4.0, etc.)
+- **event_catalog**: Source catalog (GWTC-4.0, etc.)
 - **final_status**: Detection/processing status
 - **data_type**: Signal or Noise
 - **reconstruction_error**: Autoencoder reconstruction error

@@ -4,7 +4,7 @@ Training Module for Gravitational Wave Hunter v2.0
 This module provides training capabilities for CWT-LSTM autoencoders,
 including data loading, training loops, validation, and model saving.
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

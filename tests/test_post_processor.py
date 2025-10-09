@@ -5,7 +5,7 @@ Test script for PostProcessor module
 This script tests the post-processing functionality to ensure timing analysis
 and result enhancement work correctly.
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

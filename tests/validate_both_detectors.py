@@ -25,7 +25,7 @@ Output:
     - Performance comparison with mock data
     - Summary of timing offsets and recommendations
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

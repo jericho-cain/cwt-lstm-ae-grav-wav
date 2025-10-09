@@ -5,7 +5,7 @@ Test script for CWT-LSTM Autoencoder model
 This script tests the model creation, forward pass, and basic functionality
 to ensure the model architecture is working correctly.
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

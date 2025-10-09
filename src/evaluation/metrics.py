@@ -5,7 +5,7 @@ This module provides comprehensive evaluation metrics and visualization
 for anomaly detection in gravitational wave data. It generates precision-recall
 curves, ROC curves, confusion matrices, and reconstruction error distributions.
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

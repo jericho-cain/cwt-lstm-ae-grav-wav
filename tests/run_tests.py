@@ -25,7 +25,7 @@ Output:
     - Performance metrics
     - Error summaries
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 
@@ -110,7 +110,7 @@ def main():
     """Main test runner function."""
     import argparse
     
-    parser = argparse.ArgumentParser(description="Run tests for Gravitational Wave Hunter v2.0")
+    parser = argparse.ArgumentParser(description="Run tests for CWT-LSTM Autoencoder Gravitational Wave Detection")
     parser.add_argument("--test", help="Run specific test (e.g., TestConfigValidator.test_valid_downloader_config)")
     parser.add_argument("--verbose", "-v", action="store_true", help="Verbose output")
     

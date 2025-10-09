@@ -9,7 +9,7 @@ This module tests the clean GWOSC downloader functionality including:
 - Manifest tracking
 - Error handling
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

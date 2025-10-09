@@ -4,7 +4,7 @@ Anomaly Detection Module for Gravitational Wave Hunter v2.0
 This module provides anomaly detection capabilities using trained autoencoders
 to identify potential gravitational wave signals through reconstruction error analysis.
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

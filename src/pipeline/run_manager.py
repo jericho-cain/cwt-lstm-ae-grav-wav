@@ -5,7 +5,7 @@ This module provides run management capabilities for tracking and reproducing
 pipeline executions. It creates unique run directories, tracks metadata,
 and enables full reproducibility of experiments.
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

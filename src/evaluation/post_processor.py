@@ -4,7 +4,7 @@ Post-Processing Module for Gravitational Wave Hunter v2.0
 This module provides post-processing capabilities for anomaly detection results,
 including timing analysis, peak detection, and result enhancement.
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

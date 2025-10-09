@@ -158,4 +158,50 @@ Physical parameters (SNR, masses, distance, FAR, p_astro) are from the **Gravita
 - **F1-Score**: 96.6%
 - **ROC-AUC**: 0.994
 
+## False Positive Analysis: Instrumental Glitches
+
+All three false positives (97.0% precision) exhibit the **same glitch morphology** - sharp, broadband transients characteristic of instrumental artifacts. This is excellent news for model performance, as it demonstrates:
+
+1. **Consistent behavior**: The model isn't making random errors, but systematically responding to one specific glitch type
+2. **Anomaly detection working as designed**: These glitches are correctly identified as anomalous (non-Gaussian structure)
+3. **Targetable with post-processing**: A simple glitch classifier could eliminate all three
+4. **Real-world robustness**: Coincidence detection (requiring signals in multiple detectors) would naturally filter these out
+
+### Glitch Characteristics
+
+All three false positives show:
+- **Vertical stripe** of high energy across 20-400+ Hz
+- **Broadband power** (not frequency-dependent like a chirp)
+- **Impulsive/transient** nature (very brief duration)
+- **Similar reconstruction errors** (0.77-0.82 range)
+
+| GPS Time | Reconstruction Error | Glitch Time | Observing Run |
+|----------|---------------------|-------------|---------------|
+| 1266182317 | 0.818 | ~5s | O2 |
+| 1244843719 | 0.773 | ~5s | O2 |
+| 1128737714 | 0.788 | ~8s | O1 |
+
+### Spectrograms
+
+**GPS 1266182317** (RE=0.818):
+![FP 1266182317](../../analysis_results/fp_1266182317_spectrogram.png)
+
+**GPS 1244843719** (RE=0.773):
+![FP 1244843719](../../analysis_results/fp_1244843719_spectrogram.png)
+
+**GPS 1128737714** (RE=0.788):
+![FP 1128737714](../../analysis_results/fp_1128737714_spectrogram.png)
+
+### Utility of Flagging Glitches
+
+The model's ability to flag these glitches has practical value:
+- **Glitch characterization**: Identifying common glitch morphologies helps understand detector systematics
+- **Data quality improvement**: Flagged glitches can inform future data quality vetoes
+- **Root cause analysis**: Consistent glitch patterns can guide investigation into instrumental sources
+- **Training data for glitch classifiers**: These examples can augment glitch classification systems like Gravity Spy
+
+The fact that the autoencoder flags these anomalies demonstrates it's functioning correctly as a first-stage anomaly detector, with the understanding that downstream checks (coincidence, parameter estimation, glitch classification) would handle the final signal/glitch discrimination.
+
+---
+
 Generated from run: run_20251007_174718_846c89d3

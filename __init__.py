@@ -5,13 +5,13 @@ A state-of-the-art unsupervised anomaly detection system for identifying
 gravitational wave signals in LIGO detector noise using Continuous Wavelet
 Transform (CWT) and Long Short-Term Memory (LSTM) autoencoders.
 
-Author: CWT-LSTM-AE-Grav-Wav
+Author: Jericho Cain
 Version: 1.0.0
 Date: October 2025
 """
 
 __version__ = "1.0.0"
-__author__ = "CWT-LSTM-AE-Grav-Wav"
+__author__ = "Jericho Cain"
 __email__ = "contact@gravitational-wave-detection.org"
 __description__ = "Unsupervised Gravitational Wave Detection using CWT-LSTM Autoencoders"
 __license__ = "MIT"

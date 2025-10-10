@@ -12,7 +12,7 @@ Date: October 2025
 
 __version__ = "1.0.0"
 __author__ = "Jericho Cain"
-__email__ = "contact@gravitational-wave-detection.org"
+__email__ = "jericho.cain@gmail.com"
 __description__ = "Unsupervised Gravitational Wave Detection using CWT-LSTM Autoencoders"
 __license__ = "MIT"
 

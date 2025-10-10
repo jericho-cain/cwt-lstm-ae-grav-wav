@@ -8,7 +8,7 @@ in gravitational wave data.
 The model learns to reconstruct normal noise patterns and identifies anomalies
 (potential GW signals) through high reconstruction error.
 
-Author: Gravitational Wave Hunter v2.0
+Author: Jericho Cain
 Date: October 2, 2025
 """
 

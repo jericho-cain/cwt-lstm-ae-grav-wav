@@ -7,6 +7,10 @@
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![Research](https://img.shields.io/badge/research-gravitational%20waves-purple.svg)](https://www.ligo.org/)
 [![Performance](https://img.shields.io/badge/performance-97%25%20P%20%7C%2096%25%20R-brightgreen.svg)](#results)
+[![arXiv](https://img.shields.io/badge/arXiv-2509.10505-b31b1b.svg)](https://arxiv.org/abs/2509.10505)
+
+> **Paper:** [Template-Free Gravitational Wave Detection with CWT-LSTM Autoencoders: A Case Study of Run-Dependent Calibration Effects in LIGO Data](https://arxiv.org/abs/2509.10505)  
+> Jericho Cain, arXiv:2509.10505 [astro-ph.IM], 2025
 
 ## Overview
 

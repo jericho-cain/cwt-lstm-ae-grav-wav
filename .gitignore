@@ -127,6 +127,7 @@ results/
 !results/visualizations/spectrograms/
 
 # IDE
+.cursor/
 .vscode/
 .idea/
 *.swp

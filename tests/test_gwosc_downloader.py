@@ -205,18 +205,16 @@ class TestCleanGWOSCDownloader:
     
     @patch('downloader.gwosc_downloader.GWPY_AVAILABLE', True)
     @patch('downloader.gwosc_downloader.event_gps')
-    @patch('downloader.gwosc_downloader.TimeSeries')
-    def test_download_signals(self, mock_timeseries, mock_event_gps, test_config):
+    @patch.object(CleanGWOSCDownloader, '_download_signal_segment')
+    def test_download_signals(self, mock_download_signal, mock_event_gps, test_config):
         """Test signal download functionality."""
         downloader = CleanGWOSCDownloader(test_config)
         
         # Mock event GPS time
         mock_event_gps.return_value = 1126259450
         
-        # Mock TimeSeries response
-        mock_ts = MagicMock()
-        mock_ts.value = np.random.randn(131072).astype(np.float32)
-        mock_timeseries.fetch_open_data.return_value = mock_ts
+        # Mock signal download to avoid network calls (get_urls/requests)
+        mock_download_signal.return_value = np.random.randn(131072).astype(np.float32)
         
         results = downloader.download_signals()
         

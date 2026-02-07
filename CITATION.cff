@@ -19,11 +19,12 @@ keywords:
   - ligo
   - gwosc
 preferred-citation:
-  type: software
-  title: "CWT-LSTM Autoencoder for Gravitational Wave Detection"
+  type: article
+  title: "Template-Free Gravitational Wave Detection with CWT-LSTM Autoencoders: A Case Study of Run-Dependent Calibration Effects in LIGO Data"
   authors:
-    - family-names: "CWT-LSTM-AE-Grav-Wav"
-      given-names: ""
-  year: 2025
-  url: "https://github.com/gravitational-wave-detection/cwt-lstm-ae-grav-wav"
-  license: MIT
+    - family-names: "Cain"
+      given-names: "Jericho E"
+  year: 2026
+  journal: "Classical and Quantum Gravity"
+  url: "http://iopscience.iop.org/article/10.1088/1361-6382/ae415e"
+  doi: "10.1088/1361-6382/ae415e"

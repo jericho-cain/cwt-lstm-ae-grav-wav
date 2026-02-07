@@ -9,8 +9,9 @@
 [![Performance](https://img.shields.io/badge/performance-97%25%20P%20%7C%2096%25%20R-brightgreen.svg)](#results)
 [![arXiv](https://img.shields.io/badge/arXiv-2509.10505-b31b1b.svg)](https://arxiv.org/abs/2509.10505)
 
-> **Paper:** [Template-Free Gravitational Wave Detection with CWT-LSTM Autoencoders: A Case Study of Run-Dependent Calibration Effects in LIGO Data](https://arxiv.org/abs/2509.10505)  
-> Jericho Cain, arXiv:2509.10505 [astro-ph.IM], 2025
+> **Paper (cite this):** [Template-Free Gravitational Wave Detection with CWT-LSTM Autoencoders: A Case Study of Run-Dependent Calibration Effects in LIGO Data](http://iopscience.iop.org/article/10.1088/1361-6382/ae415e)  
+> J. E. Cain, *Class. Quantum Grav.* (2026).  
+> Preprint: [arXiv:2509.10505](https://arxiv.org/abs/2509.10505) [astro-ph.IM].
 
 ## Overview
 
@@ -227,17 +228,19 @@ We welcome contributions to improve the gravitational wave detection system. Ple
 
 ## Citation
 
-If you use this system in your research, please cite:
+If you use this system in your research, please cite the published paper:
 
 ```bibtex
-@software{cwt_lstm_grav_waves,
-  title={CWT-LSTM Autoencoder for Gravitational Wave Detection},
-  author={Jericho Cain},
-  year={2025},
-  version={1.0.0},
-  url={https://github.com/jericho-cain/cwt-lstm-ae-grav-wav}
+@article{Cain2026,
+  author={Cain, Jericho E},
+  title={Template-Free Gravitational Wave Detection with CWT-LSTM Autoencoders: A Case Study of Run-Dependent Calibration Effects in LIGO Data},
+  journal={Classical and Quantum Gravity},
+  url={http://iopscience.iop.org/article/10.1088/1361-6382/ae415e},
+  year={2026}
 }
 ```
+
+Preprint: [arXiv:2509.10505](https://arxiv.org/abs/2509.10505) [astro-ph.IM].
 
 ## License
 
